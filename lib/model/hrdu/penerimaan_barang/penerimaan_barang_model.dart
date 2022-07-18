@@ -1,0 +1,241 @@
+import 'dart:convert';
+
+class Penpo {
+  Penpo({
+    this.status,
+    this.message,
+    required this.data,
+    this.dataCount,
+    this.totalPage,
+  });
+
+  final bool? status;
+  final String? message;
+  final List<Datum> data;
+  final int? dataCount;
+  final int? totalPage;
+
+  factory Penpo.fromRawJson(String str) => Penpo.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Penpo.fromJson(Map<String, dynamic> json) => Penpo(
+    status: json["status"],
+    message: json["message"],
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    dataCount: json["data_count"],
+    totalPage: json["total_page"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data_count": dataCount,
+    "total_page": totalPage,
+  };
+}
+
+class Datum {
+  Datum({
+    this.idPenerimaanBarang,
+    this.tglPenerimaanBarang,
+    this.noPenerimaanBarang,
+    this.idPurchaseOrderDetail,
+    this.tglPurchaseOrder,
+    this.noPurchaseOrder,
+    this.noSuratJalan,
+    this.petugasPenerimaan,
+    this.namaKaryawan,
+    this.gudangPenerimaan,
+    this.namaGudang,
+    this.idItemBuaso,
+    this.namaItem,
+    this.dimensi,
+    this.pj,
+    this.lb,
+    this.tb,
+    this.idVendor,
+    this.namaVendor,
+    this.hargaKesepakatan,
+    this.qtyOrder,
+    this.idSatuanOrder,
+    this.namaSatuanOrder,
+    this.qtyBeli,
+    this.idSatuanBeli,
+    this.namaSatuanBeli,
+    this.qtyPakai,
+    this.idSatuanPakai,
+    this.namaSatuanPakai,
+    this.fotoSuratJalan,
+    this.baseline,
+    this.idApprovalTransaksi,
+    this.noTransaksi,
+    this.kodeTransaksi,
+    this.idKaryawan,
+    this.idJabatan,
+    this.statusApproval,
+    this.catatan,
+    this.createdAt,
+    this.tglApproval,
+    this.approvalLevel,
+    this.namaKaryawanApproval,
+    this.namaJabatanApproval,
+    this.idKaryawanPengaju,
+    this.idJabatanPengaju,
+    this.namaKaryawanPengaju,
+    this.namaJabatanPengaju,
+  });
+
+  final String? idPenerimaanBarang;
+  final DateTime? tglPenerimaanBarang;
+  final String? noPenerimaanBarang;
+  final String? idPurchaseOrderDetail;
+  final DateTime? tglPurchaseOrder;
+  final String? noPurchaseOrder;
+  final String? noSuratJalan;
+  final String? petugasPenerimaan;
+  final String? namaKaryawan;
+  final String? gudangPenerimaan;
+  final String? namaGudang;
+  final String? idItemBuaso;
+  final String? namaItem;
+  final String? dimensi;
+  final String? pj;
+  final String? lb;
+  final String? tb;
+  final String? idVendor;
+  final String? namaVendor;
+  final String? hargaKesepakatan;
+  final String? qtyOrder;
+  final String? idSatuanOrder;
+  final String? namaSatuanOrder;
+  final String? qtyBeli;
+  final String? idSatuanBeli;
+  final String? namaSatuanBeli;
+  final String? qtyPakai;
+  final String? idSatuanPakai;
+  final String? namaSatuanPakai;
+  final String? fotoSuratJalan;
+  final String? baseline;
+  final String? idApprovalTransaksi;
+  final String? noTransaksi;
+  final String? kodeTransaksi;
+  final String? idKaryawan;
+  final String? idJabatan;
+  final String? statusApproval;
+  final String? catatan;
+  final String? createdAt;
+  final DateTime? tglApproval;
+  final String? approvalLevel;
+  final String? namaKaryawanApproval;
+  final String? namaJabatanApproval;
+  final String? idKaryawanPengaju;
+  final String? idJabatanPengaju;
+  final String? namaKaryawanPengaju;
+  final String? namaJabatanPengaju;
+
+  factory Datum.fromRawJson(String str) => Datum.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    idPenerimaanBarang: json["id_penerimaan_barang"],
+    tglPenerimaanBarang: json["tgl_penerimaan_barang"] == null ? null : DateTime.parse(json["tgl_penerimaan_barang"]),
+    noPenerimaanBarang: json["no_penerimaan_barang"],
+    idPurchaseOrderDetail: json["id_purchase_order_detail"],
+    tglPurchaseOrder: json["tgl_purchase_order"] == null ? null : DateTime.parse(json["tgl_purchase_order"]),
+    noPurchaseOrder: json["no_purchase_order"],
+    noSuratJalan: json["no_surat_jalan"],
+    petugasPenerimaan: json["petugas_penerimaan"],
+    namaKaryawan: json["nama_karyawan"],
+    gudangPenerimaan: json["gudang_penerimaan"],
+    namaGudang: json["nama_gudang"],
+    idItemBuaso: json["id_item_buaso"],
+    namaItem: json["nama_item"],
+    dimensi: json["dimensi"],
+    pj: json["pj"],
+    lb: json["lb"],
+    tb: json["tb"],
+    idVendor: json["id_vendor"],
+    namaVendor: json["nama_vendor"],
+    hargaKesepakatan: json["harga_kesepakatan"],
+    qtyOrder: json["qty_order"],
+    idSatuanOrder: json["id_satuan_order"],
+    namaSatuanOrder: json["nama_satuan_order"],
+    qtyBeli: json["qty_beli"],
+    idSatuanBeli: json["id_satuan_beli"],
+    namaSatuanBeli: json["nama_satuan_beli"],
+    qtyPakai: json["qty_pakai"],
+    idSatuanPakai: json["id_satuan_pakai"],
+    namaSatuanPakai: json["nama_satuan_pakai"],
+    fotoSuratJalan: json["foto_surat_jalan"],
+    baseline: json["baseline"],
+    idApprovalTransaksi: json["id_approval_transaksi"],
+    noTransaksi: json["no_transaksi"],
+    kodeTransaksi: json["kode_transaksi"],
+    idKaryawan: json["id_karyawan"],
+    idJabatan: json["id_jabatan"],
+    statusApproval: json["status_approval"],
+    catatan: json["catatan"],
+    createdAt: json["created_at"],
+    tglApproval: json["tgl_approval"] == null ? null : DateTime.parse(json["tgl_approval"]),
+    approvalLevel: json["approval_level"],
+    namaKaryawanApproval: json["nama_karyawan_approval"],
+    namaJabatanApproval: json["nama_jabatan_approval"],
+    idKaryawanPengaju: json["id_karyawan_pengaju"],
+    idJabatanPengaju: json["id_jabatan_pengaju"],
+    namaKaryawanPengaju: json["nama_karyawan_pengaju"],
+    namaJabatanPengaju: json["nama_jabatan_pengaju"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id_penerimaan_barang": idPenerimaanBarang,
+    "tgl_penerimaan_barang": tglPenerimaanBarang == null ? null : "${tglPenerimaanBarang?.year.toString().padLeft(4, '0')}-${tglPenerimaanBarang?.month.toString().padLeft(2, '0')}-${tglPenerimaanBarang?.day.toString().padLeft(2, '0')}",
+    "no_penerimaan_barang": noPenerimaanBarang,
+    "id_purchase_order_detail": idPurchaseOrderDetail,
+    "tgl_purchase_order": tglPurchaseOrder == null ? null : "${tglPurchaseOrder?.year.toString().padLeft(4, '0')}-${tglPurchaseOrder?.month.toString().padLeft(2, '0')}-${tglPurchaseOrder?.day.toString().padLeft(2, '0')}",
+    "no_purchase_order": noPurchaseOrder,
+    "no_surat_jalan": noSuratJalan,
+    "petugas_penerimaan": petugasPenerimaan,
+    "nama_karyawan": namaKaryawan,
+    "gudang_penerimaan": gudangPenerimaan,
+    "nama_gudang": namaGudang,
+    "id_item_buaso": idItemBuaso,
+    "nama_item": namaItem,
+    "dimensi": dimensi,
+    "pj": pj,
+    "lb": lb,
+    "tb": tb,
+    "id_vendor": idVendor,
+    "nama_vendor": namaVendor,
+    "harga_kesepakatan": hargaKesepakatan,
+    "qty_order": qtyOrder,
+    "id_satuan_order": idSatuanOrder,
+    "nama_satuan_order": namaSatuanOrder,
+    "qty_beli": qtyBeli,
+    "id_satuan_beli": idSatuanBeli,
+    "nama_satuan_beli": namaSatuanBeli,
+    "qty_pakai": qtyPakai,
+    "id_satuan_pakai": idSatuanPakai,
+    "nama_satuan_pakai": namaSatuanPakai,
+    "foto_surat_jalan": fotoSuratJalan,
+    "baseline": baseline,
+    "id_approval_transaksi": idApprovalTransaksi,
+    "no_transaksi": noTransaksi,
+    "kode_transaksi": kodeTransaksi,
+    "id_karyawan": idKaryawan,
+    "id_jabatan": idJabatan,
+    "status_approval": statusApproval,
+    "catatan": catatan,
+    "created_at": createdAt,
+    "tgl_approval": tglApproval == null ? null : "${tglApproval?.year.toString().padLeft(4, '0')}-${tglApproval?.month.toString().padLeft(2, '0')}-${tglApproval?.day.toString().padLeft(2, '0')}",
+    "approval_level": approvalLevel,
+    "nama_karyawan_approval": namaKaryawanApproval,
+    "nama_jabatan_approval": namaJabatanApproval,
+    "id_karyawan_pengaju": idKaryawanPengaju,
+    "id_jabatan_pengaju": idJabatanPengaju,
+    "nama_karyawan_pengaju": namaKaryawanPengaju,
+    "nama_jabatan_pengaju": namaJabatanPengaju,
+  };
+}

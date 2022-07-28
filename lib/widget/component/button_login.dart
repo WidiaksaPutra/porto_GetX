@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class ButtonLogin extends StatelessWidget {
   final Function()? onClicked;
@@ -15,7 +14,7 @@ class ButtonLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: getProportionateScreenHeight(50),
+      height: 50,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.centerLeft,

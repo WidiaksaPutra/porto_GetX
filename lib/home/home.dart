@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/notification/body.dart';
-import 'package:mgp_mobile_app/service/mgp_api_constant.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/home/component/home_menu.dart';
@@ -116,7 +116,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
       //       );
       //   }
       //   );
-      MGPAPICONSTANT().registerTokenDevice(tokenDevice: deviceToken);
+      MGPAPI().registerTokenDevice(tokenDevice: deviceToken);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("device_token", deviceToken);
     } on PlatformException catch (error) {

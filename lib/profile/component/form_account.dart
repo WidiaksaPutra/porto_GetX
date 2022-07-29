@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/service/mgp_api_constant.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -327,7 +327,7 @@ class _FormAccountState extends State<FormAccount> {
                   onTap: () async {
                     loginData = await SharedPreferences.getInstance();
                     deviceToken = loginData.getString("device_token");
-                    final unregisterToken = await MGPAPICONSTANT().unregisterTokenDevice(tokenDevice: deviceToken.toString());
+                    final unregisterToken = await MGPAPI().unregisterTokenDevice(tokenDevice: deviceToken.toString());
                     if (unregisterToken == "berhasil") {
                       setState(() {
                         loginData.remove("token");

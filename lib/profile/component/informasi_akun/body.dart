@@ -1,10 +1,10 @@
 import 'package:mgp_mobile_app/login/login.dart';
 import 'package:mgp_mobile_app/model/profil/profil_model.dart';
-import 'package:mgp_mobile_app/service/mgp_api_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
@@ -24,7 +24,7 @@ class _BodyState extends State<Body> {
 
   @override
   void initState(){
-    _future = MGPAPICONSTANT().fetchDataProfilUser();
+    _future = MGPAPI().fetchDataProfilUser();
     super.initState();
   }
 
@@ -333,7 +333,7 @@ class _BodyState extends State<Body> {
                             onTap: () async {
                               loginData = await SharedPreferences.getInstance();
                               deviceToken = loginData.getString("device_token");
-                              final unregisterToken = await MGPAPICONSTANT().unregisterTokenDevice(tokenDevice: deviceToken.toString());
+                              final unregisterToken = await MGPAPI().unregisterTokenDevice(tokenDevice: deviceToken.toString());
                               if (unregisterToken == "berhasil") {
                                 setState(() {
                                   loginData.remove("token");

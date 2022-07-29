@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/modul/hrdu/homepage_hrdu/homepage_hrdu.dart';
 import 'package:mgp_mobile_app/widget/component/icon_modul.dart';
-import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class HomeMenu extends StatefulWidget {
   const HomeMenu({Key? key}) : super(key: key);
@@ -29,7 +28,7 @@ class _HomeMenuState extends State<HomeMenu> {
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                childAspectRatio: getProportionateScreenRatio(),
+                childAspectRatio: MediaQuery.of(context).size.height <= 600.0 ? 1 : MediaQuery.of(context).size.height >= 650.0 ? 1.2 : 1.2,
                 crossAxisSpacing: 5,
                 mainAxisSpacing: 6,
               ),

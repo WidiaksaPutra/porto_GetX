@@ -1,4 +1,4 @@
-import 'package:mgp_mobile_app/service/mgp_api_constant.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/model/profil/profil_model.dart';
 import 'package:mgp_mobile_app/profile/component/form_account.dart';
@@ -23,7 +23,7 @@ class _BodyState extends State<Body> {
 
   @override
   void initState(){
-    _future = MGPAPICONSTANT().fetchDataProfilUser();
+    _future = MGPAPI().fetchDataProfilUser();
     super.initState();
   }
 

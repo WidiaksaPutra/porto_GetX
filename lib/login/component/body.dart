@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mgp_mobile_app/login/component/background.dart';
 import 'package:mgp_mobile_app/login/component/login_form.dart';
-import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -36,8 +35,8 @@ class _BodyState extends State<Body> {
                     children: <Widget>[
                       Image.asset(
                         "assets/images/LogoMGP.png",
-                        height: getProportionateScreenHeight(200),
-                        width: getProportionateScreenWidth(200),
+                        height: 200,
+                        width: 200,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -46,7 +45,7 @@ class _BodyState extends State<Body> {
                           Text("Login to your account"),
                         ],
                       ),
-                      SizedBox(height: getProportionateScreenHeight(10)),
+                      const SizedBox(height: 10),
                       const LoginForm(),
                     ],
                   ),

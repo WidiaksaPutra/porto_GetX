@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/service/mgp_api_constant.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/component/button_login.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/main_page/main_page.dart';
-import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
@@ -20,7 +19,6 @@ class _LoginFormState extends State<LoginForm> {
   final _usernameTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final List<String> errors = [];
   bool passwordVisible = true;
   late SharedPreferences loginData;
   bool isLoading = false;
@@ -101,7 +99,7 @@ class _LoginFormState extends State<LoginForm> {
               ],
             )
           ),
-          SizedBox(height: getProportionateScreenHeight(20)),
+          const SizedBox(height: 20),
           TextFormField(
             controller: _passwordTextController,
             keyboardType: TextInputType.text,
@@ -208,7 +206,7 @@ class _LoginFormState extends State<LoginForm> {
                     isLoading = true;
                   });
                   await Future.delayed(const Duration(milliseconds: 1000));
-                  final loginProses = await MGPAPICONSTANT().loginUser(
+                  final loginProses = await MGPAPI().loginUser(
                   username: _usernameTextController.text,
                   password: _passwordTextController.text
                   );

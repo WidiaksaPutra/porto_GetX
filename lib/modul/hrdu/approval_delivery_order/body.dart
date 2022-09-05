@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_delivery_order/detail_approval_delivery_order.dart';
-import 'package:mgp_mobile_app/model/hrdu/delivery_order/delivery_order_model.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_delivery_order.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_date.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_status.dart';
@@ -13,7 +12,7 @@ import 'package:mgp_mobile_app/widget/component/card_list.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/component/search_field.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -22,46 +21,12 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
-  late String? tokens;
-  late List<Datum> dataList = [];
-  late Future<List<Datum>> _future;
+class _BodyState extends State<Body> with DeliveryOrderClass{
+  late Future<List<dynamic>> _future;
   final ScrollController _scrollController = ScrollController();
   bool loading = false;
   int pages = 1;
   late int totalPages;
-
-  Future<List<Datum>> fetchApprovalDeliveryOrder({required int page}) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    int? perPage = 10;
-    Map<String, String>? queryParams = {
-      'page' : page.toString(),
-      'per_page' : perPage.toString(),
-    };
-    String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_delivery_order/list/?' + queryString;
-    final response =
-      await MGPAPI.client.get(Uri.parse(requestUrl),
-      headers: {
-        'Authorization': 'Bearer $tokens',
-      }
-    ).timeout(
-      const Duration(seconds: 10),
-      onTimeout: () {
-        throw TimeoutException("The Connection has Error");
-      });
-    if (response.statusCode == 200) {
-      final parsed = json.decode(response.body);
-      Regdo deliveryOrderData = Regdo.fromJson(parsed);
-      dataList.addAll(deliveryOrderData.data);
-      pages++;
-      return dataList;
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
 
   Future _refreshPage() async{
     await Future.delayed(const Duration(milliseconds: 500));
@@ -104,18 +69,18 @@ class _BodyState extends State<Body> {
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        const EdgeInsets.symmetric(horizontal: 20),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 15),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: SearchField(),
+            SizedBox(height: getProportionateScreenHeight(15).h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+              child: const SearchField(),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: getProportionateScreenHeight(5).h),
             FutureBuilder(
               future: _future,
-              builder: (BuildContext context, AsyncSnapshot<List<Datum>> snapshot){
+              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot){
                 if (snapshot.hasData) {
                   var dataDeliveryOrder = snapshot.data;
                   if (dataDeliveryOrder!.isNotEmpty) {
@@ -134,7 +99,7 @@ class _BodyState extends State<Body> {
                                   itemBuilder: (context, index){
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: HighlightItemName(
                                           child: Text(
                                             dataDeliveryOrder[index].noDeliveryOrder.toString(),
@@ -143,7 +108,7 @@ class _BodyState extends State<Body> {
                                           ),
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,42 +119,42 @@ class _BodyState extends State<Body> {
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Jabatan",
                                                 contentData: dataDeliveryOrder[index].namaJabatanPengaju,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemDate(
                                                 label: "Tgl. Delivery Order",
                                                 date: dataDeliveryOrder[index].tglDeliveryOrder,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Gudang",
                                                 contentData: dataDeliveryOrder[index].namaGudang,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Customer",
                                                 contentData: dataDeliveryOrder[index].namaCustomer,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemDate(
                                                 label: "Tgl. Batas Waktu",
                                                 date: dataDeliveryOrder[index].batasWaktu,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemStatus(
                                                 contentData: dataDeliveryOrder[index].statusApproval,
                                               ),
@@ -214,7 +179,7 @@ class _BodyState extends State<Body> {
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: 80,
+                                    height: getProportionateScreenHeight(80).h,
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -243,15 +208,15 @@ class _BodyState extends State<Body> {
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                               Skeleton(
                                 width: double.infinity,
-                                height: 380,
+                                height: getProportionateScreenHeight(380).h,
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                             ],
                           ),
                         );

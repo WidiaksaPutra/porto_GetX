@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval/approval.dart';
@@ -5,6 +6,7 @@ import 'package:mgp_mobile_app/modul/hrdu/dashboard_hrdu/dashboard_hrdu.dart';
 import 'package:mgp_mobile_app/modul/hrdu/report/report.dart';
 import 'package:flutter/material.dart';
 import 'package:mgp_mobile_app/widget/component/bottom_navigation_box.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class HomePageCRM extends StatefulWidget {
   const HomePageCRM({Key? key}) : super(key: key);
@@ -69,11 +71,11 @@ class _HomePageCRMState extends State<HomePageCRM> {
           items: bottomItems.map(
             (item) => BottomNavigationBarItem(
               icon: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 7),
+                padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(7).h),
                 child: SvgPicture.asset(
                   item.icon,
-                  width: 25,
-                  height: 25,
+                  width: getProportionateScreenWidth(25).w,
+                  height: getProportionateScreenHeight(25).h,
                   color: selectedIndex == bottomItems.indexOf(item) ? kPrimaryColor : kInActiveIconColor,
                 ),
               ),
@@ -83,8 +85,8 @@ class _HomePageCRMState extends State<HomePageCRM> {
           currentIndex: selectedIndex,
           selectedItemColor: kPrimaryColor,
           onTap: _onItemTapped,
-          selectedFontSize: 14,
-          unselectedFontSize: 14,
+          selectedFontSize: 14.sp,
+          unselectedFontSize: 14.sp,
         ),
       ),
     );

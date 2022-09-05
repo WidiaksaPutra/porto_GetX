@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/login/component/background.dart';
 import 'package:mgp_mobile_app/login/component/login_form.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -13,30 +15,31 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Background(
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
               child: Card(
                 shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  side: const BorderSide(
-                    width: 0.4, color: Colors.grey
+                  borderRadius: BorderRadius.circular(30).r,
+                  side: BorderSide(
+                    width: getProportionateScreenWidth(0.4).w, color: Colors.grey
                   )
                 ),
                 elevation: 8.0,
-                margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+                margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15, bottom: 30, left: 20, right: 20),
+                  padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h, bottom: getProportionateScreenHeight(30).h, left: getProportionateScreenWidth(20).w, right: getProportionateScreenWidth(20).w),
                   child: Column(
                     children: <Widget>[
                       Image.asset(
                         "assets/images/LogoMGP.png",
-                        height: 200,
-                        width: 200,
+                        height: getProportionateScreenHeight(200).h,
+                        width: getProportionateScreenWidth(200).w,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -45,7 +48,7 @@ class _BodyState extends State<Body> {
                           Text("Login to your account"),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: getProportionateScreenHeight(10).h),
                       const LoginForm(),
                     ],
                   ),

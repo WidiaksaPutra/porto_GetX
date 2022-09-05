@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/rap/analisa_single_rap.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rap/analisa_single_rap/body_file.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rap/analisa_single_rap/body_gambar.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rap/analisa_single_rap/body_informasi_umum.dart';
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class DetailAnalisaSingleRAPView extends StatefulWidget {
   const DetailAnalisaSingleRAPView({Key? key, required this.idRapDetail}) : super(key: key);
@@ -49,11 +51,11 @@ class _DetailAnalisaSingleRAPViewState extends State<DetailAnalisaSingleRAPView>
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Analisa Barang Jadi RAP",
+          title: Text("Analisa Barang Jadi RAP",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 18
+              fontSize: 18.sp
             ),
           ),
           flexibleSpace: const AppBarThemeColor(),
@@ -63,22 +65,22 @@ class _DetailAnalisaSingleRAPViewState extends State<DetailAnalisaSingleRAPView>
             Material(
               elevation: 2,
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: 1,
-                      color: Color.fromRGBO(0, 0, 0, 0.08)
+                      width: getProportionateScreenWidth(1).w,
+                      color: const Color.fromRGBO(0, 0, 0, 0.08)
                     )
                   )
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: 40,
+                  height: getProportionateScreenHeight(40).h,
                   child: TabBar(
                     controller: controller,
                     indicatorColor: kPrimaryColor,
-                    labelStyle: const TextStyle(
-                      fontSize: 14,
+                    labelStyle: TextStyle(
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins"
                     ),
@@ -93,7 +95,7 @@ class _DetailAnalisaSingleRAPViewState extends State<DetailAnalisaSingleRAPView>
                 ),
               ),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: getProportionateScreenHeight(5).h),
             Expanded(
               child: TabBarView(
                 controller: controller,

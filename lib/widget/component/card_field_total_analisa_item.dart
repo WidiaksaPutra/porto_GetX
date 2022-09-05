@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:intl/intl.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardFieldTotalAnalisaItem extends StatefulWidget {
   final String label;
@@ -19,7 +21,7 @@ class _CardFieldTotalAnalisaItemState extends State<CardFieldTotalAnalisaItem> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
       title: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,9 +37,9 @@ class _CardFieldTotalAnalisaItemState extends State<CardFieldTotalAnalisaItem> {
                     Padding(
                       padding: const EdgeInsets.only(left: 0),
                       child: Text(widget.label.toString(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -59,9 +61,9 @@ class _CardFieldTotalAnalisaItemState extends State<CardFieldTotalAnalisaItem> {
                             widget.total.toString()
                           )
                         ),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                         ),
                         textAlign: TextAlign.right,
                       ),

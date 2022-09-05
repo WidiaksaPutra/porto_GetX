@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/detail_rae_model.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/widget/component/card_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/component/card_item_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   final Future<AnalisaSingleRegrae> analisaSingleRegrae;
@@ -48,7 +50,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
@@ -62,30 +64,30 @@ class _BodyState extends State<Body> {
                   num totalBiayaOverhead = 0;
                   if (analisaSingleRAE!.data!.analisaFinTpFs!.isNotEmpty) {
                     for (var i = 0; i < analisaSingleRAE.data!.analisaFinTpFs!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpFs![i]!.qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpFs![i]!.unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpFs![i]!.konstanta.toString());
+                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpFs![i].qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpFs![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpFs![i].konstanta.toString());
                       subTotalFactorySupply.add(subTotal);
-                      totalFactorySupply = totalFactorySupply + subTotal;
+                      totalFactorySupply = totalFactorySupply + subTotal.round();
                     }
                   }
                   if (analisaSingleRAE.data!.analisaFinTpLc!.isNotEmpty) {
                     for (var i = 0; i < analisaSingleRAE.data!.analisaFinTpLc!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpLc![i]!.qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpLc![i]!.unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpLc![i]!.konstanta.toString());
+                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpLc![i].qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpLc![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpLc![i].konstanta.toString());
                       subTotalLabourCost.add(subTotal);
-                      totalLabourCost = totalLabourCost + subTotal;
+                      totalLabourCost = totalLabourCost + subTotal.round();
                     }
                   }
                   if (analisaSingleRAE.data!.analisaFinTpMp!.isNotEmpty) {
                     for (var i = 0; i < analisaSingleRAE.data!.analisaFinTpMp!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpMp![i]!.qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpMp![i]!.unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpMp![i]!.konstanta.toString());
+                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpMp![i].qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpMp![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpMp![i].konstanta.toString());
                       subTotalMachineProcess.add(subTotal);
-                      totalMachineProcess = totalMachineProcess + subTotal;
+                      totalMachineProcess = totalMachineProcess + subTotal.round();
                     }
                   }
                   if (analisaSingleRAE.data!.analisaFinTpBop!.isNotEmpty) {
                     for (var i = 0; i < analisaSingleRAE.data!.analisaFinTpBop!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpBop![i]!.qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpBop![i]!.unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpBop![i]!.konstanta.toString());
+                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpBop![i].qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpBop![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpBop![i].konstanta.toString());
                       subTotalBiayaOverhead.add(subTotal);
-                      totalBiayaOverhead = totalBiayaOverhead + subTotal;
+                      totalBiayaOverhead = totalBiayaOverhead + subTotal.round();
                     }
                   }
                   grandTotalFactorySupply = totalFactorySupply.toString();
@@ -96,32 +98,32 @@ class _BodyState extends State<Body> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 10,
+                     SizedBox(
+                        height: getProportionateScreenHeight(10).h,
                       ),
                       CardExpansionDetail(
                         label: "Factory Supply",
                         children: <Widget> [
                           ListView.separated(
-                            separatorBuilder: (context, index) => const SizedBox(
-                              height: 10,
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: getProportionateScreenHeight(10).h,
                             ),
                             itemCount: analisaSingleRAE.data!.analisaFinTpFs!.length,
                             itemBuilder: (context, index){
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                 child: CardItemExpansionDetail(
                                   child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                     title: HighlightItemName(
                                       child: Text(
-                                        analisaSingleRAE.data!.analisaFinTpFs![index]!.kodeItem.toString(),
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                        analisaSingleRAE.data!.analisaFinTpFs![index].kodeItem.toString(),
+                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     subtitle: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
+                                      padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +137,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Item Factory Supply",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -151,10 +153,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -171,7 +173,7 @@ class _BodyState extends State<Body> {
                                                   children: <Widget>[
                                                     Padding(
                                                       padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(analisaSingleRAE.data!.analisaFinTpFs![index]!.namaItem.toString(),
+                                                      child: Text(analisaSingleRAE.data!.analisaFinTpFs![index].namaItem.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -183,7 +185,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -193,7 +195,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Qty",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -209,10 +211,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -231,10 +233,10 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpFs![index]!.qty.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpFs![index].qty.toString()
                                                           )
                                                         )+" "+
-                                                        analisaSingleRAE.data!.analisaFinTpFs![index]!.namaSatuan.toString(),
+                                                        analisaSingleRAE.data!.analisaFinTpFs![index].namaSatuan.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -246,7 +248,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -256,7 +258,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Unit Price",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -272,10 +274,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -294,7 +296,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatCurrency.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpFs![index]!.unitPrice.toString())
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpFs![index].unitPrice.toString())
                                                         ),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -307,7 +309,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -317,7 +319,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Konstanta",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -333,10 +335,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -355,7 +357,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpFs![index]!.konstanta.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpFs![index].konstanta.toString()
                                                           )
                                                         ),
                                                         style: const TextStyle(
@@ -369,7 +371,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -379,7 +381,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Sub Total",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -395,10 +397,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -440,9 +442,9 @@ class _BodyState extends State<Body> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                             child: CardItemExpansionDetail(
                               child: ListTile(
                                 title: Column(
@@ -454,14 +456,14 @@ class _BodyState extends State<Body> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: const <Widget>[
+                                            children: <Widget>[
                                               Padding(
-                                                padding: EdgeInsets.only(left: 0),
+                                                padding: const EdgeInsets.only(left: 0),
                                                 child: Text("Grand Total",
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.left,
                                                 ),
@@ -482,10 +484,10 @@ class _BodyState extends State<Body> {
                                                       double.parse(grandTotalFactorySupply
                                                     )
                                                   ),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -500,32 +502,32 @@ class _BodyState extends State<Body> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
                         ]
                       ),
                       CardExpansionDetail(
                         label: "Labour Cost",
                         children: <Widget> [
                           ListView.separated(
-                            separatorBuilder: (context, index) => const SizedBox(
-                              height: 10,
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: getProportionateScreenHeight(10).h,
                             ),
                             itemCount: analisaSingleRAE.data!.analisaFinTpLc!.length,
                             itemBuilder: (context, index){
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                 child: CardItemExpansionDetail(
                                   child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                     title: HighlightItemName(
                                       child: Text(
-                                        analisaSingleRAE.data!.analisaFinTpLc![index]!.kodeItem.toString(),
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                        analisaSingleRAE.data!.analisaFinTpLc![index].kodeItem.toString(),
+                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     subtitle: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
+                                      padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -539,7 +541,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Item Labour Cost",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -555,10 +557,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -575,7 +577,7 @@ class _BodyState extends State<Body> {
                                                   children: <Widget>[
                                                     Padding(
                                                       padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(analisaSingleRAE.data!.analisaFinTpLc![index]!.namaItem.toString(),
+                                                      child: Text(analisaSingleRAE.data!.analisaFinTpLc![index].namaItem.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -587,7 +589,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -597,7 +599,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Qty",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -613,10 +615,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -635,10 +637,10 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpLc![index]!.qty.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpLc![index].qty.toString()
                                                           )
                                                         )+" "+
-                                                        analisaSingleRAE.data!.analisaFinTpLc![index]!.namaSatuan.toString(),
+                                                        analisaSingleRAE.data!.analisaFinTpLc![index].namaSatuan.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -650,7 +652,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -660,7 +662,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Unit Price",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -676,10 +678,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -698,7 +700,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatCurrency.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpLc![index]!.unitPrice.toString())
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpLc![index].unitPrice.toString())
                                                         ),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -711,7 +713,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -721,7 +723,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Konstanta",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -737,10 +739,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -759,7 +761,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpLc![index]!.konstanta.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpLc![index].konstanta.toString()
                                                           )
                                                         ),
                                                         style: const TextStyle(
@@ -773,7 +775,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -783,7 +785,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Sub Total",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -799,10 +801,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -844,9 +846,9 @@ class _BodyState extends State<Body> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                             child: CardItemExpansionDetail(
                               child: ListTile(
                                 title: Column(
@@ -858,14 +860,14 @@ class _BodyState extends State<Body> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: const <Widget>[
+                                            children: <Widget>[
                                               Padding(
-                                                padding: EdgeInsets.only(left: 0),
+                                                padding: const EdgeInsets.only(left: 0),
                                                 child: Text("Grand Total",
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.left,
                                                 ),
@@ -886,10 +888,10 @@ class _BodyState extends State<Body> {
                                                       double.parse(grandTotalLabourCost
                                                     )
                                                   ),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -904,32 +906,32 @@ class _BodyState extends State<Body> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
                         ]
                       ),
                       CardExpansionDetail(
                         label: "Machine Process",
                         children: <Widget> [
                           ListView.separated(
-                            separatorBuilder: (context, index) => const SizedBox(
-                              height: 10,
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: getProportionateScreenHeight(10).h,
                             ),
                             itemCount: analisaSingleRAE.data!.analisaFinTpMp!.length,
                             itemBuilder: (context, index){
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                 child: CardItemExpansionDetail(
                                   child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                     title: HighlightItemName(
                                       child: Text(
-                                        analisaSingleRAE.data!.analisaFinTpMp![index]!.kodeItem.toString(),
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                        analisaSingleRAE.data!.analisaFinTpMp![index].kodeItem.toString(),
+                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     subtitle: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
+                                      padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -943,7 +945,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Item Machine Process",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -959,10 +961,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -979,7 +981,7 @@ class _BodyState extends State<Body> {
                                                   children: <Widget>[
                                                     Padding(
                                                       padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(analisaSingleRAE.data!.analisaFinTpMp![index]!.namaItem.toString(),
+                                                      child: Text(analisaSingleRAE.data!.analisaFinTpMp![index].namaItem.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -991,7 +993,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -1001,7 +1003,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Qty",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -1017,10 +1019,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1039,10 +1041,10 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpMp![index]!.qty.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpMp![index].qty.toString()
                                                           )
                                                         )+" "+
-                                                        analisaSingleRAE.data!.analisaFinTpMp![index]!.namaSatuan.toString(),
+                                                        analisaSingleRAE.data!.analisaFinTpMp![index].namaSatuan.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1054,7 +1056,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -1064,7 +1066,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Unit Price",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -1080,10 +1082,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1102,7 +1104,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatCurrency.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpMp![index]!.unitPrice.toString())
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpMp![index].unitPrice.toString())
                                                         ),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -1115,7 +1117,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -1125,7 +1127,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Konstanta",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -1141,10 +1143,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1163,7 +1165,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpMp![index]!.konstanta.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpMp![index].konstanta.toString()
                                                           )
                                                         ),
                                                         style: const TextStyle(
@@ -1177,7 +1179,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -1187,7 +1189,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Sub Total",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -1203,10 +1205,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1248,9 +1250,9 @@ class _BodyState extends State<Body> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                             child: CardItemExpansionDetail(
                               child: ListTile(
                                 title: Column(
@@ -1262,14 +1264,14 @@ class _BodyState extends State<Body> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: const <Widget>[
+                                            children: <Widget>[
                                               Padding(
-                                                padding: EdgeInsets.only(left: 0),
+                                                padding: const EdgeInsets.only(left: 0),
                                                 child: Text("Grand Total",
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.left,
                                                 ),
@@ -1290,10 +1292,10 @@ class _BodyState extends State<Body> {
                                                       double.parse(grandTotalMachineProcess
                                                     )
                                                   ),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -1308,32 +1310,32 @@ class _BodyState extends State<Body> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
                         ]
                       ),
                       CardExpansionDetail(
                         label: "Biaya Overhead",
                         children: <Widget> [
                           ListView.separated(
-                            separatorBuilder: (context, index) => const SizedBox(
-                              height: 10,
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: getProportionateScreenHeight(10).h,
                             ),
                             itemCount: analisaSingleRAE.data!.analisaFinTpBop!.length,
                             itemBuilder: (context, index){
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                 child: CardItemExpansionDetail(
                                   child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                     title: HighlightItemName(
                                       child: Text(
-                                        analisaSingleRAE.data!.analisaFinTpBop![index]!.kodeItem.toString(),
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                        analisaSingleRAE.data!.analisaFinTpBop![index].kodeItem.toString(),
+                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     subtitle: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
+                                      padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1347,7 +1349,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Item Biaya Overhead",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -1363,10 +1365,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1383,7 +1385,7 @@ class _BodyState extends State<Body> {
                                                   children: <Widget>[
                                                     Padding(
                                                       padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(analisaSingleRAE.data!.analisaFinTpBop![index]!.namaItem.toString(),
+                                                      child: Text(analisaSingleRAE.data!.analisaFinTpBop![index].namaItem.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1395,7 +1397,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -1405,7 +1407,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Qty",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -1421,10 +1423,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1443,10 +1445,10 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpBop![index]!.qty.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpBop![index].qty.toString()
                                                           )
                                                         )+" "+
-                                                        analisaSingleRAE.data!.analisaFinTpBop![index]!.namaSatuan.toString(),
+                                                        analisaSingleRAE.data!.analisaFinTpBop![index].namaSatuan.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1458,7 +1460,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -1468,7 +1470,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Unit Price",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -1484,10 +1486,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1506,7 +1508,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatCurrency.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpBop![index]!.unitPrice.toString())
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpBop![index].unitPrice.toString())
                                                         ),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -1519,7 +1521,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -1529,7 +1531,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Konstanta",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -1545,10 +1547,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1567,7 +1569,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaFinTpBop![index]!.konstanta.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaFinTpBop![index].konstanta.toString()
                                                           )
                                                         ),
                                                         style: const TextStyle(
@@ -1581,7 +1583,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -1591,7 +1593,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Sub Total",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -1607,10 +1609,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -1652,9 +1654,9 @@ class _BodyState extends State<Body> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                             child: CardItemExpansionDetail(
                               child: ListTile(
                                 title: Column(
@@ -1666,14 +1668,14 @@ class _BodyState extends State<Body> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: const <Widget>[
+                                            children: <Widget>[
                                               Padding(
-                                                padding: EdgeInsets.only(left: 0),
+                                                padding: const EdgeInsets.only(left: 0),
                                                 child: Text("Grand Total",
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.left,
                                                 ),
@@ -1694,10 +1696,10 @@ class _BodyState extends State<Body> {
                                                       double.parse(grandTotalBiayaOverhead
                                                     )
                                                   ),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -1712,10 +1714,10 @@ class _BodyState extends State<Body> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
                         ]
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: getProportionateScreenHeight(30).h),
                     ],
                   );
                 } else {

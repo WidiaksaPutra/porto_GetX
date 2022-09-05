@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mgp_mobile_app/modul/hrdu/history_analisa_barang_jadi/history_analisa_barang_jadi.dart';
@@ -23,6 +24,7 @@ import 'package:mgp_mobile_app/modul/hrdu/history_sales_order/history_sales_orde
 import 'package:mgp_mobile_app/modul/hrdu/history_seleksi_vendor/history_seleksi_vendor.dart';
 import 'package:mgp_mobile_app/modul/hrdu/history_surat_jalan/history_surat_jalan.dart';
 import 'package:mgp_mobile_app/modul/hrdu/history_surat_perjanjian_kerja/history_surat_perjanjian_kerja.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BodyHistory extends StatefulWidget {
@@ -72,7 +74,7 @@ class _BodyHistoryState extends State<BodyHistory> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(height: 15),
+          SizedBox(height: getProportionateScreenHeight(15).h),
           CardMenuApproval(
             child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(
@@ -81,7 +83,7 @@ class _BodyHistoryState extends State<BodyHistory> {
               itemCount: hakAksesMenu.length,
               itemBuilder: (BuildContext context, index){
                 return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15.0).w),
                   leading: const IconMenuApproval(),
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/rap/analisa_single_rap.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rap/analisa_bahan_baku/analisa_bahan_baku.dart';
@@ -14,6 +15,7 @@ import 'package:mgp_mobile_app/widget/component/card_field_item_text.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_total_analisa.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_total_analisa_item.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class BodyInformasi extends StatefulWidget {
   final Future<AnalisaSingleRegrap> futureAnalisaSingleRap;
@@ -73,7 +75,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
@@ -286,7 +288,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                     children: <Widget>[
                       CardDetail(
                         child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
                           title: Column(
                             children: <Widget>[
                               CardFieldItemText(
@@ -295,28 +297,28 @@ class _BodyInformasiState extends State<BodyInformasi> {
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              const SizedBox(height: 5),
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                               CardFieldItemText(
                                 label: "Nama Barang Jadi",
                                 contentData: analisaSingleRAE.data!.namaItem,
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              const SizedBox(height: 5),
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                               // CardFieldItemText(
                               //   label: "Sumber Barang Jadi",
                               //   contentData: analisaSingleRAE.data!.namaKelompok,
                               //   flexLeftRow: 14,
                               //   flexRightRow: 20,
                               // ),
-                              // const SizedBox(height: 5),
+                              // SizedBox(height: getProportionateScreenHeight(5).h),
                               CardFieldItemText(
                                 label: "Satuan Jual",
                                 contentData: analisaSingleRAE.data!.namaSatuan,
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              // const SizedBox(height: 5),
+                              // SizedBox(height: getProportionateScreenHeight(5).h),
                               // CardFieldItemUrlLauncher(
                               //   label: "Link Referensi",
                               //   linkReferensi: analisaSingleRAE.data!.linkReferensi,
@@ -331,10 +333,10 @@ class _BodyInformasiState extends State<BodyInformasi> {
                       //   label: "Uraian",
                       //   children: <Widget> [
                       //     Padding(
-                      //       padding: const EdgeInsets.symmetric(horizontal: 10),
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                       //       child: CardItemExpansionDetail(
                       //         child: Padding(
-                      //           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      //           padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
                       //           child: (analisaSingleRAE.data!.uraian != null)
                       //           ? Html(
                       //             data: analisaSingleRAE.data!.uraian
@@ -342,14 +344,14 @@ class _BodyInformasiState extends State<BodyInformasi> {
                       //           : const Text("-",
                       //             style: TextStyle(
                       //               color: Colors.black,
-                      //               fontSize: 14
+                      //               fontSize: 14.sp
                       //             ),
                       //             textAlign: TextAlign.left,
                       //           )
                       //         ),
                       //       ),
                       //     ),
-                      //     const SizedBox(height: 10),
+                      //     SizedBox(height: getProportionateScreenHeight(10).h),
                       //   ],
                       // ),
                       CardFieldAnalisa(
@@ -397,25 +399,25 @@ class _BodyInformasiState extends State<BodyInformasi> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: getProportionateScreenHeight(10).h),
                     ],
                   );
                 } else {
                   return Center(
                     child: Column(
-                      children: const <Widget>[
-                        SizedBox(height: 5),
-                        Skeleton(height: 200, width: double.infinity),
-                        SizedBox(height: 5),
-                        Skeleton(height: 85, width: double.infinity),
-                        SizedBox(height: 5),
-                        Skeleton(height: 85, width: double.infinity),
-                        SizedBox(height: 5),
-                        Skeleton(height: 85, width: double.infinity),
-                        SizedBox(height: 5),
-                        Skeleton(height: 85, width: double.infinity),
-                        SizedBox(height: 5),
-                        Skeleton(height: 85, width: double.infinity),
+                      children: <Widget>[
+                        SizedBox(height: getProportionateScreenHeight(5).h),
+                        Skeleton(height: getProportionateScreenHeight(200).h, width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
+                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
+                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
+                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
+                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
+                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
                       ],
                     ),
                   );

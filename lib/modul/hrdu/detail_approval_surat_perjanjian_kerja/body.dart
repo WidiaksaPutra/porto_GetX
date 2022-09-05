@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/surat_perjanjian_kerja/detail_surat_perjanjian_kerja_model.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_surat_perjanjian_kerja/approval_surat_perjanjian_kerja.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rab/analisa_single_rab/analisa_single_rab.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_surat_perjanjian_kerja/prelim_surat_perjanjian_kerja/prelim_surat_perjanjian_kerja.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/component/alert_approval.dart';
 import 'package:mgp_mobile_app/widget/component/button_pemeriksa.dart';
 import 'package:mgp_mobile_app/widget/component/button_pengesah.dart';
@@ -25,6 +26,7 @@ import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/widget/component/field_catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   final String noSpk;
@@ -55,6 +57,9 @@ class _BodyState extends State<Body> {
   late String totalSetelahDiskon;
   late String ppnHarga;
   late String totalSetelahPpn;
+  late String subtotalPerlimm;
+  late String uangMukaHarga;
+  late String totalUangMukaHarga;
   final _formKey = GlobalKey<FormState>();
   final _catatanTextEditingController = TextEditingController();
   late Future<DetailRegspk> futureDetailRegspk;
@@ -91,6 +96,7 @@ class _BodyState extends State<Body> {
             );
             if (_postProses == "berhasil") {
               Get.offAll(const SuratPerjanjianKerjaView());
+              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
             }
           },
         );
@@ -110,7 +116,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -131,28 +137,25 @@ class _BodyState extends State<Body> {
                     } else {
                       visibilityStatusMenu = false;
                     }
-                    late double valueDiskon;
                     double valuePPN = double.parse(detailSuratPerjanjianKerja.data!.detail!.ppn.toString());
-                    if (detailSuratPerjanjianKerja.data!.detail!.diskon != null) {
-                      valueDiskon = double.parse(detailSuratPerjanjianKerja.data!.detail!.diskon.toString());
-                    } else {
-                      valueDiskon = 0;
-                    }
+                    double valueDiskon = double.parse(detailSuratPerjanjianKerja.data!.detail!.diskon.toString());
+                    double uangMuka = double.parse(detailSuratPerjanjianKerja.data!.detail!.uangMuka.toString());
                     num totalHargaPenawaran = 0;
                     num totalPrelim = 0;
+                    num subTotalPerlim = 0;
                     if (detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi!.isNotEmpty) {
                       for (var i = 0; i < detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi!.length; i++) {
-                        num subTotal = (double.parse(detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![i]!.rounded.toString()) * double.parse(detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![i]!.qtyRab.toString()));
+                        num subTotal = (double.parse(detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![i].rounded.toString()) * double.parse(detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![i].qtyRab.toString()));
                         totalHargaPenawaran = totalHargaPenawaran + subTotal;
                         subTotalHargaSuratPerjanjianKerja.add(subTotal.toString());
                       }
                     }
                     if (detailSuratPerjanjianKerja.data!.detail!.detailPrelim!.isNotEmpty) {
                       for (var i = 0; i < detailSuratPerjanjianKerja.data!.detail!.detailPrelim!.length; i++) {
-                        num subTotal = double.parse(detailSuratPerjanjianKerja.data!.detail!.detailPrelim![i]!.qtyAnalisa.toString())
-                        * double.parse(detailSuratPerjanjianKerja.data!.detail!.detailPrelim![i]!.unitPrice.toString())
-                        * double.parse(detailSuratPerjanjianKerja.data!.detail!.detailPrelim![i]!.konstanta.toString());
-                        totalPrelim = totalPrelim + subTotal;
+                        subTotalPerlim = double.parse(detailSuratPerjanjianKerja.data!.detail!.detailPrelim![i].qtyAnalisa.toString())
+                        * double.parse(detailSuratPerjanjianKerja.data!.detail!.detailPrelim![i].unitPrice.toString())
+                        * double.parse(detailSuratPerjanjianKerja.data!.detail!.detailPrelim![i].konstanta.toString());
+                        totalPrelim = totalPrelim + subTotalPerlim;
                       }
                     }
                     num grandTotalPenawaran = totalHargaPenawaran + totalPrelim;
@@ -161,16 +164,21 @@ class _BodyState extends State<Body> {
                     num totalDiskon = (grandTotalPenawaran - diskonTotal);
                     num ppnTotal = (totalDiskon * valuePPN)/100;
                     num totalPPN = (totalDiskon + ppnTotal);
+                    num uangMukaTotal = (totalPPN * uangMuka)/100;
+                    num totalUangMukaTotal = (totalPPN - uangMukaTotal);
                     diskonHarga = diskonTotal.toString();
                     totalSetelahDiskon = totalDiskon.toString();
                     ppnHarga = ppnTotal.toString();
                     totalSetelahPpn = totalPPN.toString();
+                    uangMukaHarga = uangMukaTotal.toString();
+                    totalUangMukaHarga = totalUangMukaTotal.toString();
+                    subtotalPerlimm = subTotalPerlim.toString();
                     grandTotalPrelim = totalPrelim.toString();
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 5),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(
@@ -181,56 +189,56 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Penawaran",
                                   contentData: detailSuratPerjanjianKerja.data!.detail!.noPenawaran,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Customer",
                                   contentData: detailSuratPerjanjianKerja.data!.detail!.namaCustomer,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "ATT",
                                   contentData: detailSuratPerjanjianKerja.data!.detail!.att,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemDate(
                                   label: "Tgl. Selesai",
                                   date: detailSuratPerjanjianKerja.data!.detail!.tglSelesai,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemDate(
                                   label: "Tgl. SPK",
                                   date: detailSuratPerjanjianKerja.data!.detail!.tglSpk,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. SPK",
                                   contentData: detailSuratPerjanjianKerja.data!.detail!.noSpk,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemDate(
                                   label: "Tgl. Selesai SPK",
                                   date: detailSuratPerjanjianKerja.data!.detail!.tglSelesaiSpk,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Proyek",
                                   contentData: detailSuratPerjanjianKerja.data!.detail!.namaProyek,
@@ -245,49 +253,49 @@ class _BodyState extends State<Body> {
                           label: "Item Barang Jadi",
                           children: <Widget> [
                             ListView.separated(
-                              separatorBuilder: (context, index) => const SizedBox(
-                                height: 10,
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: getProportionateScreenHeight(10).h,
                               ),
                               itemCount: detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi!.length,
                               itemBuilder: (context, index){
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                   child: CardItemExpansionDetail(
                                     child: ListTile(
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                       title: HighlightItemName(
                                         child: Text(
-                                          detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index]!.kodeItem.toString(),
-                                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                          detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index].kodeItem.toString(),
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       subtitle: Padding(
-                                        padding: const EdgeInsets.only(top: 15),
+                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             CardFieldItemText(
                                               label: "Barang Jadi",
-                                              contentData: detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index]!.namaItem,
+                                              contentData: detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index].namaItem,
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemRightRow(
                                               label: "Qty",
                                               rightRow: <Widget> [
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 0),
-                                                  child: (detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index]!.qtyRab != null)
+                                                  child: (detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index].qtyRab != null)
                                                   ? Text(
                                                     formatDecimal.format(
-                                                      double.parse(detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index]!.qtyRab.toString()
+                                                      double.parse(detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index].qtyRab.toString()
                                                       )
                                                     ).toString()
                                                     +" "+
-                                                    detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index]!.namaSatuan.toString(),
+                                                    detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index].namaSatuan.toString(),
                                                     style: const TextStyle(
                                                       color: Colors.black,
                                                     ),
@@ -304,14 +312,14 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemFormatCurrency(
                                               label: "Harga Satuan",
-                                              contentData: detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index]!.rounded,
+                                              contentData: detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index].rounded,
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemFormatCurrency(
                                               label: "Sub Total",
                                               contentData: subTotalHargaSuratPerjanjianKerja[index],
@@ -324,7 +332,7 @@ class _BodyState extends State<Body> {
                                       onTap : () {
                                         Get.to(
                                           DetailAnalisaSingleRABView(
-                                            idRabDetail: detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index]!.idRabDetail.toString(),
+                                            idRabDetail: detailSuratPerjanjianKerja.data!.detail!.detailBarangJadi![index].idRabDetail.toString(),
                                             title: "Analisa Barang Jadi SPK",
                                           )
                                         );
@@ -336,32 +344,32 @@ class _BodyState extends State<Body> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                  title: const Text(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                  title: Text(
                                     "PRELIM",
-                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14),
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   subtitle: Padding(
-                                    padding: const EdgeInsets.only(top: 15),
+                                    padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
                                         const CardExpansionDetailPrelim(),
-                                        const SizedBox(height: 10),
+                                        SizedBox(height: getProportionateScreenHeight(10).h),
                                         CardFieldItemFormatCurrency(
                                           label: "Harga Satuan",
-                                          contentData: grandTotalPrelim,
+                                          contentData: subtotalPerlimm,
                                           flexLeftRow: 12,
                                           flexRightRow: 20,
                                         ),
-                                        const SizedBox(height: 10),
+                                        SizedBox(height: getProportionateScreenHeight(10).h),
                                         CardFieldItemFormatCurrency(
                                           label: "Sub Total",
                                           contentData: grandTotalPrelim,
@@ -377,9 +385,9 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: ListTile(
                                   title: Column(
@@ -390,7 +398,7 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemPercent(
                                         label: "Diskon",
                                         labelValue: valueDiskon.toString(),
@@ -398,14 +406,14 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total Setelah Diskon",
                                         total: totalSetelahDiskon,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemPercent(
                                         label: "PPN",
                                         labelValue: detailSuratPerjanjianKerja.data!.detail!.ppn,
@@ -413,10 +421,25 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total Setelah PPN",
                                         total: totalSetelahPpn,
+                                        flexLeftRow: 15,
+                                        flexRightRow: 20,
+                                      ),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      CardFieldItemPercent(
+                                        label: "Uang Muka",
+                                        labelValue: detailSuratPerjanjianKerja.data!.detail!.uangMuka,
+                                        total: uangMukaHarga,
+                                        flexLeftRow: 15,
+                                        flexRightRow: 20,
+                                      ),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      CardFieldItemTotal(
+                                        label: "Sisa",
+                                        total: totalUangMukaHarga,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
@@ -425,38 +448,38 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                           ],
                         ),
-                        if (detailSuratPerjanjianKerja.data!.approval!.isNotEmpty)...[
+                        if (detailSuratPerjanjianKerja.data!.approval.isNotEmpty)...[
                           CardExpansionDetail(
                             label: "Catatan Approval",
                             children: <Widget> [
                               ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 10,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: getProportionateScreenHeight(10).h,
                                 ),
-                                itemCount: detailSuratPerjanjianKerja.data!.approval!.length,
+                                itemCount: detailSuratPerjanjianKerja.data!.approval.length,
                                 itemBuilder: (context, index){
                                   return FieldCatatanApproval(
                                     index: index,
-                                    statusApproval: detailSuratPerjanjianKerja.data!.approval![index]!.statusApproval,
-                                    namaKaryawan: detailSuratPerjanjianKerja.data!.approval![index]!.namaKaryawan,
-                                    catatanApproval: detailSuratPerjanjianKerja.data!.approval![index]!.catatan,
-                                    tglApproval: detailSuratPerjanjianKerja.data!.approval![index]!.tglApproval,
+                                    statusApproval: detailSuratPerjanjianKerja.data!.approval[index].statusApproval,
+                                    namaKaryawan: detailSuratPerjanjianKerja.data!.approval[index].namaKaryawan,
+                                    catatanApproval: detailSuratPerjanjianKerja.data!.approval[index].catatan,
+                                    tglApproval: detailSuratPerjanjianKerja.data!.approval[index].tglApproval,
                                   );
                                 },
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -481,14 +504,14 @@ class _BodyState extends State<Body> {
                         Visibility(
                           visible: catatanError,
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
-                              FormErrors(errors: kCatatanError),
-                              SizedBox(height: 8),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              const FormErrors(errors: kCatatanError),
+                              SizedBox(height: getProportionateScreenHeight(8).h),
                             ],
                           )
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: getProportionateScreenHeight(10).h),
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: ButtonPemeriksa(
@@ -576,7 +599,7 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: getProportionateScreenHeight(30).h),
                       ],
                     );
                   } else {

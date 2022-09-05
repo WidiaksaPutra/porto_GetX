@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/model/hrdu/harga_perkiraan_sendiri/harga_perkiraan_sendiri_model.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_date.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_format_currency.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_text.dart';
@@ -13,6 +14,7 @@ import 'package:mgp_mobile_app/widget/component/icon_filter.dart';
 import 'package:mgp_mobile_app/widget/component/search_field.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
@@ -145,12 +147,12 @@ class _BodyState extends State<Body> {
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        const EdgeInsets.symmetric(horizontal: 20),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 15),
+            SizedBox(height: getProportionateScreenHeight(15).h),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
               child: Row(
                 children: <Widget> [
                   const Expanded(
@@ -181,7 +183,7 @@ class _BodyState extends State<Body> {
                       dropdownWidth: 153,
                       dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
                       dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10.r),
                         color: colorCardItem,
                       ),
                       dropdownElevation: 8,
@@ -191,7 +193,7 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: getProportionateScreenHeight(5).h),
             FutureBuilder(
               future: _future,
               builder: (BuildContext context, AsyncSnapshot<List<Datum>> snapshot){
@@ -213,7 +215,7 @@ class _BodyState extends State<Body> {
                                   itemBuilder: (context, index){
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: HighlightItemName(
                                           child: Text(
                                             dataHargaPerkiraanSendiri[index].kodeItem.toString(),
@@ -222,7 +224,7 @@ class _BodyState extends State<Body> {
                                           ),
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,42 +235,42 @@ class _BodyState extends State<Body> {
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Grup Buaso",
                                                 contentData: dataHargaPerkiraanSendiri[index].grupBuaso,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Satuan Pakai",
                                                 contentData: dataHargaPerkiraanSendiri[index].satuanPakai,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemFormatCurrency(
                                                 label: "HPS Pakai",
                                                 contentData: dataHargaPerkiraanSendiri[index].hpsPakai,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Satuan Beli",
                                                 contentData: dataHargaPerkiraanSendiri[index].satuanBeli,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemFormatCurrency(
                                                 label: "HPS Beli",
                                                 contentData: dataHargaPerkiraanSendiri[index].hpsBeli,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemDate(
                                                 label: "Tgl. HPS",
                                                 date: dataHargaPerkiraanSendiri[index].tglHps,
@@ -296,7 +298,7 @@ class _BodyState extends State<Body> {
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: 80,
+                                    height: getProportionateScreenHeight(80).h,
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -325,15 +327,15 @@ class _BodyState extends State<Body> {
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                               Skeleton(
                                 width: double.infinity,
-                                height: 380,
+                                height: getProportionateScreenHeight(380).h,
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                             ],
                           ),
                         );

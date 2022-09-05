@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardExpansionDetail extends StatelessWidget {
   final String label;
@@ -10,22 +12,22 @@ class CardExpansionDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3.0,
-      margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+      margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
       shape: ContinuousRectangleBorder(
-        borderRadius: BorderRadius.circular(25),
-        side: const BorderSide(
-          width: 0.4, color: Colors.grey
+        borderRadius: BorderRadius.circular(25.r),
+        side: BorderSide(
+          width: getProportionateScreenWidth(0.4).w, color: Colors.grey
         )
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15.r),
         child: ExpansionTile(
           title: Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w600,
-              fontSize: 14
+              fontSize: 14.sp
             ),
           ),
           iconColor: kPrimaryColor,

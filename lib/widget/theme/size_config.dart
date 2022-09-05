@@ -4,7 +4,7 @@ class SizeConfig {
   static late MediaQueryData mediaQueryData;
   static late double screenWidth;
   static late double screenHeight;
-  static double? defaultSize;
+  static late double? defaultSize;
   static Orientation? orientation;
 
   void init(BuildContext context) {
@@ -39,5 +39,15 @@ double getProportionateScreenRatio() {
     return 1.2;
   } else {
     return 1.3;
+  }
+}
+
+bool getHidentHeight(){
+  double screenHeight = SizeConfig.screenHeight;
+  if(screenHeight <= 1000){
+    return false;
+  }
+  else{
+    return true;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/mutasi_antar_gudang/detail_mutasi_antar_gudang.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,8 +16,9 @@ import 'package:mgp_mobile_app/widget/component/catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/widget/component/field_catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:get/get.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -68,6 +70,7 @@ class _BodyState extends State<Body> {
             );
             if (_postProses == "berhasil") {
               Get.offAll(const MutasiAntarGudangView());
+              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
             }
           },
         );
@@ -88,7 +91,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -113,7 +116,7 @@ class _BodyState extends State<Body> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 5),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(
@@ -124,33 +127,33 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Mutasi",
                                   contentData: detailMutasiAntarGudang.data!.detail!.noMutasiAntarGudang,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Gudang Asal",
                                   contentData: detailMutasiAntarGudang.data!.detail!.namaGudangAsal,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Gudang Tujuan",
                                   contentData: detailMutasiAntarGudang.data!.detail!.namaGudangTujuan,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemRightRow(
                                   label: "Item Barang",
                                   rightRow: <Widget> [
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 0.0),
+                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
                                       child: (detailMutasiAntarGudang.data!.detail!.namaItem != null)
                                       ? Text(
                                         detailMutasiAntarGudang.data!.detail!.kodeItem.toString()
@@ -172,12 +175,12 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemRightRow(
                                   label: "Qty Mutasi",
                                   rightRow: <Widget> [
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 0.0),
+                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
                                       child: (detailMutasiAntarGudang.data!.detail!.qtyMutasi != null)
                                       ? Text(
                                         formatDecimal.format(double.parse(detailMutasiAntarGudang.data!.detail!.qtyMutasi.toString())).toString()
@@ -208,8 +211,8 @@ class _BodyState extends State<Body> {
                             label: "Catatan Approval",
                             children: <Widget> [
                               ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 10,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: getProportionateScreenHeight(10).h,
                                 ),
                                 itemCount: detailMutasiAntarGudang.data!.approval!.length,
                                 itemBuilder: (context, index){
@@ -224,14 +227,14 @@ class _BodyState extends State<Body> {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -256,16 +259,16 @@ class _BodyState extends State<Body> {
                         Visibility(
                           visible: catatanError,
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
-                              FormErrors(errors: kCatatanError),
-                              SizedBox(height: 8),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              const FormErrors(errors: kCatatanError),
+                              SizedBox(height: getProportionateScreenHeight(8).h),
                             ],
                           )
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
-                          child: const SizedBox(height: 10)
+                          child: SizedBox(height: getProportionateScreenHeight(10).h)
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
@@ -354,7 +357,7 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: getProportionateScreenHeight(30).h),
                       ],
                     );
                   } else {

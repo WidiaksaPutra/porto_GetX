@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/penerimaan_barang/detail_penerimaan_barang.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,8 +18,9 @@ import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/widget/component/field_catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/component/preview_image.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:get/get.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -69,6 +71,7 @@ class _BodyState extends State<Body> {
             );
             if (_postProses == "berhasil") {
               Get.offAll(const PenerimaanBarangView());
+              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
             }
           },
         );
@@ -88,7 +91,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -116,7 +119,7 @@ class _BodyState extends State<Body> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 5),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(
@@ -127,14 +130,14 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Vendor",
                                   contentData: detailPenerimaanBarang.data!.detail!.namaVendor,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemRightRow(
                                   label: "Qty Purchase Order",
                                   rightRow: <Widget> [
@@ -164,28 +167,28 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemDate(
                                   label: "Tgl. Penerimaan Barang",
                                   date: detailPenerimaanBarang.data!.detail!.tglPenerimaanBarang,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Surat Jalan",
                                   contentData: detailPenerimaanBarang.data!.detail!.noSuratJalan,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Gudang Penerimaan",
                                   contentData: detailPenerimaanBarang.data!.detail!.namaGudang,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemRightRow(
                                   label: "Qty Penerimaan Dalam Satuan Beli",
                                   rightRow: <Widget> [
@@ -215,35 +218,35 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Purchase Order",
                                   contentData: detailPenerimaanBarang.data!.detail!.noPurchaseOrder,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Item",
                                   contentData: detailPenerimaanBarang.data!.detail!.namaItem,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Penerimaan Barang",
                                   contentData: detailPenerimaanBarang.data!.detail!.noPenerimaanBarang,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Petugas Penerimaan",
                                   contentData: detailPenerimaanBarang.data!.detail!.namaKaryawan,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemRightRow(
                                   label: "Qty Penerimaan Dalam Satuan Pakai",
                                   rightRow: <Widget> [
@@ -290,8 +293,8 @@ class _BodyState extends State<Body> {
                             label: "Catatan Approval",
                             children: <Widget> [
                               ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 10,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: getProportionateScreenHeight(10).h,
                                 ),
                                 itemCount: detailPenerimaanBarang.data!.approval!.length,
                                 itemBuilder: (context, index){
@@ -306,14 +309,14 @@ class _BodyState extends State<Body> {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -338,16 +341,16 @@ class _BodyState extends State<Body> {
                         Visibility(
                           visible: catatanError,
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
-                              FormErrors(errors: kCatatanError),
-                              SizedBox(height: 8),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              const FormErrors(errors: kCatatanError),
+                              SizedBox(height: getProportionateScreenHeight(8).h),
                             ],
                           )
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
-                          child: const SizedBox(height: 10)
+                          child: SizedBox(height: getProportionateScreenHeight(10).h)
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
@@ -431,7 +434,7 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: getProportionateScreenHeight(30).h),
                       ],
                     );
                   } else {

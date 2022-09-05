@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/analisa_barang_jadi/analisa_single_barang_jadi.dart';
 import 'package:mgp_mobile_app/model/hrdu/analisa_barang_jadi/detail_analisa_barang_jadi_model.dart';
@@ -7,7 +8,7 @@ import 'package:mgp_mobile_app/modul/hrdu/approval_analisa_barang_jadi/approval_
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_analisa_barang_jadi/analisa_bahan_baku/analisa_bahan_baku.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_analisa_barang_jadi/analisa_finishing/analisa_finishing.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_analisa_barang_jadi/analisa_penunjang_produksi/analisa_penunjang_produksi.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/component/alert_approval.dart';
 import 'package:mgp_mobile_app/widget/component/button_pemeriksa.dart';
 import 'package:mgp_mobile_app/widget/component/button_pengesah.dart';
@@ -28,6 +29,7 @@ import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/widget/component/field_catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class BodyInformasi extends StatefulWidget {
   final Future<DetailRegabj> futureAnalisaBarangJadi;
@@ -109,6 +111,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
             );
             if (_postProses == "berhasil") {
               Get.offAll(const AnalisaBarangJadiView());
+              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
             }
           },
         );
@@ -127,7 +130,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -328,7 +331,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                       children: <Widget>[
                         CardDetail(
                           child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+                            contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
                             title: Column(
                               children: <Widget>[
                                 CardFieldItemText(
@@ -337,28 +340,28 @@ class _BodyInformasiState extends State<BodyInformasi> {
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Nama Barang Jadi",
                                   contentData: analisaBarangJadi.data!.detail!.namaItem,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Sumber Barang Jadi",
                                   contentData: analisaBarangJadi.data!.detail!.namaKelompok,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Satuan Jual",
                                   contentData: analisaBarangJadi.data!.detail!.namaSatuan,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemUrlLauncher(
                                   label: "Link Referensi",
                                   linkReferensi: analisaBarangJadi.data!.detail!.linkReferensi,
@@ -373,25 +376,25 @@ class _BodyInformasiState extends State<BodyInformasi> {
                           label: "Uraian",
                           children: <Widget> [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
                                   child: (analisaBarangJadi.data!.detail!.uraian != null)
                                   ? Html(
                                     data: analisaBarangJadi.data!.detail!.uraian
                                   )
-                                  : const Text("-",
+                                  : Text("-",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 14
+                                      fontSize: 14.sp
                                     ),
                                     textAlign: TextAlign.left,
                                   )
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                           ],
                         ),
                         CardFieldAnalisa(
@@ -444,8 +447,8 @@ class _BodyInformasiState extends State<BodyInformasi> {
                             label: "Catatan Approval",
                             children: <Widget> [
                               ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 10,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: getProportionateScreenHeight(10).h,
                                 ),
                                 itemCount: analisaBarangJadi.data!.approval!.length,
                                 itemBuilder: (context, index){
@@ -460,14 +463,14 @@ class _BodyInformasiState extends State<BodyInformasi> {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -492,16 +495,16 @@ class _BodyInformasiState extends State<BodyInformasi> {
                         Visibility(
                           visible: catatanError,
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
-                              FormErrors(errors: kCatatanError),
-                              SizedBox(height: 8),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              const FormErrors(errors: kCatatanError),
+                              SizedBox(height: getProportionateScreenHeight(8).h),
                             ],
                           )
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
-                          child: const SizedBox(height: 10)
+                          child: SizedBox(height: getProportionateScreenHeight(10).h)
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
@@ -585,25 +588,25 @@ class _BodyInformasiState extends State<BodyInformasi> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: getProportionateScreenHeight(30).h),
                       ],
                     );
                   } else {
                     return Center(
                       child: Column(
-                        children: const <Widget>[
-                          SizedBox(height: 5),
-                          Skeleton(height: 200, width: double.infinity),
-                          SizedBox(height: 5),
-                          Skeleton(height: 85, width: double.infinity),
-                          SizedBox(height: 5),
-                          Skeleton(height: 85, width: double.infinity),
-                          SizedBox(height: 5),
-                          Skeleton(height: 85, width: double.infinity),
-                          SizedBox(height: 5),
-                          Skeleton(height: 85, width: double.infinity),
-                          SizedBox(height: 5),
-                          Skeleton(height: 85, width: double.infinity),
+                        children:  <Widget>[
+                          SizedBox(height: getProportionateScreenHeight(5).h),
+                          Skeleton(height: getProportionateScreenHeight(200).h, width: double.infinity),
+                          SizedBox(height: getProportionateScreenHeight(5).h),
+                          Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                          SizedBox(height: getProportionateScreenHeight(5).h),
+                          Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                          SizedBox(height: getProportionateScreenHeight(5).h),
+                          Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                          SizedBox(height: getProportionateScreenHeight(5).h),
+                          Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                          SizedBox(height: getProportionateScreenHeight(5).h),
+                          Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
                         ],
                       ),
                     );

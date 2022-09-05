@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mgp_mobile_app/modul/hrdu/menu_report_hrdu/report_harga_perkiraan_sendiri/report_harga_perkiraan_sendiri.dart';
@@ -7,6 +8,7 @@ import 'package:mgp_mobile_app/widget/component/icon_menu_approval.dart';
 import 'package:mgp_mobile_app/widget/component/icon_trailing_menu_approval.dart';
 import 'package:mgp_mobile_app/widget/component/text_menu_approval.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
@@ -57,7 +59,7 @@ class _BodyState extends State<Body> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(height: 15),
+          SizedBox(height: getProportionateScreenHeight(15).h),
           CardMenuApproval(
             child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(
@@ -66,7 +68,7 @@ class _BodyState extends State<Body> {
               itemCount: hakAksesReport.length,
               itemBuilder: (BuildContext context, index){
                 return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15.0).w),
                   leading: const IconMenuApproval(),
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

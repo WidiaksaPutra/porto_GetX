@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/faktur_penjualan/detail_faktur_penjualan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -20,8 +21,9 @@ import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/widget/component/field_catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:get/get.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   final String noFaktur;
@@ -49,6 +51,10 @@ class _BodyState extends State<Body> {
   late String totalSetelahDiskon;
   late String ppnHarga;
   late String totalSetelahPpn;
+  late String uangMukaHarga;
+  late String totalUangMukaHarga;
+  late String grandTotalPrelim;
+  late String perlimPersentase;
   final _formKey = GlobalKey<FormState>();
   final _catatanTextEditingController = TextEditingController();
   late Future<DetailRegfpnj> futureDetailRegfpnj;
@@ -85,6 +91,7 @@ class _BodyState extends State<Body> {
             );
             if (_postProses == "berhasil") {
               Get.offAll(const FakturPenjualanView());
+              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
             }
           },
         );
@@ -104,7 +111,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -115,6 +122,7 @@ class _BodyState extends State<Body> {
                   if (snapshot.hasData) {
                     var detailFakturPenjualan = snapshot.data;
                     String status = detailFakturPenjualan!.data!.behavior.toString();
+                    num totalPrelim = 0;
                     if (status == "V") {
                       visibilityPemeriksa = true;
                     } else {
@@ -127,26 +135,45 @@ class _BodyState extends State<Body> {
                     }
                     double valuePPN = double.parse(detailFakturPenjualan.data!.detail!.ppn.toString());
                     double valueDiskon = double.parse(detailFakturPenjualan.data!.detail!.diskon.toString());
+                    double uangMuka = double.parse(detailFakturPenjualan.data!.detail!.uangMuka.toString());
+                    double persentasePrelim = double.parse(detailFakturPenjualan.data!.detail!.persentasePrelim.toString());
                     num totalHarga = 0;
-                    for(var i = 0; i< detailFakturPenjualan.data!.detail!.detail!.length; i++){
-                      num subTotal = (double.parse(detailFakturPenjualan.data!.detail!.detail![i]!.hargaSatuanJual.toString())) * double.parse(detailFakturPenjualan.data!.detail!.detail![i]!.qty.toString());
-                      totalHarga = totalHarga + (double.parse(detailFakturPenjualan.data!.detail!.detail![i]!.hargaSatuanJual.toString())) * double.parse(detailFakturPenjualan.data!.detail!.detail![i]!.qty.toString());
+                    num subTotalPerlim = 0;
+                    for(var i = 0; i < detailFakturPenjualan.data!.detail!.detail!.length; i++){
+                      num subTotal = (double.parse(detailFakturPenjualan.data!.detail!.detail![i].hargaSatuanJual.toString())) * double.parse(detailFakturPenjualan.data!.detail!.detail![i].qty.toString());
+                      totalHarga = totalHarga + (double.parse(detailFakturPenjualan.data!.detail!.detail![i].hargaSatuanJual.toString())) * double.parse(detailFakturPenjualan.data!.detail!.detail![i].qty.toString());
                       subTotalHarga.add(subTotal.toString());        
                     }
-                    grandTotalHarga = totalHarga.toString();
-                    num diskonTotal = (totalHarga * valueDiskon)/100;
-                    num totalDiskon = (totalHarga - diskonTotal);
+                    if (detailFakturPenjualan.data!.detail!.detail!.isNotEmpty) {
+                      for (var i = 0; i < detailFakturPenjualan.data!.detail!.prelim!.length; i++) {
+                        subTotalPerlim = double.parse(detailFakturPenjualan.data!.detail!.prelim![i].qtyAnalisa.toString())
+                        * double.parse(detailFakturPenjualan.data!.detail!.prelim![i].unitPrice.toString())
+                        * double.parse(detailFakturPenjualan.data!.detail!.prelim![i].konstanta.toString());
+                        totalPrelim = totalPrelim + subTotalPerlim;
+                      }
+                    }
+                    num prelimTotal = (totalPrelim * persentasePrelim)/100;
+                    num hargaTotal = (totalHarga + prelimTotal);
+                    num diskonTotal = (hargaTotal * valueDiskon)/100;
+                    num totalDiskon = (hargaTotal - diskonTotal);
                     num ppnTotal = (totalDiskon * valuePPN)/100;
                     num totalPPN = (totalDiskon + ppnTotal);
+                    num uangMukaTotal = (totalPPN * uangMuka)/100;
+                    num totalUangMukaTotal = (totalPPN - uangMukaTotal);
+                    grandTotalHarga = hargaTotal.toString();
                     diskonHarga = diskonTotal.toString();
                     totalSetelahDiskon = totalDiskon.toString();
                     ppnHarga = ppnTotal.toString();
                     totalSetelahPpn = totalPPN.toString();
+                    uangMukaHarga = uangMukaTotal.toString();
+                    totalUangMukaHarga = totalUangMukaTotal.toString();
+                    grandTotalPrelim = totalPrelim.toString();
+                    perlimPersentase = prelimTotal.toString();
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 5),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(
@@ -157,48 +184,48 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Sales Order",
                                   contentData: detailFakturPenjualan.data!.detail!.noSalesOrder,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
-                                CardFieldItemText(
-                                  label: "Customer",
-                                  contentData: detailFakturPenjualan.data!.detail!.namaCustomer,
-                                  flexLeftRow: 12,
-                                  flexRightRow: 20,
-                                ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Sales",
                                   contentData: detailFakturPenjualan.data!.detail!.namaSales,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                CardFieldItemText(
+                                  label: "Customer",
+                                  contentData: detailFakturPenjualan.data!.detail!.namaCustomer,
+                                  flexLeftRow: 12,
+                                  flexRightRow: 20,
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemDate(
                                   label: "Tgl. Faktur",
                                   date: detailFakturPenjualan.data!.detail!.tglFaktur,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Faktur",
                                   contentData: detailFakturPenjualan.data!.detail!.noFaktur,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
-                                CardFieldItemText(
-                                  label: "Proyek",
-                                  contentData: detailFakturPenjualan.data!.detail!.namaProyek,
-                                  flexLeftRow: 12,
-                                  flexRightRow: 20,
-                                ),
+                                // SizedBox(height: getProportionateScreenHeight(5).h),
+                                // CardFieldItemText(
+                                //   label: "Proyek",
+                                //   contentData: detailFakturPenjualan.data!.detail!.namaProyek,
+                                //   flexLeftRow: 12,
+                                //   flexRightRow: 20,
+                                // ),
                               ],
                             ),
                           ),
@@ -207,57 +234,71 @@ class _BodyState extends State<Body> {
                           label: "Item Faktur Penjualan",
                           children: <Widget> [
                             ListView.separated(
-                              separatorBuilder: (context, index) => const SizedBox(
-                                height: 10,
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: getProportionateScreenHeight(10).h,
                               ),
                               itemCount: detailFakturPenjualan.data!.detail!.detail!.length,
                               itemBuilder: (BuildContext context, index){
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                   child: CardItemExpansionDetail(
                                     child: ListTile(
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                       title: HighlightItemName(
                                         child: Text(
-                                          detailFakturPenjualan.data!.detail!.detail![index]!.noSuratJalan.toString(),
-                                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                          detailFakturPenjualan.data!.detail!.detail![index].noSuratJalan.toString(),
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       subtitle: Padding(
-                                        padding: const EdgeInsets.only(top: 15),
+                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             CardFieldItemDate(
                                               label: "Tgl. Surat Jalan",
-                                              date: detailFakturPenjualan.data!.detail!.detail![index]!.tglSuratJalan,
+                                              date: detailFakturPenjualan.data!.detail!.detail![index].tglSuratJalan,
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),  
+                                            CardFieldItemText(
+                                              label: "No. Surat Jalan",
+                                              contentData: detailFakturPenjualan.data!.detail!.detail![index].noSuratJalan,
+                                              flexLeftRow: 10,
+                                              flexRightRow: 20,
+                                            ),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            CardFieldItemDate(
+                                              label: "Tgl. Delivery Order",
+                                              date: detailFakturPenjualan.data!.detail!.detail![index].tglDeliveryOrder,
+                                              flexLeftRow: 10,
+                                              flexRightRow: 20,
+                                            ),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemText(
                                               label: "No. Delivery Order",
-                                              contentData: detailFakturPenjualan.data!.detail!.detail![index]!.noDeliveryOrder,
+                                              contentData: detailFakturPenjualan.data!.detail!.detail![index].noDeliveryOrder,
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemRightRow(
                                               label: "Item Barang",
                                               rightRow: <Widget> [
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 0),
-                                                  child: (detailFakturPenjualan.data!.detail!.detail![index]!.kodeItem != null)
+                                                  child: (detailFakturPenjualan.data!.detail!.detail![index].kodeItem != null)
                                                   ? Text(
                                                     "("+
-                                                    detailFakturPenjualan.data!.detail!.detail![index]!.kodeItem.toString()
+                                                    detailFakturPenjualan.data!.detail!.detail![index].kodeItem.toString()
                                                     +') '+
-                                                    detailFakturPenjualan.data!.detail!.detail![index]!.namaItem.toString(),
-                                                    style: const TextStyle(
+                                                    detailFakturPenjualan.data!.detail!.detail![index].namaItem.toString(),
+                                                    style: TextStyle(
                                                       color: Colors.black,
-                                                      fontSize: 14
+                                                      fontSize: 14.sp
                                                     ),
                                                     textAlign: TextAlign.left,
                                                   )
@@ -272,20 +313,20 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemRightRow(
                                               label: "Qty. Surat Jalan",
                                               rightRow: <Widget> [
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 0),
-                                                  child: (detailFakturPenjualan.data!.detail!.detail![index]!.qty != null)
+                                                  child: (detailFakturPenjualan.data!.detail!.detail![index].qty != null)
                                                   ? Text(
-                                                    formatDecimal.format(double.parse(detailFakturPenjualan.data!.detail!.detail![index]!.qty.toString())).toString()
+                                                    formatDecimal.format(double.parse(detailFakturPenjualan.data!.detail!.detail![index].qty.toString())).toString()
                                                     +' '+
-                                                    detailFakturPenjualan.data!.detail!.detail![index]!.namaSatuan.toString(),
-                                                    style: const TextStyle(
+                                                    detailFakturPenjualan.data!.detail!.detail![index].namaSatuan.toString(),
+                                                    style: TextStyle(
                                                       color: Colors.black,
-                                                      fontSize: 14
+                                                      fontSize: 14.sp
                                                     ),
                                                     textAlign: TextAlign.left,
                                                   )
@@ -300,14 +341,14 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemFormatCurrency(
                                               label: "Harga Satuan",
-                                              contentData: detailFakturPenjualan.data!.detail!.detail![index]!.hargaSatuanJual,
+                                              contentData: detailFakturPenjualan.data!.detail!.detail![index].hargaSatuanJual,
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemFormatCurrency(
                                               label: "Sub Total",
                                               contentData: subTotalHarga[index],
@@ -324,20 +365,35 @@ class _BodyState extends State<Body> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: ListTile(
                                   title: Column(
                                     children: <Widget> [
+                                      CardFieldItemTotal(
+                                        label: "Total Prelim",
+                                        total: grandTotalPrelim,
+                                        flexLeftRow: 15,
+                                        flexRightRow: 20,
+                                      ),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      CardFieldItemPercent(
+                                        label: "Prelim Disertakan Dalam Faktur",
+                                        labelValue: detailFakturPenjualan.data!.detail!.persentasePrelim,
+                                        total: perlimPersentase,
+                                        flexLeftRow: 15,
+                                        flexRightRow: 20,
+                                      ),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total",
                                         total: grandTotalHarga,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemPercent(
                                         label: "Diskon",
                                         labelValue: detailFakturPenjualan.data!.detail!.diskon,
@@ -345,14 +401,14 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total Setelah Diskon",
                                         total: totalSetelahDiskon,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemPercent(
                                         label: "PPN",
                                         labelValue: detailFakturPenjualan.data!.detail!.ppn,
@@ -360,10 +416,25 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total Setelah PPN",
                                         total: totalSetelahPpn,
+                                        flexLeftRow: 15,
+                                        flexRightRow: 20,
+                                      ),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      CardFieldItemPercent(
+                                        label: "Uang Muka",
+                                        labelValue: detailFakturPenjualan.data!.detail!.uangMuka,
+                                        total: uangMukaHarga,
+                                        flexLeftRow: 15,
+                                        flexRightRow: 20,
+                                      ),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      CardFieldItemTotal(
+                                        label: "Sisa",
+                                        total: totalUangMukaHarga,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
@@ -372,38 +443,38 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                           ],
                         ),
-                        if (detailFakturPenjualan.data!.approval!.isNotEmpty)...[
+                        if (detailFakturPenjualan.data!.approval.isNotEmpty)...[
                           CardExpansionDetail(
                             label: "Catatan Approval",
                             children: <Widget> [
                               ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 10,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: getProportionateScreenHeight(10).h,
                                 ),
-                                itemCount: detailFakturPenjualan.data!.approval!.length,
+                                itemCount: detailFakturPenjualan.data!.approval.length,
                                 itemBuilder: (context, index){
                                   return FieldCatatanApproval(
                                     index: index,
-                                    statusApproval: detailFakturPenjualan.data!.approval![index]!.statusApproval,
-                                    namaKaryawan: detailFakturPenjualan.data!.approval![index]!.namaKaryawan,
-                                    catatanApproval: detailFakturPenjualan.data!.approval![index]!.catatan,
-                                    tglApproval: detailFakturPenjualan.data!.approval![index]!.tglApproval,
+                                    statusApproval: detailFakturPenjualan.data!.approval[index].statusApproval,
+                                    namaKaryawan: detailFakturPenjualan.data!.approval[index].namaKaryawan,
+                                    catatanApproval: detailFakturPenjualan.data!.approval[index].catatan,
+                                    tglApproval: detailFakturPenjualan.data!.approval[index].tglApproval,
                                   );
                                 },
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -428,16 +499,16 @@ class _BodyState extends State<Body> {
                         Visibility(
                           visible: catatanError,
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
-                              FormErrors(errors: kCatatanError),
-                              SizedBox(height: 8),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              const FormErrors(errors: kCatatanError),
+                              SizedBox(height: getProportionateScreenHeight(8).h),
                             ],
                           )
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
-                          child: const SizedBox(height: 10)
+                          child: SizedBox(height: getProportionateScreenHeight(10).h)
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
@@ -526,7 +597,7 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: getProportionateScreenHeight(30).h),
                       ],
                     );
                   } else {

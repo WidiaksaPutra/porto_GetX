@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/notification/body.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/home/component/home_menu.dart';
@@ -22,8 +22,10 @@ import 'package:mgp_mobile_app/modul/hrdu/detail_approval_seleksi_vendor/detail_
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_surat_jalan/detail_approval_surat_jalan.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_surat_perjanjian_kerja/detail_approval_surat_perjanjian_kerja.dart';
 import 'package:mgp_mobile_app/main.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -138,22 +140,22 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             Material(
               elevation: 2,
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: 1,
-                      color: Color.fromRGBO(0, 0, 0, 0.08)
+                      width: getProportionateScreenWidth(1).w,
+                      color: const Color.fromRGBO(0, 0, 0, 0.08)
                     )
                   )
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: 40,
+                  height: getProportionateScreenHeight(40).h,
                   child: TabBar(
                     controller: controller,
                     indicatorColor: kPrimaryColor,
-                    labelStyle: const TextStyle(
-                      fontSize: 14,
+                    labelStyle: TextStyle(
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins"
                     ),

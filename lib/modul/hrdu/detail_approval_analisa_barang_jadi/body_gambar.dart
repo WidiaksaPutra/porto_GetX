@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/analisa_barang_jadi/detail_analisa_barang_jadi_model.dart';
 import 'package:mgp_mobile_app/widget/component/card_gambar.dart';
 import 'package:mgp_mobile_app/widget/component/preview_image.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class BodyGambar extends StatefulWidget {
   final Future<DetailRegabj> futureAnalisaBarangJadi;
@@ -20,7 +22,7 @@ class _BodyGambarState extends State<BodyGambar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
       child: FutureBuilder(
         future: widget.futureAnalisaBarangJadi,
         builder: (BuildContext context, AsyncSnapshot<DetailRegabj> snapshot) {
@@ -69,27 +71,27 @@ class _BodyGambarState extends State<BodyGambar> {
             return Center(
               child: Column(
                 children: <Widget>[
-                  const SizedBox(height: 5),
+                  SizedBox(height: getProportionateScreenHeight(5).h),
                   Row(
-                    children: const <Widget>[
+                    children: <Widget>[
                       Expanded(
-                        child: Skeleton(height: 100, width: 100)
+                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: getProportionateScreenWidth(10).w),
                       Expanded(
-                        child: Skeleton(height: 100, width: 100)
+                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: getProportionateScreenHeight(20).h),
                   Row(
-                    children: const <Widget>[
+                    children: <Widget>[
                       Expanded(
-                        child: Skeleton(height: 100, width: 100)
+                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: getProportionateScreenWidth(10).w),
                       Expanded(
-                        child: Skeleton(height: 100, width: 100)
+                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
                       ),
                     ],
                   ),

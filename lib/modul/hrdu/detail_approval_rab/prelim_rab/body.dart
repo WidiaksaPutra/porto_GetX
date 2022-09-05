@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:mgp_mobile_app/model/hrdu/rab/detail_rab_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/rab/list_kelompok_prelim.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/component/card_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_total_analisa.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   final Future<DetailRegrab> detailRegrab;
@@ -49,7 +51,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder<ListKelompokPrelimRegrab>(
@@ -71,91 +73,91 @@ class _BodyState extends State<Body> {
                         if (dataPrelim!.data!.detail!.detailPrelim!.isNotEmpty) {
                           for (var i = 0; i < listKelompokPrelim!.data!.length; i++) {
                             for (var j = 0; j < dataPrelim.data!.detail!.detailPrelim!.length; j++) {
-                              num subTotal = double.parse(dataPrelim.data!.detail!.detailPrelim![j]!.qtyAnalisa.toString())
-                              * double.parse(dataPrelim.data!.detail!.detailPrelim![j]!.unitPrice.toString());
-                              num subTotalPrelim = subTotal 
-                              * double.parse(dataPrelim.data!.detail!.detailPrelim![j]!.konstanta.toString());
-                              if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j]!.idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "ATK") {
+                              num subTotal = double.parse(dataPrelim.data!.detail!.detailPrelim![j].qtyAnalisa.toString())
+                              * double.parse(dataPrelim.data!.detail!.detailPrelim![j].unitPrice.toString());
+                              num subTotalPrelim = subTotal.round()
+                              * double.parse(dataPrelim.data!.detail!.detailPrelim![j].konstanta.toString());
+                              if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j].idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "ATK") {
                                 atk.add(
                                   ListDataPrelim(
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.kodeItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyAnalisa.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaSatuanPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.unitPrice.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].kodeItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyAnalisa.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaSatuanPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].unitPrice.toString(),
                                     subTotal.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyDurasi.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.konstanta.toString(), 
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyDurasi.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].konstanta.toString(), 
                                     subTotalPrelim.toString(),
                                   ),
                                 );
-                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j]!.idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Safety") {
+                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j].idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Safety") {
                                 safety.add(
                                   ListDataPrelim(
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.kodeItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyAnalisa.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaSatuanPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.unitPrice.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].kodeItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyAnalisa.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaSatuanPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].unitPrice.toString(),
                                     subTotal.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyDurasi.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.konstanta.toString(), 
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyDurasi.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].konstanta.toString(), 
                                     subTotalPrelim.toString(),
                                   ),
                                 );
-                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j]!.idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Proteksi") {
+                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j].idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Proteksi") {
                                 proteksi.add(
                                   ListDataPrelim(
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.kodeItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyAnalisa.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaSatuanPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.unitPrice.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].kodeItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyAnalisa.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaSatuanPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].unitPrice.toString(),
                                     subTotal.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyDurasi.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.konstanta.toString(), 
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyDurasi.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].konstanta.toString(), 
                                     subTotalPrelim.toString(),
                                   ),
                                 );
-                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j]!.idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Hand Tools") {
+                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j].idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Hand Tools") {
                                 handTools.add(
                                   ListDataPrelim(
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.kodeItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyAnalisa.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaSatuanPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.unitPrice.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].kodeItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyAnalisa.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaSatuanPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].unitPrice.toString(),
                                     subTotal.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyDurasi.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.konstanta.toString(), 
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyDurasi.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].konstanta.toString(), 
                                     subTotalPrelim.toString(),
                                   ),
                                 );
-                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j]!.idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Honor Staff") {
+                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j].idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Honor Staff") {
                                 honorStaff.add(
                                   ListDataPrelim(
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.kodeItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyAnalisa.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaSatuanPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.unitPrice.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].kodeItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyAnalisa.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaSatuanPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].unitPrice.toString(),
                                     subTotal.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyDurasi.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.konstanta.toString(), 
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyDurasi.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].konstanta.toString(), 
                                     subTotalPrelim.toString(),
                                   ),
                                 );
-                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j]!.idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Lain-lain") {
+                              } else if (listKelompokPrelim.data![i]!.idKelompok.toString() == dataPrelim.data!.detail!.detailPrelim![j].idKelompok.toString() && listKelompokPrelim.data![i]!.namaKelompok.toString() == "Lain-lain") {
                                 lainLain.add(
                                   ListDataPrelim(
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.kodeItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaItemPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyAnalisa.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.namaSatuanPrelim.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.unitPrice.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].kodeItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaItemPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyAnalisa.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].namaSatuanPrelim.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].unitPrice.toString(),
                                     subTotal.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.qtyDurasi.toString(),
-                                    dataPrelim.data!.detail!.detailPrelim![j]!.konstanta.toString(), 
+                                    dataPrelim.data!.detail!.detailPrelim![j].qtyDurasi.toString(),
+                                    dataPrelim.data!.detail!.detailPrelim![j].konstanta.toString(), 
                                     subTotalPrelim.toString(),
                                   ),
                                 );
@@ -165,7 +167,7 @@ class _BodyState extends State<Body> {
                         }
                         return Column(
                           children: <Widget> [
-                            const SizedBox(height: 5),
+                            SizedBox(height: getProportionateScreenHeight(5).h),
                             CardExpansionDetail(
                               label: "ATK",
                               children: <Widget> [
@@ -174,16 +176,16 @@ class _BodyState extends State<Body> {
                                     separatorBuilder: (context, index) {
                                       return Container(
                                         width: double.infinity,
-                                        height: 15,
-                                        decoration: const BoxDecoration(
+                                        height: getProportionateScreenHeight(15).h,
+                                        decoration:  BoxDecoration(
                                           border: Border(
                                             top: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             ),
                                             bottom: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             )
                                           )
                                         ),
@@ -192,7 +194,7 @@ class _BodyState extends State<Body> {
                                     itemCount: atk.length,
                                     itemBuilder: (context, index){
                                       return ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,14 +202,14 @@ class _BodyState extends State<Body> {
                                             HighlightItemName(
                                               child: Text(
                                                 atk[index].kodePrelim.toString(),
-                                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                           ],
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +223,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Item Prelim",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -237,10 +239,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -276,7 +278,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -286,7 +288,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -302,10 +304,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -339,7 +341,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -349,7 +351,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Unit Price",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -365,10 +367,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -401,7 +403,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -409,9 +411,9 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: const <Widget>[
+                                                     children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Sub Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -427,10 +429,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -463,7 +465,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -473,7 +475,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty Durasi",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -489,10 +491,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -525,7 +527,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -535,7 +537,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Konstanta",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -551,10 +553,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -586,7 +588,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -596,7 +598,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -612,10 +614,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -624,7 +626,7 @@ class _BodyState extends State<Body> {
                                                       ],
                                                     ),
                                                   ),
-                                                  Expanded(
+                                                Expanded(
                                                     flex: 20,
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -633,9 +635,8 @@ class _BodyState extends State<Body> {
                                                         Padding(
                                                           padding: const EdgeInsets.only(left: 0),
                                                           child: Text(
-                                                            formatCurrency.format(
-                                                              double.parse(atk[index].totalPrelim.toString()
-                                                              )
+                                                            formatDecimal.format(
+                                                              double.parse(atk[index].konstantaPrelim.toString())
                                                             ),
                                                             style: const TextStyle(
                                                               color: Colors.black,
@@ -658,10 +659,10 @@ class _BodyState extends State<Body> {
                                   ),
                                 ],
                                 if (atk.isEmpty)...[
-                                  const Center(
+                                  Center(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Text("Tidak Ada Data",
+                                      padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10.0).h),
+                                      child: const Text("Tidak Ada Data",
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
@@ -680,16 +681,16 @@ class _BodyState extends State<Body> {
                                     separatorBuilder: (context, index) {
                                       return Container(
                                         width: double.infinity,
-                                        height: 15,
-                                        decoration: const BoxDecoration(
+                                        height: getProportionateScreenHeight(15).h,
+                                        decoration:  BoxDecoration(
                                           border: Border(
                                             top: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             ),
                                             bottom: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             )
                                           )
                                         ),
@@ -698,7 +699,7 @@ class _BodyState extends State<Body> {
                                     itemCount: safety.length,
                                     itemBuilder: (context, index){
                                       return ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -706,14 +707,14 @@ class _BodyState extends State<Body> {
                                             HighlightItemName(
                                               child: Text(
                                                 safety[index].kodePrelim.toString(),
-                                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                           ],
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -727,7 +728,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Item Prelim",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -743,10 +744,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -782,7 +783,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -792,7 +793,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -808,10 +809,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -845,7 +846,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -855,7 +856,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Unit Price",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -871,10 +872,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -907,7 +908,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -915,9 +916,9 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: const <Widget>[
+                                                     children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Sub Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -933,10 +934,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -969,7 +970,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -979,7 +980,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty Durasi",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -995,10 +996,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1031,7 +1032,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1041,7 +1042,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Konstanta",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1057,10 +1058,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1092,7 +1093,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1102,7 +1103,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1118,10 +1119,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1136,7 +1137,7 @@ class _BodyState extends State<Body> {
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: <Widget>[
-                                                        Padding(
+                                                          Padding(
                                                           padding: const EdgeInsets.only(left: 0),
                                                           child: Text(
                                                             formatCurrency.format(
@@ -1164,10 +1165,10 @@ class _BodyState extends State<Body> {
                                   ),
                                 ],
                                 if (safety.isEmpty)...[
-                                  const Center(
+                                  Center(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Text("Tidak Ada Data",
+                                      padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10.0).h),
+                                      child: const Text("Tidak Ada Data",
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
@@ -1186,16 +1187,16 @@ class _BodyState extends State<Body> {
                                     separatorBuilder: (context, index) {
                                       return Container(
                                         width: double.infinity,
-                                        height: 15,
-                                        decoration: const BoxDecoration(
+                                        height: getProportionateScreenHeight(15).h,
+                                        decoration:  BoxDecoration(
                                           border: Border(
                                             top: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             ),
                                             bottom: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             )
                                           )
                                         ),
@@ -1204,7 +1205,7 @@ class _BodyState extends State<Body> {
                                     itemCount: proteksi.length,
                                     itemBuilder: (context, index){
                                       return ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1212,14 +1213,14 @@ class _BodyState extends State<Body> {
                                             HighlightItemName(
                                               child: Text(
                                                 proteksi[index].kodePrelim.toString(),
-                                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                           ],
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1233,7 +1234,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Item Prelim",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1249,10 +1250,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1288,7 +1289,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1298,7 +1299,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1314,10 +1315,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1351,7 +1352,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1361,7 +1362,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Unit Price",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1377,10 +1378,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1413,7 +1414,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1421,9 +1422,9 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: const <Widget>[
+                                                     children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Sub Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1439,10 +1440,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1475,7 +1476,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1485,7 +1486,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty Durasi",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1501,10 +1502,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1537,7 +1538,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1547,7 +1548,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Konstanta",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1563,10 +1564,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1598,7 +1599,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1608,7 +1609,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1624,10 +1625,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1670,10 +1671,10 @@ class _BodyState extends State<Body> {
                                   ),
                                 ],
                                 if (proteksi.isEmpty)...[
-                                  const Center(
+                                  Center(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Text("Tidak Ada Data",
+                                      padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10.0).h),
+                                      child: const Text("Tidak Ada Data",
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
@@ -1692,16 +1693,16 @@ class _BodyState extends State<Body> {
                                     separatorBuilder: (context, index) {
                                       return Container(
                                         width: double.infinity,
-                                        height: 15,
-                                        decoration: const BoxDecoration(
+                                        height: getProportionateScreenHeight(15).h,
+                                        decoration:  BoxDecoration(
                                           border: Border(
                                             top: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             ),
                                             bottom: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             )
                                           )
                                         ),
@@ -1710,7 +1711,7 @@ class _BodyState extends State<Body> {
                                     itemCount: handTools.length,
                                     itemBuilder: (context, index){
                                       return ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1718,14 +1719,14 @@ class _BodyState extends State<Body> {
                                             HighlightItemName(
                                               child: Text(
                                                 handTools[index].kodePrelim.toString(),
-                                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                           ],
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1739,7 +1740,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Item Prelim",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1755,10 +1756,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1794,7 +1795,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1804,7 +1805,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1820,10 +1821,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1857,7 +1858,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1867,7 +1868,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Unit Price",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1883,10 +1884,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1919,7 +1920,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1927,9 +1928,9 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: const <Widget>[
+                                                     children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Sub Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -1945,10 +1946,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -1981,7 +1982,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -1991,7 +1992,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty Durasi",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2007,10 +2008,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2043,7 +2044,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2053,7 +2054,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Konstanta",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2069,10 +2070,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2104,7 +2105,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2114,7 +2115,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2130,10 +2131,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2176,10 +2177,10 @@ class _BodyState extends State<Body> {
                                   ),
                                 ],
                                 if (handTools.isEmpty)...[
-                                  const Center(
+                                  Center(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Text("Tidak Ada Data",
+                                      padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10.0).h),
+                                      child: const Text("Tidak Ada Data",
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
@@ -2198,16 +2199,16 @@ class _BodyState extends State<Body> {
                                     separatorBuilder: (context, index) {
                                       return Container(
                                         width: double.infinity,
-                                        height: 15,
-                                        decoration: const BoxDecoration(
+                                        height: getProportionateScreenHeight(15).h,
+                                        decoration:  BoxDecoration(
                                           border: Border(
                                             top: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             ),
                                             bottom: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             )
                                           )
                                         ),
@@ -2216,7 +2217,7 @@ class _BodyState extends State<Body> {
                                     itemCount: honorStaff.length,
                                     itemBuilder: (context, index){
                                       return ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -2224,14 +2225,14 @@ class _BodyState extends State<Body> {
                                             HighlightItemName(
                                               child: Text(
                                                 honorStaff[index].kodePrelim.toString(),
-                                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                           ],
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2245,7 +2246,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Item Prelim",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2261,10 +2262,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2300,7 +2301,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2310,7 +2311,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2326,10 +2327,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2363,7 +2364,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2373,7 +2374,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Unit Price",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2389,10 +2390,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2425,7 +2426,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2433,9 +2434,9 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: const <Widget>[
+                                                     children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Sub Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2451,10 +2452,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2487,7 +2488,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2497,7 +2498,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty Durasi",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2513,10 +2514,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2549,7 +2550,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2559,7 +2560,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Konstanta",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2575,10 +2576,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2610,7 +2611,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2620,7 +2621,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2636,10 +2637,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2682,10 +2683,10 @@ class _BodyState extends State<Body> {
                                   ),
                                 ],
                                 if (honorStaff.isEmpty)...[
-                                  const Center(
+                                  Center(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Text("Tidak Ada Data",
+                                      padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10.0).h),
+                                      child: const Text("Tidak Ada Data",
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
@@ -2704,16 +2705,16 @@ class _BodyState extends State<Body> {
                                     separatorBuilder: (context, index) {
                                       return Container(
                                         width: double.infinity,
-                                        height: 15,
-                                        decoration: const BoxDecoration(
+                                        height: getProportionateScreenHeight(15).h,
+                                        decoration:  BoxDecoration(
                                           border: Border(
                                             top: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             ),
                                             bottom: BorderSide(
-                                              width: 2,
-                                              color: Color.fromRGBO(246, 246, 246, 1)
+                                              width: getProportionateScreenWidth(2).w,
+                                              color: const Color.fromRGBO(246, 246, 246, 1)
                                             )
                                           )
                                         ),
@@ -2722,7 +2723,7 @@ class _BodyState extends State<Body> {
                                     itemCount: lainLain.length,
                                     itemBuilder: (context, index){
                                       return ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -2730,14 +2731,14 @@ class _BodyState extends State<Body> {
                                             HighlightItemName(
                                               child: Text(
                                                 lainLain[index].kodePrelim.toString(),
-                                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                           ],
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2751,7 +2752,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Item Prelim",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2767,10 +2768,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2806,7 +2807,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2816,7 +2817,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2832,10 +2833,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2869,7 +2870,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2879,7 +2880,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Unit Price",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2895,10 +2896,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2931,7 +2932,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -2939,9 +2940,9 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: const <Widget>[
+                                                     children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Sub Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -2957,10 +2958,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -2993,7 +2994,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -3003,7 +3004,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Qty Durasi",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -3019,10 +3020,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -3055,7 +3056,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -3065,7 +3066,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Konstanta",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -3081,10 +3082,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -3116,7 +3117,7 @@ class _BodyState extends State<Body> {
                                                   ),
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               Row(
                                                 children: <Widget>[
                                                   Expanded(
@@ -3126,7 +3127,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: const <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.only(left: 0),
+                                                          padding: const EdgeInsets.only(left: 0),
                                                           child: Text("Total",
                                                             style: TextStyle(
                                                               color: Colors.black,
@@ -3142,10 +3143,10 @@ class _BodyState extends State<Body> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: const <Widget>[
+                                                      children: <Widget>[
                                                         Padding(
-                                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                                          child: Text(":",
+                                                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                          child: const Text(":",
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                             ),
@@ -3188,10 +3189,10 @@ class _BodyState extends State<Body> {
                                   ),
                                 ],
                                 if (lainLain.isEmpty)...[
-                                  const Center(
+                                  Center(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Text("Tidak Ada Data",
+                                      padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10.0).h),
+                                      child: const Text("Tidak Ada Data",
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
@@ -3202,10 +3203,10 @@ class _BodyState extends State<Body> {
                                 ]
                               ]
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                             CardFieldGrandTotalAnalisa(
                               child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                                contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
                                 title: Column(
                                   children: <Widget>[
                                     Row(
@@ -3215,14 +3216,14 @@ class _BodyState extends State<Body> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: const <Widget>[
+                                            children: <Widget>[
                                               Padding(
-                                                padding: EdgeInsets.only(left: 0),
+                                                padding: const EdgeInsets.only(left: 0),
                                                 child: Text("Grand Total",
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.left,
                                                 ),
@@ -3243,10 +3244,10 @@ class _BodyState extends State<Body> {
                                                       double.parse(widget.grandTotalPrelim.toString()
                                                     )
                                                   ),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14
+                                                    fontSize: 14.sp
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -3271,40 +3272,40 @@ class _BodyState extends State<Body> {
                   );
                 } else {
                   return Column(
-                    children: const <Widget> [
-                      SizedBox(height: 10),
+                    children: <Widget> [
+                      SizedBox(height: getProportionateScreenHeight(10).h),
                       Skeleton(
-                        height: 60,
+                        height: getProportionateScreenHeight(60).h,
                         width: double.infinity,
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: getProportionateScreenHeight(10).h),
                       Skeleton(
-                        height: 60,
+                        height: getProportionateScreenHeight(60).h,
                         width: double.infinity,
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: getProportionateScreenHeight(10).h),
                       Skeleton(
-                        height: 60,
+                        height: getProportionateScreenHeight(60).h,
                         width: double.infinity,
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: getProportionateScreenHeight(10).h),
                       Skeleton(
-                        height: 60,
+                        height: getProportionateScreenHeight(60).h,
                         width: double.infinity,
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: getProportionateScreenHeight(10).h),
                       Skeleton(
-                        height: 60,
+                        height: getProportionateScreenHeight(60).h,
                         width: double.infinity,
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: getProportionateScreenHeight(10).h),
                       Skeleton(
-                        height: 60,
+                        height: getProportionateScreenHeight(60).h,
                         width: double.infinity,
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: getProportionateScreenHeight(10).h),
                       Skeleton(
-                        height: 60,
+                        height: getProportionateScreenHeight(60).h,
                         width: double.infinity,
                       ),
                     ],

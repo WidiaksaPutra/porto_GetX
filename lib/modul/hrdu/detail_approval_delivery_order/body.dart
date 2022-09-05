@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/delivery_order/detail_delivery_order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,8 +18,9 @@ import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/widget/component/field_catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:get/get.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   final String noDeliveryOrder;
@@ -71,6 +73,7 @@ class _BodyState extends State<Body> {
             );
             if (_postProses == "berhasil") {
               Get.offAll(const DeliveryOrderView());
+              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
             }
           },
         );
@@ -91,7 +94,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -116,7 +119,7 @@ class _BodyState extends State<Body> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 5),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(
@@ -127,56 +130,56 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Sales Order",
                                   contentData: detailDeliveryOrder.data!.detail!.noSalesOrder,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Customer",
                                   contentData: detailDeliveryOrder.data!.detail!.namaCustomer,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Sales",
                                   contentData: detailDeliveryOrder.data!.detail!.namaSales,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemDate(
                                   label: "Tgl. Delivery Order",
                                   date: detailDeliveryOrder.data!.detail!.tglDeliveryOrder,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Delivery Order",
                                   contentData: detailDeliveryOrder.data!.detail!.noDeliveryOrder,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Gudang",
                                   contentData: detailDeliveryOrder.data!.detail!.namaGudang,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Proyek",
                                   contentData: detailDeliveryOrder.data!.detail!.namaProyek,
                                   flexLeftRow: 14,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Catatan",
                                   contentData: detailDeliveryOrder.data!.detail!.catatanDeliveryOrder,
@@ -191,25 +194,25 @@ class _BodyState extends State<Body> {
                           label: "Item Delivery Order",
                           children: <Widget> [
                             ListView.separated(
-                              separatorBuilder: (context, index) => const SizedBox(
-                                height: 10,
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: getProportionateScreenHeight(10).h,
                               ),
                               itemCount: detailDeliveryOrder.data!.detail!.detail!.length,
                               itemBuilder: (BuildContext context, index){
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                   child: CardItemExpansionDetail(
                                     child: ListTile(
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                       title: HighlightItemName(
                                         child: Text(
                                           detailDeliveryOrder.data!.detail!.detail![index]!.kodeBarang.toString(),
-                                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       subtitle: Padding(
-                                        padding: const EdgeInsets.only(top: 15),
+                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,14 +223,14 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 8,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemText(
                                               label: "Gudang",
                                               contentData: detailDeliveryOrder.data!.detail!.detail![index]!.namaGudang,
                                               flexLeftRow: 8,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemRightRow(
                                               label: "Qty",
                                               rightRow: <Widget> [
@@ -238,9 +241,9 @@ class _BodyState extends State<Body> {
                                                     formatDecimal.format(double.parse(detailDeliveryOrder.data!.detail!.detail![index]!.qty.toString())).toString()
                                                     +' '+
                                                     detailDeliveryOrder.data!.detail!.detail![index]!.namaSatuan.toString(),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       color: Colors.black,
-                                                      fontSize: 14
+                                                      fontSize: 14.sp
                                                     ),
                                                     textAlign: TextAlign.left,
                                                   )
@@ -265,7 +268,7 @@ class _BodyState extends State<Body> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                             ),
-                            const SizedBox(height: 10)
+                            SizedBox(height: getProportionateScreenHeight(10).h)
                           ],
                         ),
                         if (detailDeliveryOrder.data!.approval!.isNotEmpty)...[
@@ -273,8 +276,8 @@ class _BodyState extends State<Body> {
                             label: "Catatan Approval",
                             children: <Widget> [
                               ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 10,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: getProportionateScreenHeight(10).h,
                                 ),
                                 itemCount: detailDeliveryOrder.data!.approval!.length,
                                 itemBuilder: (context, index){
@@ -289,14 +292,14 @@ class _BodyState extends State<Body> {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -321,16 +324,16 @@ class _BodyState extends State<Body> {
                         Visibility(
                           visible: catatanError,
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
-                              FormErrors(errors: kCatatanError),
-                              SizedBox(height: 8),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              const FormErrors(errors: kCatatanError),
+                              SizedBox(height: getProportionateScreenHeight(8).h),
                             ],
                           )
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
-                          child: const SizedBox(height: 10)
+                          child: SizedBox(height: getProportionateScreenHeight(10).h)
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
@@ -408,7 +411,7 @@ class _BodyState extends State<Body> {
                                   showAlertDialog(
                                     "APPROVE Delivery Order",
                                     "APPROVE",
-                                    reviseButtonColor,
+                                    verifyButtonColor,
                                     detailDeliveryOrder.data!.detail!.noDeliveryOrder.toString(),
                                     "APP",
                                     _catatanTextEditingController.text,
@@ -419,7 +422,7 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: getProportionateScreenHeight(30).h),
                       ],
                     );
                   } else {

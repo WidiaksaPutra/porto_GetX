@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/component/button_login.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/main_page/main_page.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
@@ -35,8 +37,8 @@ class _LoginFormState extends State<LoginForm> {
           TextFormField(
             controller: _usernameTextController,
             keyboardType: TextInputType.text,
-            style: const TextStyle(
-              fontSize: 14
+            style: TextStyle(
+              fontSize: 14.sp,
             ),
             onChanged: (value) {
               if (value.isNotEmpty) {
@@ -56,36 +58,36 @@ class _LoginFormState extends State<LoginForm> {
             },
             decoration: InputDecoration(
               hintText: "Username",
-              hintStyle: const TextStyle(
-                fontSize: 14,
-                color: Color.fromRGBO(217, 217, 217, 1)
+              hintStyle: TextStyle(
+                fontSize: 14.sp,
+                color: const Color.fromRGBO(217, 217, 217, 1)
               ),
               filled: true,
               fillColor: colorCardItem,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5).r,
                 borderSide: const BorderSide(color: Colors.transparent),
                 gapPadding: 10,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5).r,
                 borderSide: const BorderSide(color: Colors.transparent),
                 gapPadding: 10,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5).r,
                 borderSide: const BorderSide(color: Colors.transparent),
                 gapPadding: 10,
               ),
               prefixIcon: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  10,
-                  20,
-                  0,
-                  20
+                padding: EdgeInsets.fromLTRB(
+                  getProportionateScreenWidth(10).w,
+                  getProportionateScreenHeight(20).h,
+                  getProportionateScreenWidth(0).w,
+                  getProportionateScreenHeight(20).h,
                 ),
                 child: SvgPicture.asset("assets/icons/briefcase.svg",
-                  height: 20,
+                  height: getProportionateScreenHeight(20).h,
                 ),
               ),
             ),
@@ -93,18 +95,18 @@ class _LoginFormState extends State<LoginForm> {
           Visibility(
             visible: usernameError,
             child: Column(
-              children: const <Widget>[
-                SizedBox(height: 5),
-                FormErrors(errors: kUsernameNullError),
+              children: <Widget>[
+                SizedBox(height: getProportionateScreenHeight(5).h),
+                const FormErrors(errors: kUsernameNullError),
               ],
             )
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: getProportionateScreenHeight(20).h),
           TextFormField(
             controller: _passwordTextController,
             keyboardType: TextInputType.text,
-            style: const TextStyle(
-              fontSize: 14
+            style: TextStyle(
+              fontSize: 14.sp
             ),
             obscureText: passwordVisible,
             onChanged: (value) {
@@ -125,36 +127,36 @@ class _LoginFormState extends State<LoginForm> {
             },
             decoration: InputDecoration(
               hintText: "Password",
-              hintStyle: const TextStyle(
-                fontSize: 14,
-                color: Color.fromRGBO(217, 217, 217, 1)
+              hintStyle: TextStyle(
+                fontSize: 14.sp,
+                color: const Color.fromRGBO(217, 217, 217, 1),
               ),
               filled: true,
               fillColor: colorCardItem,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5).r,
                 borderSide: const BorderSide(color: Colors.transparent),
                 gapPadding: 10,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5).r,
                 borderSide: const BorderSide(color: Colors.transparent),
                 gapPadding: 10,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5).r,
                 borderSide: const BorderSide(color: Colors.transparent),
                 gapPadding: 10,
               ),
               prefixIcon: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  10,
-                  20,
-                  0,
-                  20
+                padding: EdgeInsets.fromLTRB(
+                  getProportionateScreenWidth(10).w,
+                  getProportionateScreenHeight(20).h,
+                  getProportionateScreenWidth(0).w,
+                  getProportionateScreenHeight(20).h,
                 ),
                 child: SvgPicture.asset("assets/icons/locked.svg",
-                  height: 20,
+                  height: getProportionateScreenHeight(20).h,
                 ),
               ),
               suffixIcon: Padding(
@@ -167,7 +169,7 @@ class _LoginFormState extends State<LoginForm> {
                   },
                   icon: SvgPicture.asset(
                     (passwordVisible) ? "assets/icons/eye.svg" : "assets/icons/eye_hide.svg",
-                    height: 20,
+                    height: getProportionateScreenHeight(20).h,
                     color: (passwordVisible) ? const Color.fromRGBO(217, 217, 217, 1) : Colors.green,
                   ),
                 ),
@@ -177,10 +179,10 @@ class _LoginFormState extends State<LoginForm> {
           Visibility(
             visible: passwordError,
             child: Column(
-              children: const <Widget>[
-                SizedBox(height: 5),
-                FormErrors(errors: kPassNullError),
-                SizedBox(height: 8),
+              children: <Widget>[
+                SizedBox(height: getProportionateScreenHeight(5).h),
+                const FormErrors(errors: kPassNullError),
+                SizedBox(height: getProportionateScreenHeight(8).h),
               ],
             )
           ),
@@ -219,7 +221,7 @@ class _LoginFormState extends State<LoginForm> {
                       snackPosition: SnackPosition.BOTTOM,
                       animationDuration: const Duration(milliseconds: 400),
                       duration: const Duration(milliseconds: 1500),
-                      padding: const EdgeInsets.all(20)
+                      padding: EdgeInsets.symmetric(horizontal:getProportionateScreenWidth(20).w, vertical:getProportionateScreenHeight(20).h),
                     );
                     setState(() {
                       isLoading = false;

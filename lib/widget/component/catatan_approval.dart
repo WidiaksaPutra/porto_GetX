@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 
 class CatatanApproval extends StatelessWidget {
@@ -20,24 +21,24 @@ class CatatanApproval extends StatelessWidget {
       validator: validator,
       decoration: InputDecoration(
         hintText: "Masukkan Catatan",
-        hintStyle: const TextStyle(
-          fontSize: 14,
+        hintStyle: TextStyle(
+          fontSize: 14.sp,
           color: Color.fromRGBO(194, 194, 194, 1)
         ),
         filled: true,
         fillColor: colorCardSearch,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(10.r),
           borderSide: BorderSide(color: Colors.grey[300]!),
           gapPadding: 10,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(10.r),
           borderSide: BorderSide(color: Colors.grey[300]!),
           gapPadding: 10,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(10.r),
           borderSide: BorderSide(color: Colors.grey[300]!),
           gapPadding: 10,
         ),

@@ -7,9 +7,11 @@ class DetailSalesOrderSPKView extends StatelessWidget {
   const DetailSalesOrderSPKView({
     Key? key,
     required this.noSalesOrderSPK,
+    required this.idSalesOrderSpk,
     required this.statusMenu,
   }) : super(key: key);
   final String noSalesOrderSPK;
+  final String idSalesOrderSpk;
   final String statusMenu;
 
   @override
@@ -27,7 +29,7 @@ class DetailSalesOrderSPKView extends StatelessWidget {
         ),
         flexibleSpace: const AppBarThemeColor(),
       ),
-      body: Body(noSalesOrderSPK: noSalesOrderSPK, statusMenu: statusMenu),
+      body: Body(noSalesOrderSPK: noSalesOrderSPK, statusMenu: statusMenu, idSalesOrderSpk: idSalesOrderSpk,),
     );
   }
 }

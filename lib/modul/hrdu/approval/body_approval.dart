@@ -1,8 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_analisa_barang_jadi/approval_analisa_barang_jadi.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_sales_order_spk/approval_sales_order_spk.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_analisa_barang_jadi.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_delivery_order.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_faktur_penjualan.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_mutasi_antar_gudang.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_peluang.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_penawaran.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_penerimaan_barang.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_ppa.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_purchase_order.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_purchase_request.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_rab.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_rae.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_rap.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_sales_order.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_sales_order_spk.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_seleksi_vendor.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_surat_jalan.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_surat_perjanjian_kerja.dart';
+import 'package:mgp_mobile_app/widget/component/badge.dart';
 import 'package:mgp_mobile_app/widget/component/card_menu_approval.dart';
 import 'package:mgp_mobile_app/widget/component/icon_menu_approval.dart';
 import 'package:mgp_mobile_app/widget/component/icon_trailing_menu_approval.dart';
@@ -23,6 +43,7 @@ import 'package:mgp_mobile_app/modul/hrdu/approval_sales_order/approval_sales_or
 import 'package:mgp_mobile_app/modul/hrdu/approval_seleksi_vendor/approval_seleksi_vendor.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_surat_jalan/approval_surat_jalan.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_surat_perjanjian_kerja/approval_surat_perjanjian_kerja.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BodyApproval extends StatefulWidget {
@@ -32,7 +53,10 @@ class BodyApproval extends StatefulWidget {
   _BodyApprovalState createState() => _BodyApprovalState();
 }
 
-class _BodyApprovalState extends State<BodyApproval> {
+class _BodyApprovalState extends State<BodyApproval> with DeliveryOrderClass, FakturPenjualanClass, MutasiAntarGudangClass,
+  PeluangClass, PenawaranClass, PenerimaanBarangClass, PPAClass, PurchaseOrderClass, PurchaseRequestClass,
+  RABClass, RAEClass, RAPClass, SalesOrderClass, SalesOrderSPKClass, SeleksiVendorClass, SuratJalanClass, SPKClass, 
+  AnalisaBarangJadiClass {
   late String tokenUser;
   late SharedPreferences loginData;
   late String? deviceToken;
@@ -73,7 +97,7 @@ class _BodyApprovalState extends State<BodyApproval> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(height: 15),
+          SizedBox(height: getProportionateScreenHeight(15).h),
           CardMenuApproval(
             child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(
@@ -82,96 +106,198 @@ class _BodyApprovalState extends State<BodyApproval> {
               itemCount: hakAksesMenu.length,
               itemBuilder: (BuildContext context, index){
                 return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15.0).w),
                   leading: const IconMenuApproval(),
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      if(hakAksesMenu[index] == hakAksesHrduApproval[0])...[
-                        const TextMenuApproval(
-                          label: "Purchase Request"
-                        ),
+                     if(hakAksesMenu[index] == hakAksesHrduApproval[0])...[
+                        FutureBuilder(
+                        future: fetchApprovalCountPurchaseRequest(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Purchase Request");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[1])...[
-                        const TextMenuApproval(
-                          label: "Seleksi Vendor"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountSeleksiVendor(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Seleksi Vendor");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[2])...[
-                        const TextMenuApproval(
-                          label: "Purchase Order"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountPurchaseOrder(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Purchase Order");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[3])...[
-                        const TextMenuApproval(
-                          label: "Penerimaan Barang"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountPenerimaanBarang(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Penerimaan Barang");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[4])...[
-                        const TextMenuApproval(
-                          label: "Sales Order"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountSalesOrder(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Sales Order");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[5])...[
-                        const TextMenuApproval(
-                          label: "Sales Order SPK"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountSalesOrderSPK(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Sales Order SPK");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[6])...[
-                        const TextMenuApproval(
-                          label: "Delivery Order"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountDeliveryOrder(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Delivery Order");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[7])...[
-                        const TextMenuApproval(
-                          label: "Surat Jalan"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountSuratJalan(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Surat Jalan");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[8])...[
-                        const TextMenuApproval(
-                          label: "Faktur Penjualan"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountFakturPenjualan(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Faktur Penjualan");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[9])...[
-                        const TextMenuApproval(
-                          label: "Analisa Barang Jadi"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountAnalisaBarangJadi(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Analisa Barang Jadi");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[10])...[
-                        const TextMenuApproval(
-                          label: "Peluang"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountPeluang(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Peluang");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[11])...[
-                        const TextMenuApproval(
-                          label: "Rencana Anggaran Estimasi"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountRAE(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Rencana Anggaran Estimasi");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[12])...[
-                        const TextMenuApproval(
-                          label: "Rencana Anggaran Biaya"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountRAB(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Rencana Anggaran Biaya");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[13])...[
-                        const TextMenuApproval(
-                          label: "Penawaran"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountPenawaran(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Penawaran");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[14])...[
-                        const TextMenuApproval(
-                          label: "Surat Perjanjian Kerja"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountSPK(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Surat Perjanjian Kerja");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[15])...[
-                        const TextMenuApproval(
-                          label: "Rencana Anggaran Produksi"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountRAP(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Rencana Anggaran Produksi");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[16])...[
-                        const TextMenuApproval(
-                          label: "Mutasi Antar Gudang"
-                        ),
+                        FutureBuilder(
+                        future: fetchApprovalCountMutasiAntarGudang(page: 1),
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+                          if(snapshot.hasData){
+                            return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Mutasi Antar Gudang");
+                          }else{
+                            return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
+                          }
+                        }),
                       ],
                       if(hakAksesMenu[index] == hakAksesHrduApproval[17])...[
                         const TextMenuApproval(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardFieldAnalisa extends StatelessWidget {
   final String label;
@@ -11,17 +13,17 @@ class CardFieldAnalisa extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: ContinuousRectangleBorder(
-        borderRadius: BorderRadius.circular(25),
-        side: const BorderSide(
-          width: 0.4, color: Colors.grey
+        borderRadius: BorderRadius.circular(25.r),
+        side: BorderSide(
+          width: getProportionateScreenWidth(0.4).w, color: Colors.grey
         ),
       ),
       elevation: 3.0,
-      margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+      margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
       child: Padding(
-        padding: const EdgeInsets.only(top: 5, bottom: 5),
+        padding: EdgeInsets.only(top: getProportionateScreenHeight(5).h, bottom: getProportionateScreenHeight(5).h),
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15.0).w),
           leading: ShaderMask(
             shaderCallback: (Rect bounds) {
               return const LinearGradient(
@@ -36,17 +38,17 @@ class CardFieldAnalisa extends StatelessWidget {
             },
             child: SvgPicture.asset("assets/icons/akun_informasi_menu.svg",
               color: kPrimaryColor,
-              height: 30,
-              width: 30,
+              height: getProportionateScreenHeight(30).h,
+              width: getProportionateScreenWidth(30).w,
             ),
           ),
           title: Transform.translate(
-            offset: const Offset(-16, 0),
+            offset: Offset(getProportionateScreenWidth(-16).w, getProportionateScreenHeight(0).h),
             child: Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
-                fontSize: 14 
+                fontSize: 14.sp 
               ),
               textAlign: TextAlign.left,
             ),

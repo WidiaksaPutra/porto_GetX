@@ -1,4 +1,5 @@
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/penawaran/detail_penawaran_model.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_penawaran/approval_penawaran.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_penawaran/prelim_penawaran/prelim_penawaran.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rab/analisa_single_rab/analisa_single_rab.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/component/alert_approval.dart';
 import 'package:mgp_mobile_app/widget/component/button_pemeriksa.dart';
 import 'package:mgp_mobile_app/widget/component/button_pengesah.dart';
@@ -26,6 +27,7 @@ import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/widget/component/field_catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   final String noPenawaran;
@@ -93,6 +95,7 @@ class _BodyState extends State<Body> {
             );
             if (_postProses == "berhasil") {
               Get.offAll(const PenawaranView());
+              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
             }
           },
         );
@@ -112,7 +115,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -177,7 +180,7 @@ class _BodyState extends State<Body> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 5),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(
@@ -188,49 +191,49 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. RAB",
                                   contentData: detailPenawaran.data!.detail!.noRab,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemDate(
                                   label: "Tgl. Penawaran",
                                   date: detailPenawaran.data!.detail!.tglPenawaran,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Penawaran",
                                   contentData: detailPenawaran.data!.detail!.noPenawaran,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Customer",
                                   contentData: detailPenawaran.data!.detail!.namaCustomer,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "ATT",
                                   contentData: detailPenawaran.data!.detail!.att,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemDate(
                                   label: "Tgl. Selesai",
                                   date: detailPenawaran.data!.detail!.tglSelesai,
                                   flexLeftRow: 8,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Proyek",
                                   contentData: detailPenawaran.data!.detail!.namaProyek,
@@ -245,50 +248,50 @@ class _BodyState extends State<Body> {
                           label: "Teks Pembuka",
                           children: <Widget> [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
                                   child: (detailPenawaran.data!.detail!.teksPembuka != null)
                                   ? Html(
                                     data: detailPenawaran.data!.detail!.teksPembuka
                                   )
-                                  : const Text("-",
+                                  :  Text("-",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 14
+                                      fontSize: 14.sp
                                     ),
                                     textAlign: TextAlign.left,
                                   )
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                           ],
                         ),
                         CardExpansionDetail(
                           label: "Item Barang Jadi",
                           children: <Widget> [
                             ListView.separated(
-                              separatorBuilder: (context, index) => const SizedBox(
-                                height: 10,
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: getProportionateScreenHeight(10).h,
                               ),
                               itemCount: detailPenawaran.data!.detail!.detailBarangJadi!.length,
                               itemBuilder: (context, index){
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                   child: CardItemExpansionDetail(
                                     child: ListTile(
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                       title: HighlightItemName(
                                         child: Text(
                                           detailPenawaran.data!.detail!.detailBarangJadi![index]!.kodeItem.toString(),
-                                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       subtitle: Padding(
-                                        padding: const EdgeInsets.only(top: 15),
+                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,7 +302,7 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemRightRow(
                                               label: "Qty",
                                               rightRow: <Widget> [
@@ -329,14 +332,14 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemFormatCurrency(
                                               label: "Harga Satuan",
                                               contentData: detailPenawaran.data!.detail!.detailBarangJadi![index]!.rounded,
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemFormatCurrency(
                                               label: "Sub Total",
                                               contentData: subTotalHargaPenawaran[index],
@@ -361,32 +364,32 @@ class _BodyState extends State<Body> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                  title: const Text(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                  title: Text(
                                     "PRELIM",
-                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14),
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   subtitle: Padding(
-                                    padding: const EdgeInsets.only(top: 15),
+                                    padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
                                         const CardExpansionDetailPrelim(),
-                                        const SizedBox(height: 10),
+                                        SizedBox(height: getProportionateScreenHeight(10).h),
                                         CardFieldItemFormatCurrency(
                                           label: "Harga Satuan",
                                           contentData: grandTotalPrelim,
                                           flexLeftRow: 12,
                                           flexRightRow: 20,
                                         ),
-                                        const SizedBox(height: 10),
+                                        SizedBox(height: getProportionateScreenHeight(10).h),
                                         CardFieldItemFormatCurrency(
                                           label: "Sub Total",
                                           contentData: grandTotalPrelim,
@@ -402,9 +405,9 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: ListTile(
                                   title: Column(
@@ -415,30 +418,30 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemPercent(
-                                        label: "Diskon",
+                                        label: "Total Diskon",
                                         labelValue: detailPenawaran.data!.detail!.diskon,
                                         total: diskonHarga,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total Setelah Diskon",
                                         total: totalSetelahDiskon,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemPercent(
-                                        label: "PPN",
+                                        label: "Total PPN",
                                         labelValue: detailPenawaran.data!.detail!.ppn,
                                         total: ppnHarga,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total Setelah PPN",
                                         total: totalSetelahPpn,
@@ -450,9 +453,9 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: ListTile(
                                   title: Column(
@@ -468,32 +471,32 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                           ],
                         ),
                         CardExpansionDetail(
                           label: "Teks Penutup",
                           children: <Widget> [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
                                   child: (detailPenawaran.data!.detail!.teksPenutup != null)
                                   ? Html(
                                     data: detailPenawaran.data!.detail!.teksPenutup
                                   )
-                                  : const Text("-",
+                                  :  Text("-",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 14
+                                      fontSize: 14.sp
                                     ),
                                     textAlign: TextAlign.left,
                                   )
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                           ],
                         ),
                         if (detailPenawaran.data!.approval!.isNotEmpty)...[
@@ -501,8 +504,8 @@ class _BodyState extends State<Body> {
                             label: "Catatan Approval",
                             children: <Widget> [
                               ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 10,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: getProportionateScreenHeight(10).h,
                                 ),
                                 itemCount: detailPenawaran.data!.approval!.length,
                                 itemBuilder: (context, index){
@@ -517,14 +520,14 @@ class _BodyState extends State<Body> {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -549,16 +552,16 @@ class _BodyState extends State<Body> {
                         Visibility(
                           visible: catatanError,
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
-                              FormErrors(errors: kCatatanError),
-                              SizedBox(height: 8),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              const FormErrors(errors: kCatatanError),
+                              SizedBox(height: getProportionateScreenHeight(8).h),
                             ],
                           )
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
-                          child: const SizedBox(height: 10)
+                          child: SizedBox(height: getProportionateScreenHeight(10).h)
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
@@ -647,7 +650,7 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: getProportionateScreenHeight(30).h),
                       ],
                     );
                   } else {

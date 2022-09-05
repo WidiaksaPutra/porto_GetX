@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardExpansionDetailPrelim extends StatelessWidget {
   const CardExpansionDetailPrelim({Key? key}) : super(key: key);
@@ -14,7 +16,7 @@ class CardExpansionDetailPrelim extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const <Widget> [
               Padding(
-                padding: EdgeInsets.only(left: 0),
+                padding: const EdgeInsets.only(left: 0),
                 child: Text("Qty",
                   style: TextStyle(
                     color: Colors.black,
@@ -30,10 +32,10 @@ class CardExpansionDetailPrelim extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const <Widget>[
+            children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Text(":",
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(10).w, right: getProportionateScreenWidth(10).w),
+                child: const Text(":",
                   style: TextStyle(
                     color: Colors.black,
                   ),
@@ -50,8 +52,8 @@ class CardExpansionDetailPrelim extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const <Widget> [
               Padding(
-                padding: EdgeInsets.only(left: 0),
-                child: Text("1",
+                padding: const EdgeInsets.only(left: 0),
+                child: Text("-",
                   style: TextStyle(
                     color: Colors.black,
                   ),

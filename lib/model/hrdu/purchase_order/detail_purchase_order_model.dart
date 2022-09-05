@@ -161,6 +161,7 @@ class Detail {
     this.pembayaran,
     this.svDetail,
     this.poDetail,
+    this.dp,
   });
 
   final String? idPurchaseOrder;
@@ -196,6 +197,7 @@ class Detail {
   final String? alamatVendor;
   final String? kodeVendor;
   final String? pembayaran;
+  final String? dp;
   final List<SvDetail?>? svDetail;
   final List<PoDetail?>? poDetail;
 
@@ -237,6 +239,7 @@ class Detail {
     alamatVendor: json["alamat_vendor"],
     kodeVendor: json["kode_vendor"],
     pembayaran: json["pembayaran"],
+    dp: json["dp"] == null ? "0" : json["dp"].toString(),
     svDetail: json["sv_detail"] == null ? null : List<SvDetail>.from(json["sv_detail"].map((x) => SvDetail.fromJson(x))),
     poDetail: json["po_detail"] == null ? null : List<PoDetail>.from(json["po_detail"].map((x) => PoDetail.fromJson(x))),
   );
@@ -275,6 +278,7 @@ class Detail {
     "alamat_vendor": alamatVendor,
     "kode_vendor": kodeVendor,
     "pembayaran": pembayaran,
+    "dp": dp == null ? "0" : dp.toString(),
     "sv_detail": svDetail == null ? null : List<dynamic>.from(svDetail!.map((x) => x?.toJson())),
     "po_detail": poDetail == null ? null : List<dynamic>.from(poDetail!.map((x) => x?.toJson())),
   };

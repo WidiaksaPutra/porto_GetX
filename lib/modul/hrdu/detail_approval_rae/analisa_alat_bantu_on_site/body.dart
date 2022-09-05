@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/detail_rae_model.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/widget/component/card_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/component/card_item_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   final Future<AnalisaSingleRegrae> analisaSingleRegrae;
@@ -16,11 +18,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  final formatCurrency = NumberFormat.currency(
-    locale: 'ID',
-    decimalDigits: 0,
-    symbol: "Rp"
-  );
+  final formatCurrency =
+      NumberFormat.currency(locale: 'ID', decimalDigits: 0, symbol: "Rp");
   final formatDecimal = NumberFormat("###.######", "id_ID");
   final decimalFormat = NumberFormat("###", "id_ID");
   final List<String> errors = [];
@@ -28,449 +27,669 @@ class _BodyState extends State<Body> {
   late String? tokens;
   bool visibilityPemeriksa = false;
   bool visibilityPengesah = false;
-  late List subTotalAlatBantuOnSite = [];
-  late String grandTotalAlatBantuOnSite;
+  // late String grandTotalAlatBantuOnSite;
+  late List subTotalPrice = [];
 
   @override
   void initState() {
     initializeDateFormatting();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
               future: widget.analisaSingleRegrae,
-              builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegrae> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<AnalisaSingleRegrae> snapshot) {
                 if (snapshot.hasData) {
-                 var analisaSingleRAE = snapshot.data;
-                  num totalAlatBantuOnSite = 0;
-                  if (analisaSingleRAE!.data!.analisaAlatBantuOnsite!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaAlatBantuOnsite!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaAlatBantuOnsite![i]!.qty.toString()) * double.parse(analisaSingleRAE.data!.analisaAlatBantuOnsite![i]!.unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaAlatBantuOnsite![i]!.konstanta.toString());
-                      subTotalAlatBantuOnSite.add(subTotal);
-                      totalAlatBantuOnSite = totalAlatBantuOnSite + subTotal;
+                  var analisaSingleRAE = snapshot.data;
+
+                  num totalHardwood = 0;
+                  if (analisaSingleRAE!.data!.analisaHardwood!.isNotEmpty) {
+                    for (var i = 0; i < analisaSingleRAE.data!.analisaHardwood!.length; i++) {
+                      num countTotalUnit = ((double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyRaw.toString()) 
+                      * double.parse(analisaSingleRAE.data!.analisaHardwood![i].tRaw.toString()) 
+                      * double.parse(analisaSingleRAE.data!.analisaHardwood![i].wRaw.toString()) 
+                      * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lRaw.toString())) / 1000000);
+                      num totalUnit = (countTotalUnit < 0.000001) ? 0.000001 : countTotalUnit;
+                      num totalPrice = totalUnit * (double.parse(analisaSingleRAE.data!.analisaHardwood![i].unitPrice.toString()) 
+                      * double.parse(analisaSingleRAE.data!.analisaHardwood![i].konstanta.toString()));
+                      // print(totalPrice);
+                      totalHardwood = totalHardwood + totalPrice.round();
                     }
                   }
-                  grandTotalAlatBantuOnSite = totalAlatBantuOnSite.toString();
+
+                  num totalPlywood = 0;
+                  if (analisaSingleRAE.data!.analisaPlywood!.isNotEmpty) {
+                    for (var i = 0; i < analisaSingleRAE.data!.analisaPlywood!.length; i++) {
+                      num total = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) 
+                      * double.parse(analisaSingleRAE.data!.analisaPlywood![i].unitPrice.toString()) 
+                      * double.parse(analisaSingleRAE.data!.analisaPlywood![i].konstanta.toString()));
+                      totalPlywood = totalPlywood + total.round();
+                    }
+                  }
+
+                  num unitPriceAlatBantuOnSite = totalHardwood + totalPlywood;
+
+                  if (analisaSingleRAE
+                      .data!.analisaAlatBantuOnsite!.isNotEmpty) {
+                    for (var i = 0;
+                        i <
+                            analisaSingleRAE
+                                .data!.analisaAlatBantuOnsite!.length;
+                        i++) {
+                      num totalPrice = unitPriceAlatBantuOnSite *
+                          double.parse(analisaSingleRAE
+                              .data!.analisaAlatBantuOnsite![i].qty
+                              .toString()) *
+                          double.parse(analisaSingleRAE
+                              .data!.analisaAlatBantuOnsite![i].konstanta
+                              .toString());
+                      subTotalPrice.add(totalPrice);
+                      // totalAlatBantuOnSite = totalAlatBantuOnSite + totalPrice;
+                    }
+                  }
+
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 10,
+                      SizedBox(
+                        height: getProportionateScreenHeight(10).h,
                       ),
                       CardExpansionDetail(
-                        label: "Alat Bantu On-Site",
-                        children: <Widget> [
-                          ListView.separated(
-                            separatorBuilder: (context, index) => const SizedBox(
-                              height: 10,
-                            ),
-                            itemCount: analisaSingleRAE.data!.analisaAlatBantuOnsite!.length,
-                            itemBuilder: (context, index){
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: CardItemExpansionDetail(
-                                  child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                    title: HighlightItemName(
-                                      child: Text(
-                                        analisaSingleRAE.data!.analisaAlatBantuOnsite![index]!.kodeItem.toString(),
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-                                        overflow: TextOverflow.ellipsis,
+                          label: "Alat Bantu On-Site",
+                          children: <Widget>[
+                            ListView.separated(
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: getProportionateScreenHeight(10).h,
+                              ),
+                              itemCount: analisaSingleRAE
+                                  .data!.analisaAlatBantuOnsite!.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          getProportionateScreenWidth(10).w),
+                                  child: CardItemExpansionDetail(
+                                    child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              getProportionateScreenWidth(20.0)
+                                                  .w,
+                                          vertical:
+                                              getProportionateScreenHeight(10.0)
+                                                  .h),
+                                      title: HighlightItemName(
+                                        child: Text(
+                                          analisaSingleRAE
+                                              .data!
+                                              .analisaAlatBantuOnsite![index]
+                                              .kodeItem
+                                              .toString(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14.sp),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    ),
-                                    subtitle: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 12,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.only(left: 0),
-                                                      child: Text("Item Alat Bantu On-Site",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 0,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
+                                      subtitle: Padding(
+                                        padding: EdgeInsets.only(
+                                            top:
+                                                getProportionateScreenHeight(15)
+                                                    .h),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  flex: 12,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: const <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          "Item Alat Bantu On-Site",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                flex: 20,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(analisaSingleRAE.data!.analisaAlatBantuOnsite![index]!.namaItem.toString(),
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 12,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.only(left: 0),
-                                                      child: Text("Qty",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 0,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
+                                                Expanded(
+                                                  flex: 0,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    getProportionateScreenWidth(
+                                                                            10)
+                                                                        .w),
+                                                        child: const Text(
+                                                          ":",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                flex: 20,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(
-                                                        formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaAlatBantuOnsite![index]!.qty.toString()
-                                                          )
-                                                        )+" "+
-                                                        analisaSingleRAE.data!.analisaAlatBantuOnsite![index]!.namaSatuan.toString(),
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 12,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.only(left: 0),
-                                                      child: Text("Unit Price",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 0,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
+                                                Expanded(
+                                                  flex: 20,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          analisaSingleRAE
+                                                              .data!
+                                                              .analisaAlatBantuOnsite![
+                                                                  index]
+                                                              .namaItem
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                flex: 20,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(
-                                                        formatCurrency.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaAlatBantuOnsite![index]!.unitPrice.toString())
-                                                        ),
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 12,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.only(left: 0),
-                                                      child: Text("Konstanta",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 0,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
+                                              ],
+                                            ),
+                                            SizedBox(
+                                                height:
+                                                    getProportionateScreenHeight(
+                                                            10)
+                                                        .h),
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  flex: 12,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: const <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          "Qty",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                flex: 20,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(
-                                                        formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaAlatBantuOnsite![index]!.konstanta.toString()
-                                                          )
-                                                        ),
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 12,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.only(left: 0),
-                                                      child: Text("Sub Total",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 0,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
-                                                    Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
-                                                        style: TextStyle(
-                                                          color: Colors.black,
+                                                Expanded(
+                                                  flex: 0,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    getProportionateScreenWidth(
+                                                                            10)
+                                                                        .w),
+                                                        child: const Text(
+                                                          ":",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                flex: 20,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(
-                                                        formatCurrency.format(
-                                                          double.parse(subTotalAlatBantuOnSite[index].toString())
+                                                Expanded(
+                                                  flex: 20,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          formatDecimal.format(double.parse(
+                                                                  analisaSingleRAE
+                                                                      .data!
+                                                                      .analisaAlatBantuOnsite![
+                                                                          index]
+                                                                      .qty
+                                                                      .toString())) +
+                                                              " " +
+                                                              analisaSingleRAE
+                                                                  .data!
+                                                                  .analisaAlatBantuOnsite![
+                                                                      index]
+                                                                  .namaSatuan
+                                                                  .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
                                                         ),
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                        textAlign: TextAlign.left,
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                              ],
+                                            ),
+                                            SizedBox(
+                                                height:
+                                                    getProportionateScreenHeight(
+                                                            10)
+                                                        .h),
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  flex: 12,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: const <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          "Unit Price",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 0,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    getProportionateScreenWidth(
+                                                                            10)
+                                                                        .w),
+                                                        child: const Text(
+                                                          ":",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 20,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          formatCurrency.format(
+                                                              double.parse(
+                                                                  unitPriceAlatBantuOnSite
+                                                                      .toString())),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                                height:
+                                                    getProportionateScreenHeight(
+                                                            10)
+                                                        .h),
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  flex: 12,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: const <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          "Konstanta",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 0,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    getProportionateScreenWidth(
+                                                                            10)
+                                                                        .w),
+                                                        child: const Text(
+                                                          ":",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 20,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          formatDecimal.format(
+                                                              double.parse(
+                                                                  analisaSingleRAE
+                                                                      .data!
+                                                                      .analisaAlatBantuOnsite![
+                                                                          index]
+                                                                      .konstanta
+                                                                      .toString())),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                                height:
+                                                    getProportionateScreenHeight(
+                                                            10)
+                                                        .h),
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  flex: 12,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: const <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          "Sub Total",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 0,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    getProportionateScreenWidth(
+                                                                            10)
+                                                                        .w),
+                                                        child: const Text(
+                                                          ":",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 20,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 0),
+                                                        child: Text(
+                                                          formatCurrency.format(
+                                                              double.parse(
+                                                                  subTotalPrice[
+                                                                          index]
+                                                                      .toString())),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                          ),
-                          const SizedBox(height: 10),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: CardItemExpansionDetail(
-                              child: ListTile(
-                                title: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 4,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: const <Widget>[
-                                              Padding(
-                                                padding: EdgeInsets.only(left: 0),
-                                                child: Text("Grand Total",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14
-                                                  ),
-                                                  textAlign: TextAlign.left,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(right: 0),
-                                                child: Text(
-                                                  formatCurrency.format(
-                                                      double.parse(grandTotalAlatBantuOnSite
-                                                    )
-                                                  ),
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14
-                                                  ),
-                                                  textAlign: TextAlign.right,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                );
+                              },
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                        ]
-                      ),
-                      const SizedBox(height: 30),
+                            // SizedBox(height: getProportionateScreenHeight(10).h),
+                            // Padding(
+                            //   padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            //   child: CardItemExpansionDetail(
+                            //     child: ListTile(
+                            //       title: Column(
+                            //         children: <Widget>[
+                            //           Row(
+                            //             children: <Widget>[
+                            //               Expanded(
+                            //                 flex: 4,
+                            //                 child: Column(
+                            //                   crossAxisAlignment: CrossAxisAlignment.start,
+                            //                   mainAxisAlignment: MainAxisAlignment.start,
+                            //                   children: <Widget>[
+                            //                     Padding(
+                            //                       padding: const EdgeInsets.only(left: 0),
+                            //                       child: Text("Grand Total",
+                            //                         style: TextStyle(
+                            //                           color: Colors.black,
+                            //                           fontWeight: FontWeight.bold,
+                            //                           fontSize: 14.sp
+                            //                         ),
+                            //                         textAlign: TextAlign.left,
+                            //                       ),
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //               ),
+                            //               Expanded(
+                            //                 flex: 6,
+                            //                 child: Column(
+                            //                   crossAxisAlignment: CrossAxisAlignment.end,
+                            //                   mainAxisAlignment: MainAxisAlignment.end,
+                            //                   children: <Widget>[
+                            //                     Padding(
+                            //                       padding: const EdgeInsets.only(right: 0),
+                            //                       child: Text(
+                            //                         formatCurrency.format(
+                            //                             double.parse(grandTotalAlatBantuOnSite
+                            //                           )
+                            //                         ),
+                            //                         style: TextStyle(
+                            //                           color: Colors.black,
+                            //                           fontWeight: FontWeight.bold,
+                            //                           fontSize: 14.sp
+                            //                         ),
+                            //                         textAlign: TextAlign.right,
+                            //                       ),
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            SizedBox(
+                                height: getProportionateScreenHeight(10).h),
+                          ]),
+                      SizedBox(height: getProportionateScreenHeight(30).h),
                     ],
                   );
                 } else {

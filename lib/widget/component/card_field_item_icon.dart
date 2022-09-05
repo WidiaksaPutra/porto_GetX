@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardFieldItemIcon extends StatelessWidget {
   final String label;
@@ -27,9 +29,9 @@ class CardFieldItemIcon extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 0),
                 child: Text(label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14
+                    fontSize: 14.sp
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -42,13 +44,13 @@ class CardFieldItemIcon extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const <Widget>[
+            children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5).w),
                 child: Text(":",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14
+                    fontSize: 14.sp
                   ),
                 ),
               ),
@@ -62,17 +64,17 @@ class CardFieldItemIcon extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(left: 5),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
                 child: (status != null)
                 ? SvgPicture.asset(
                   "assets/icons/verify_icon.svg",
-                  height: 25,
-                  width: 25,
+                  height: getProportionateScreenHeight(25).h,
+                  width: getProportionateScreenWidth(25).w,
                 )
                 : SvgPicture.asset(
                   "assets/icons/reject_icon.svg",
-                  height: 25,
-                  width: 25,
+                  height: getProportionateScreenHeight(25).h,
+                  width: getProportionateScreenWidth(25).w,
                 )
               ),
             ],

@@ -1,9 +1,8 @@
-import 'dart:convert';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_seleksi_vendor/detail_approval_seleksi_vendor_view.dart';
-import 'package:mgp_mobile_app/model/hrdu/seleksi_vendor/seleksi_vendor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_seleksi_vendor.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_date.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_status.dart';
@@ -12,7 +11,7 @@ import 'package:mgp_mobile_app/widget/component/card_list.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/component/search_field.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -21,10 +20,8 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
-  late String? tokens;
-  late List<Datum> dataList = [];
-  late Future<List<Datum>> _future;
+class _BodyState extends State<Body> with SeleksiVendorClass{
+  late Future<List<dynamic>> _future;
   final ScrollController _scrollController = ScrollController();
   bool loading = false;
   int pages = 1;
@@ -36,33 +33,6 @@ class _BodyState extends State<Body> {
       pages = 1;
     });
     _future = fetchApprovalSeleksiVendor(page: pages);
-  }
-
-  Future<List<Datum>> fetchApprovalSeleksiVendor({required int page}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    int? perPage = 10;
-    Map<String, String>? queryParams = {
-      'page' : page.toString(),
-      'per_page' : perPage.toString(),
-    };
-    String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_seleksi_vendor/list/?' + queryString;
-    final response =
-      await MGPAPI.client.get(Uri.parse(requestUrl),
-      headers: {
-        'Authorization': 'Bearer $tokens',
-      }
-    );
-    if (response.statusCode == 200) {
-      final parsed = json.decode(response.body);
-      Pvspr seleksiVendorData = Pvspr.fromJson(parsed);
-      dataList.addAll(seleksiVendorData.data);
-      pages++;
-      return dataList;
-    } else {
-      throw Exception('Failed to load data');
-    }
   }
 
   @override
@@ -97,18 +67,18 @@ class _BodyState extends State<Body> {
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        const EdgeInsets.symmetric(horizontal: 20),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 15),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: SearchField(),
+            SizedBox(height: getProportionateScreenHeight(15).h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+              child: const SearchField(),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: getProportionateScreenHeight(5).h),
             FutureBuilder(
               future: _future,
-              builder: (BuildContext context, AsyncSnapshot<List<Datum>> snapshot){
+              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot){
                 if (snapshot.hasData) {
                   var dataSeleksiVendor = snapshot.data;
                   if (dataSeleksiVendor!.isNotEmpty) {
@@ -127,7 +97,7 @@ class _BodyState extends State<Body> {
                                   itemBuilder: (context, index){
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: HighlightItemName(
                                           child: Text(
                                             dataSeleksiVendor[index].noSeleksiVendor.toString(),
@@ -136,7 +106,7 @@ class _BodyState extends State<Body> {
                                           ),
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,42 +117,42 @@ class _BodyState extends State<Body> {
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Jabatan",
                                                 contentData: dataSeleksiVendor[index].namaJabatanPengaju,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemDate(
                                                 label: "Tgl. Seleksi Vendor",
                                                 date: dataSeleksiVendor[index].tglSeleksiVendor,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Vendor",
                                                 contentData: dataSeleksiVendor[index].namaVendor,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Keperluan",
                                                 contentData: dataSeleksiVendor[index].keperluan,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemDate(
                                                 label: "Tgl. Pemakaian",
                                                 date: dataSeleksiVendor[index].tglPemakaian,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemStatus(
                                                 contentData: dataSeleksiVendor[index].statusApproval,
                                               ),
@@ -207,7 +177,7 @@ class _BodyState extends State<Body> {
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: 80,
+                                    height: getProportionateScreenHeight(80).h,
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -236,15 +206,15 @@ class _BodyState extends State<Body> {
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                               Skeleton(
                                 width: double.infinity,
-                                height: 330,
+                                height: getProportionateScreenHeight(330).h,
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                             ],
                           ),
                         );

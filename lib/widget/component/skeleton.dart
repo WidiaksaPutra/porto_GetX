@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Skeleton extends StatelessWidget {
@@ -13,11 +15,11 @@ class Skeleton extends StatelessWidget {
       child: Container(
         height: height,
         width: width,
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(horizontal:getProportionateScreenWidth(20).w, vertical:getProportionateScreenHeight(20).h),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.3),
+          color: Colors.black.withOpacity(0.3.r),
           borderRadius:
-            BorderRadius.circular(15
+            BorderRadius.circular(15.r
           )
         ),
       ),
@@ -35,10 +37,10 @@ class CircleSkeleton extends StatelessWidget {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[600]!,
       child: Container(
-        height: size,
-        width: size,
+        height: size?.sp,
+        width: size?.sp,
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.3),
+          color: Colors.black.withOpacity(0.3.r),
           shape: BoxShape.circle,
         ),
       ),

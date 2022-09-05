@@ -1,9 +1,12 @@
 import 'dart:async';
+// import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/main_page/main_page.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget{
@@ -54,17 +57,17 @@ class _SplashScreenState extends State<SplashScreen> {
               children: <Widget> [
                 Image.asset(
                   "assets/images/LogoMGP.png",
-                  height: 300.0,
-                  width: 300.0,
+                  height: getProportionateScreenHeight(300.0).h,
+                  width: getProportionateScreenWidth(300.0).w,
                 ),
-                const Text("Welcome!",
+                Text("Welcome!",
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 30.sp,
                     fontWeight: FontWeight.bold,
                     color: kPrimaryColor
                   ),
                 ),
-                const SizedBox(height: 50),
+                SizedBox(height: getProportionateScreenHeight(50).h),
                 const CircularProgressIndicator(
                   color: kSecondaryColor,
                 ),

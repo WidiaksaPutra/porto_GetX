@@ -1,6 +1,8 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 ThemeData theme() {
   return ThemeData(
@@ -15,13 +17,13 @@ ThemeData theme() {
 
 InputDecorationTheme inputDecorationTheme() {
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(15),
+    borderRadius: BorderRadius.circular(15.r),
     borderSide: const BorderSide(color: kTextColor),
     gapPadding: 10,
   );
   return InputDecorationTheme(
     floatingLabelBehavior: FloatingLabelBehavior.auto,
-    contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+    contentPadding: EdgeInsets.fromLTRB(getProportionateScreenWidth(20).w, getProportionateScreenHeight(20).h, getProportionateScreenWidth(20).w, getProportionateScreenHeight(20).h),
     enabledBorder: outlineInputBorder,
     focusedBorder: outlineInputBorder,
     border: outlineInputBorder,
@@ -41,17 +43,17 @@ AppBarTheme appBarTheme() {
     elevation: 0,
     iconTheme: const IconThemeData(color: Colors.white),
     systemOverlayStyle: SystemUiOverlayStyle.light,
-    toolbarTextStyle: const TextTheme(
+    toolbarTextStyle: TextTheme(
       headline6: TextStyle(
         color: Colors.white,
-        fontSize: 18,
+        fontSize: 18.sp,
         fontWeight: FontWeight.bold,
         fontFamily: "Poppins"
       ),
-    ).bodyText2, titleTextStyle: const TextTheme(
+    ).bodyText2, titleTextStyle: TextTheme(
       headline6: TextStyle(
         color: Colors.white,
-        fontSize: 18,
+        fontSize: 18.sp,
         fontWeight: FontWeight.bold,
         fontFamily: "Poppins"
       ),

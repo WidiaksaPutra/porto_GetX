@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_baku.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_fin.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_gambar.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_penunjang.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_umum.dart';
+import 'package:mgp_mobile_app/modul/hrdu/detail_approval_peluang/analisa_single_peluang/body_file.dart';
+import 'package:mgp_mobile_app/modul/hrdu/detail_approval_peluang/analisa_single_peluang/body_gambar.dart';
+import 'package:mgp_mobile_app/modul/hrdu/detail_approval_peluang/analisa_single_peluang/build_informasi_umum_copy.dart';
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_single_rae/body_file.dart';
-import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_single_rae/body_gambar.dart';
-import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_single_rae/body_informasi_umum.dart';
-import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class DetailAnalisaSinglePeluangView extends StatefulWidget {
-  const DetailAnalisaSinglePeluangView({Key? key, required this.idRaeDetail}) : super(key: key);
-  final String idRaeDetail;
+  const DetailAnalisaSinglePeluangView({Key? key, required this.idBarangJadi}) : super(key: key);
+  final String idBarangJadi;
   @override
   _DetailAnalisaSinglePeluangViewState createState() => _DetailAnalisaSinglePeluangViewState();
 }
@@ -17,11 +23,22 @@ class DetailAnalisaSinglePeluangView extends StatefulWidget {
 class _DetailAnalisaSinglePeluangViewState extends State<DetailAnalisaSinglePeluangView> with SingleTickerProviderStateMixin {
   late TabController controller;
   String title = "Approval";
-  late Future<AnalisaSingleRegrae> future;
+  late Future<AnalisaSingleRegplgUmum> futureUmum;
+  late Future<AnalisaSingleRegplgBaku> futureBuku;
+  late Future<AnalisaSingleRegplgPenunjang> futurePenunjang;
+  late Future<AnalisaSingleRegplgFinishing> futureFinishing;
+
+  late Future<AnalisaSingleRegplgGambar> futureGambar_File;
 
   @override
   void initState() {
-    future = MGPAPI().fetchAnalisaSingleRAE(idRaeDetail: widget.idRaeDetail);
+    futureUmum = MGPAPI().fetchAnalisaSinglePeluangUmum(idBarangJadi: widget.idBarangJadi);
+    futureBuku = MGPAPI().fetchAnalisaSinglePeluangBaku(idBarangJadi: widget.idBarangJadi);
+    futurePenunjang = MGPAPI().fetchAnalisaSinglePeluangPenunjang(idBarangJadi: widget.idBarangJadi);
+    futureFinishing = MGPAPI().fetchAnalisaSinglePeluangFinishing(idBarangJadi: widget.idBarangJadi);
+
+    futureGambar_File = MGPAPI().fetchAnalisaSinglePeluangGambar(idBarangJadi: widget.idBarangJadi);
+
     super.initState();
     controller = TabController(length: 3, vsync: this);
     controller.addListener(() { 
@@ -49,11 +66,11 @@ class _DetailAnalisaSinglePeluangViewState extends State<DetailAnalisaSinglePelu
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Analisa Barang Jadi RAE",
+          title: Text("Analisa Barang Jadi Peluang",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 18
+              fontSize: 18.sp
             ),
           ),
           flexibleSpace: const AppBarThemeColor(),
@@ -63,22 +80,22 @@ class _DetailAnalisaSinglePeluangViewState extends State<DetailAnalisaSinglePelu
             Material(
               elevation: 2,
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: 1,
-                      color: Color.fromRGBO(0, 0, 0, 0.08)
+                      width: getProportionateScreenWidth(1).w,
+                      color: const Color.fromRGBO(0, 0, 0, 0.08)
                     )
                   )
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: 40,
+                  height: getProportionateScreenHeight(40).h,
                   child: TabBar(
                     controller: controller,
                     indicatorColor: kPrimaryColor,
-                    labelStyle: const TextStyle(
-                      fontSize: 14,
+                    labelStyle: TextStyle(
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins"
                     ),
@@ -93,14 +110,15 @@ class _DetailAnalisaSinglePeluangViewState extends State<DetailAnalisaSinglePelu
                 ),
               ),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: getProportionateScreenHeight(5).h),
             Expanded(
               child: TabBarView(
                 controller: controller,
                 children: <Widget>[
-                  BodyInformasi(futureAnalisaSingleRae: future),
-                  BodyGambar(futureAnalisaSingleRae: future),
-                  BodyFile(futureAnalisaSingleRae: future),
+                  BodyInformasi(idBarangJadi: widget.idBarangJadi, futureAnalisaSinglePeluangBaku: futureBuku, fetchAnalisaSinglePeluangPenunjang: futurePenunjang, fetchAnalisaSinglePeluangFinishing: futureFinishing),
+                  // BodyInformasi(futureAnalisaSinglePeluangUmum: futureUmum, futureAnalisaSinglePeluangBaku: futureBuku, fetchAnalisaSinglePeluangPenunjang: futurePenunjang, fetchAnalisaSinglePeluangFinishing: futureFinishing),
+                  BodyGambar(futureAnalisaSingleGambar: futureGambar_File),
+                  BodyFile(futureAnalisaSingleFile: futureGambar_File),
                 ],
               ),
             ),

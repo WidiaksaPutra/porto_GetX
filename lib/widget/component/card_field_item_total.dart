@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardFieldItemTotal extends StatefulWidget {
   final String label;
@@ -42,12 +44,12 @@ class _CardFieldItemTotalState extends State<CardFieldItemTotal> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(left: 0.0),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
                 child: Text(widget.label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 14
+                    fontSize: 14.sp
                   ),
                   textAlign: TextAlign.left,
                 )
@@ -68,10 +70,10 @@ class _CardFieldItemTotalState extends State<CardFieldItemTotal> {
                       double.parse(widget.total
                     )
                   ),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 14
+                    fontSize: 14.sp
                   ),
                   textAlign: TextAlign.right,
                 ),

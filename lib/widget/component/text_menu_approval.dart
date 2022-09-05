@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class TextMenuApproval extends StatelessWidget {
   final String label;
@@ -10,12 +12,12 @@ class TextMenuApproval extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: const Offset(-15, 0),
+      offset: Offset(getProportionateScreenWidth(-15).w, getProportionateScreenHeight(0).h),
       child: Text(label,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.w800,
-          fontSize: 14 
+          fontSize: 14.sp 
         ),
         textAlign: TextAlign.left,
       ),

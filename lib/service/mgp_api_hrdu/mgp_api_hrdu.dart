@@ -3,6 +3,11 @@ import 'package:mgp_mobile_app/model/hrdu/analisa_barang_jadi/detail_analisa_bar
 import 'package:mgp_mobile_app/model/hrdu/delivery_order/detail_delivery_order_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/faktur_penjualan/detail_faktur_penjualan_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/kegiatan/detail_kegiatan_model.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_baku.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_fin.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_gambar.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_penunjang.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_umum.dart';
 import 'package:mgp_mobile_app/model/hrdu/rap/analisa_single_rap.dart';
 import 'package:mgp_mobile_app/model/hrdu/sales_order_spk/detail_sales_order_spk_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/sales_order_spk/list_kelompok_prelim_sales_order_spk.dart';
@@ -33,7 +38,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MGPAPI {
   static var client = http.Client();
-  static var baseURL = "https://api.mgp.bhawanaerp.com/v1/hrdu";
+  static var baseURL = "https://devapi.mgp.bhawanaerp.com/v1/hrdu";
+  // static var baseURL = "https://api.mgp.bhawanaerp.com/v1/hrdu";
   late String? tokens;
   var status = "";
 
@@ -248,6 +254,7 @@ class MGPAPI {
     await Future.delayed(const Duration(milliseconds: 500));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
+    print(noFaktur);
     Map<String, String>? queryParams = {
       'no_faktur' : noFaktur,
     };
@@ -259,10 +266,11 @@ class MGPAPI {
         'Authorization': 'Bearer $tokens',
       }
     );
-    
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body);
       DetailRegfpnj detailFakturPenjualanData = DetailRegfpnj.fromJson(parsed);
+      print(detailFakturPenjualanData);
       return detailFakturPenjualanData;
     } else {
       throw Exception('Failed to load album');
@@ -628,12 +636,13 @@ class MGPAPI {
     }
   }
   // Detail Sales Order SPK
-  Future<DetailRegsospk> fetchApprovalDetailSalesOrderSPK({required String noSalesOrderSPK}) async {
+  Future<DetailRegsospk> fetchApprovalDetailSalesOrderSPK({required String noSalesOrderSpk, required String idSalesOrderSpk}) async {
     await Future.delayed(const Duration(milliseconds: 500));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     Map<String, String>? queryParams = {
-      'no_sales_order_spk' : noSalesOrderSPK,
+      'no_sales_order_spk' : noSalesOrderSpk,
+      'id_sales_order_spk' : idSalesOrderSpk,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
     var requestUrl = baseURL + '/approval_sales_order_spk/detail?' + queryString;
@@ -882,6 +891,133 @@ class MGPAPI {
     } else {
     }
   }
+
+  Future<AnalisaSingleRegplgGambar> fetchAnalisaSinglePeluangGambar({required String idBarangJadi}) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    tokens = prefs.getString("token")!;
+    Map<String, String>? queryParams = {
+      'id_barang_jadi' : idBarangJadi,
+      'tipe' : 'gambar',
+    };
+    String? queryString = Uri(queryParameters: queryParams).query;
+    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    final response = 
+      await client.get(Uri.parse(requestUrl),
+      headers: {
+        'Authorization': 'Bearer $tokens',
+      }
+    );
+    if (response.statusCode == 200) {
+      final parsed = json.decode(response.body);
+      AnalisaSingleRegplgGambar analisaSingleRegplgGambar = AnalisaSingleRegplgGambar.fromJson(parsed);
+      return analisaSingleRegplgGambar;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<AnalisaSingleRegplgUmum> fetchAnalisaSinglePeluangUmum({required String idBarangJadi}) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    tokens = prefs.getString("token")!;
+    Map<String, String>? queryParams = {
+      'id_barang_jadi' : idBarangJadi,
+      'tipe' : 'umum',
+    };
+    String? queryString = Uri(queryParameters: queryParams).query;
+    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    final response = 
+      await client.get(Uri.parse(requestUrl),
+      headers: {
+        'Authorization': 'Bearer $tokens',
+      }
+    );
+    if (response.statusCode == 200) {
+      final parsed = json.decode(response.body);
+      AnalisaSingleRegplgUmum analisaSingleRegplgUmum = AnalisaSingleRegplgUmum.fromJson(parsed);
+      return analisaSingleRegplgUmum;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<AnalisaSingleRegplgBaku> fetchAnalisaSinglePeluangBaku({required String idBarangJadi}) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    tokens = prefs.getString("token")!;
+    Map<String, String>? queryParams = {
+      'id_barang_jadi' : idBarangJadi,
+      'tipe' : 'baku',
+    };
+    String? queryString = Uri(queryParameters: queryParams).query;
+    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    final response = 
+      await client.get(Uri.parse(requestUrl),
+      headers: {
+        'Authorization': 'Bearer $tokens',
+      }
+    );
+    if (response.statusCode == 200) {
+      final parsed = json.decode(response.body);
+      AnalisaSingleRegplgBaku analisaSingleRegplgBaku = AnalisaSingleRegplgBaku.fromJson(parsed);
+      return analisaSingleRegplgBaku;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<AnalisaSingleRegplgPenunjang> fetchAnalisaSinglePeluangPenunjang({required String idBarangJadi}) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    tokens = prefs.getString("token")!;
+    Map<String, String>? queryParams = {
+      'id_barang_jadi' : idBarangJadi,
+      'tipe' : 'penunjang',
+    };
+    String? queryString = Uri(queryParameters: queryParams).query;
+    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    final response = 
+      await client.get(Uri.parse(requestUrl),
+      headers: {
+        'Authorization': 'Bearer $tokens',
+      }
+    );
+    if (response.statusCode == 200) {
+      final parsed = json.decode(response.body);
+      AnalisaSingleRegplgPenunjang analisaSingleRegplgPenunjang = AnalisaSingleRegplgPenunjang.fromJson(parsed);
+      return analisaSingleRegplgPenunjang;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+  
+  Future<AnalisaSingleRegplgFinishing> fetchAnalisaSinglePeluangFinishing({required String idBarangJadi}) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    tokens = prefs.getString("token")!;
+    Map<String, String>? queryParams = {
+      'id_barang_jadi' : idBarangJadi,
+      'tipe' : 'fin',
+    };
+    String? queryString = Uri(queryParameters: queryParams).query;
+    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    final response = 
+      await client.get(Uri.parse(requestUrl),
+      headers: {
+        'Authorization': 'Bearer $tokens',
+      }
+    );
+    if (response.statusCode == 200) {
+      final parsed = json.decode(response.body);
+      AnalisaSingleRegplgFinishing analisaSingleRegplgFinishing = AnalisaSingleRegplgFinishing.fromJson(parsed);
+      return analisaSingleRegplgFinishing;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+  
+
   // Analisa Single Rencana Anggaran Estimasi
   Future<AnalisaSingleRegrae> fetchAnalisaSingleRAE({required String idRaeDetail}) async {
     await Future.delayed(const Duration(milliseconds: 500));
@@ -1029,8 +1165,8 @@ class MGPAPI {
     );
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body);
-      AnalisaSingleRegrab analisaSingleRAE = AnalisaSingleRegrab.fromJson(parsed);
-      return analisaSingleRAE;
+      AnalisaSingleRegrab analisaSingleRAB = AnalisaSingleRegrab.fromJson(parsed);
+      return analisaSingleRAB;
     } else {
       throw Exception('Failed to load album');
     }

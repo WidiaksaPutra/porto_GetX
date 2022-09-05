@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/sales_order/detail_sales_order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -20,8 +21,9 @@ import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/widget/component/field_catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:get/get.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -84,6 +86,7 @@ class _BodyState extends State<Body> {
             );
             if (_postProses == "berhasil") {
               Get.offAll(const SalesOrderView());
+              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
             }
           },
         );
@@ -103,7 +106,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -128,8 +131,8 @@ class _BodyState extends State<Body> {
                     double valueDiskon = double.parse(snapshot.data!.data!.detail!.diskon.toString());
                     num totalHarga = 0;
                     for(var i = 0; i< snapshot.data!.data!.detail!.detail!.length; i++){
-                      num subTotal = (double.parse(snapshot.data!.data!.detail!.detail![i]!.hargaSatuanJual.toString())) * double.parse(snapshot.data!.data!.detail!.detail![i]!.qtyItem.toString());
-                      totalHarga = totalHarga + (double.parse(snapshot.data!.data!.detail!.detail![i]!.hargaSatuanJual.toString())) * double.parse(snapshot.data!.data!.detail!.detail![i]!.qtyItem.toString());
+                      num subTotal = (double.parse(snapshot.data!.data!.detail!.detail![i].hargaSatuanJual.toString())) * double.parse(snapshot.data!.data!.detail!.detail![i].qtyItem.toString());
+                      totalHarga = totalHarga + (double.parse(snapshot.data!.data!.detail!.detail![i].hargaSatuanJual.toString())) * double.parse(snapshot.data!.data!.detail!.detail![i].qtyItem.toString());
                       subTotalHarga.add(subTotal.toString());
                     }
                     grandTotalHarga = totalHarga.toString();
@@ -145,7 +148,7 @@ class _BodyState extends State<Body> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 5),
+                        SizedBox(height: getProportionateScreenHeight(5).h),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(
@@ -156,42 +159,49 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "No. Sales Order",
                                   contentData: detailSalesOrder.data!.detail!.noSalesOrder,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Customer",
                                   contentData: detailSalesOrder.data!.detail!.namaCustomer,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Sales",
                                   contentData: detailSalesOrder.data!.detail!.namaSales,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Alamat Pengiriman",
                                   contentData: detailSalesOrder.data!.detail!.alamatPengiriman,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemDate(
                                   label: "Tgl. Batas Waktu",
                                   date: detailSalesOrder.data!.detail!.batasWaktu,
                                   flexLeftRow: 13,
                                   flexRightRow: 20,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                CardFieldItemText(
+                                  label: "Proyek",
+                                  contentData: detailSalesOrder.data!.detail!.namaProyek,
+                                  flexLeftRow: 13,
+                                  flexRightRow: 20,
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(5).h),
                                 CardFieldItemText(
                                   label: "Catatan Sales Order",
                                   contentData: detailSalesOrder.data!.detail!.catatanSo,
@@ -206,56 +216,56 @@ class _BodyState extends State<Body> {
                           label: "Item Sales Order",
                           children: <Widget> [
                             ListView.separated(
-                              separatorBuilder: (context, index) => const SizedBox(
-                                height: 10,
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: getProportionateScreenHeight(10).h,
                               ),
                               itemCount: detailSalesOrder.data!.detail!.detail!.length,
                               itemBuilder: (BuildContext context, index){
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                   child: CardItemExpansionDetail(
                                     child: ListTile(
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                       title: HighlightItemName(
                                         child: Text(
-                                          detailSalesOrder.data!.detail!.detail![index]!.kodeBarang.toString(),
-                                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                          detailSalesOrder.data!.detail!.detail![index].kodeBarang.toString(),
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       subtitle: Padding(
-                                        padding: const EdgeInsets.only(top: 15),
+                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             CardFieldItemText(
                                               label: "Nama Barang",
-                                              contentData: detailSalesOrder.data!.detail!.detail![index]!.namaBarang,
+                                              contentData: detailSalesOrder.data!.detail!.detail![index].namaBarang,
                                               flexLeftRow: 13,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemText(
                                               label: "Nama Gudang",
-                                              contentData: detailSalesOrder.data!.detail!.detail![index]!.namaGudang,
+                                              contentData: detailSalesOrder.data!.detail!.detail![index].namaGudang,
                                               flexLeftRow: 13,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemRightRow(
                                               label: "Qty",
                                               rightRow: <Widget> [
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 0),
-                                                  child: (detailSalesOrder.data!.detail!.detail![index]!.qtyItem != null)
+                                                  child: (detailSalesOrder.data!.detail!.detail![index].qtyItem != null)
                                                   ? Text(
-                                                    formatDecimal.format(double.parse(detailSalesOrder.data!.detail!.detail![index]!.qtyItem.toString())).toString()
+                                                    formatDecimal.format(double.parse(detailSalesOrder.data!.detail!.detail![index].qtyItem.toString())).toString()
                                                     +' '+
-                                                    detailSalesOrder.data!.detail!.detail![index]!.namaSatuan.toString(),
-                                                    style: const TextStyle(
+                                                    detailSalesOrder.data!.detail!.detail![index].namaSatuan.toString(),
+                                                    style: TextStyle(
                                                       color: Colors.black,
-                                                      fontSize: 14
+                                                      fontSize: 14.sp
                                                     ),
                                                     textAlign: TextAlign.left,
                                                   )
@@ -270,14 +280,14 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 13,
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemFormatCurrency(
                                               label: "Harga Satuan",
-                                              contentData: detailSalesOrder.data!.detail!.detail![index]!.hargaSatuanJual,
+                                              contentData: detailSalesOrder.data!.detail!.detail![index].hargaSatuanJual,
                                               flexLeftRow: 13, 
                                               flexRightRow: 20,
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             CardFieldItemFormatCurrency(
                                               label: "Sub Total",
                                               contentData: subTotalHarga[index],
@@ -294,9 +304,9 @@ class _BodyState extends State<Body> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: getProportionateScreenHeight(10).h),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                               child: CardItemExpansionDetail(
                                 child: ListTile(
                                   title: Column(
@@ -307,7 +317,7 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemPercent(
                                         label: "Diskon",
                                         labelValue: detailSalesOrder.data!.detail!.diskon,
@@ -315,14 +325,14 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total Setelah Diskon",
                                         total: totalSetelahDiskon,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemPercent(
                                         label: "PPN",
                                         labelValue: detailSalesOrder.data!.detail!.ppn,
@@ -330,7 +340,7 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      const SizedBox(height: 5),
+                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total Setelah PPN",
                                         total: totalSetelahPpn,
@@ -342,38 +352,38 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10)
+                            SizedBox(height: getProportionateScreenHeight(10).h)
                           ],
                         ),
-                        if (detailSalesOrder.data!.approval!.isNotEmpty)...[
+                        if (detailSalesOrder.data!.approval.isNotEmpty)...[
                           CardExpansionDetail(
                             label: "Catatan Approval",
                             children: <Widget> [
                               ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 10,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: getProportionateScreenHeight(10).h,
                                 ),
-                                itemCount: detailSalesOrder.data!.approval!.length,
+                                itemCount: detailSalesOrder.data!.approval.length,
                                 itemBuilder: (context, index){
                                   return FieldCatatanApproval(
                                     index: index,
-                                    statusApproval: detailSalesOrder.data!.approval![index]!.statusApproval,
-                                    namaKaryawan: detailSalesOrder.data!.approval![index]!.namaKaryawan,
-                                    catatanApproval: detailSalesOrder.data!.approval![index]!.catatan,
-                                    tglApproval: detailSalesOrder.data!.approval![index]!.tglApproval,
+                                    statusApproval: detailSalesOrder.data!.approval[index].statusApproval,
+                                    namaKaryawan: detailSalesOrder.data!.approval[index].namaKaryawan,
+                                    catatanApproval: detailSalesOrder.data!.approval[index].catatan,
+                                    tglApproval: detailSalesOrder.data!.approval[index].tglApproval,
                                   );
                                 },
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -398,16 +408,16 @@ class _BodyState extends State<Body> {
                         Visibility(
                           visible: catatanError,
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
-                              FormErrors(errors: kCatatanError),
-                              SizedBox(height: 8),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              const FormErrors(errors: kCatatanError),
+                              SizedBox(height: getProportionateScreenHeight(8).h),
                             ],
                           )
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
-                          child: const SizedBox(height: 10)
+                          child: SizedBox(height: getProportionateScreenHeight(10).h)
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
@@ -496,7 +506,7 @@ class _BodyState extends State<Body> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: getProportionateScreenHeight(30).h),
                       ],
                     );
                   } else {

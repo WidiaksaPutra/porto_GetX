@@ -1,18 +1,24 @@
-import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
-import 'package:mgp_mobile_app/model/hrdu/rae/detail_rae_model.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_fin.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:mgp_mobile_app/widget/component/card_expansion_detail.dart';
+import 'package:mgp_mobile_app/widget/component/card_item_expansion_detail.dart';
+import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
-class Body extends StatefulWidget {
-  final Future<AnalisaSingleRegrae> analisaSingleRegrae;
-  const Body({Key? key, required this.analisaSingleRegrae}) : super(key: key);
-
+class BodyFinihing extends StatefulWidget {
+  final Future<AnalisaSingleRegplgFinishing> analisaSingleRegplgFinishing;
+  final String namaFinishing;
+  const BodyFinihing({Key? key, required this.analisaSingleRegplgFinishing, required this.namaFinishing}) : super(key: key);
+ 
   @override
-  _BodyState createState() => _BodyState();
+  _BodyFinishingState createState() => _BodyFinishingState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyFinishingState extends State<BodyFinihing> {
+
   final formatCurrency = NumberFormat.currency(
     locale: 'ID',
     decimalDigits: 0,
@@ -26,23 +32,23 @@ class _BodyState extends State<Body> {
   late String grandTotalPrelim;
   late String grandTotalHargaRAE;
   final List<String> errors = [];
-  late Future<DetailRegrae> futureDetailRegrae;
   late String? tokens;
   bool visibilityPemeriksa = false;
   bool visibilityPengesah = false;
-  late List subTotalHardwood = [];
-  late List subTotalPlywood = [];
+  late List subTotalFactorySupply = [];
+  late List subTotalLabourCost = [];
+  late List subTotalMachineProcess = [];
+  late List subTotalBiayaOverhead = [];
+  late String grandTotalFactorySupply;
+  late String grandTotalLabourCost;
+  late String grandTotalMachineProcess;
+  late String grandTotalBiayaOverhead;
   late List listLuaslHardwood = [];
   late List listLuasPlywood = [];
-  late List listVolumeHardwood = [];
-  late List listVolumePlywood = [];
-  late String totalLuasHardwood;
-  late String totalVolumeHardwood;
-  late String grandTotalHardwood;
-  late String totalLuasPlywood;
-  late String totalVolumePlywood;
-  late String grandTotalPlywood;
-
+  final List<int> indexanalisaFinFnBp = [];
+  final List<int> indexanalisaFinFnSc = [];
+  final List<int> indexanalisaFinFnLc = [];
+  
   @override
   void initState() {
     initializeDateFormatting();
@@ -54,176 +60,90 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
-              future: widget.analisaSingleRegrae,
-              builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegrae> snapshot) {
+              future: widget.analisaSingleRegplgFinishing,
+              builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegplgFinishing>snapshot) {
                 if (snapshot.hasData) {
-                 var analisaSingleRAE = snapshot.data;
-                  num totalHardwood = 0;
-                  num totalPlywood = 0;
-                  num luasHardwood = 0;
-                  num luasPlywood = 0;
-                  num volumeHardwood = 0;
-                  num volumePlywood = 0;
-                  if (analisaSingleRAE!.data!.analisaHardwood!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaHardwood!.length; i++) {
-                      num volume = (double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.tRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.wRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.lRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.qtyRaw.toString()))/1000000;
-                      volumeHardwood = volumeHardwood + volume;
-                      listVolumeHardwood.add(volume);
-                      num subTotal = volume * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.konstanta.toString());
-                      subTotalHardwood.add(subTotal);
-                      totalHardwood = totalHardwood + subTotal;
-                      if (analisaSingleRAE.data!.analisaHardwood![i]!.namaTipeSisi.toString() == "4 Sisi (2TL + 2WL)") {
-                        num tPlusW = (double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.wFinal.toString()));
-                        num luas = (tPlusW * 2 * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.lFinal.toString()))/10000;
-                        listLuaslHardwood.add(luas);
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i]!.namaTipeSisi.toString() == "3 Sisi Opsi 1 (2TL + WL)") {
-                        num tPlusWPlusT = (double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.wFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.tFinal.toString()));
-                        num luas = (tPlusWPlusT * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.lFinal.toString()))/10000;
-                        listLuaslHardwood.add(luas);
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i]!.namaTipeSisi.toString() == "3 Sisi Opsi 2 (TL + 2WL)") {
-                        num tPlusWPlusW = (double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.wFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.wFinal.toString()));
-                        num luas = (tPlusWPlusW * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.lFinal.toString()))/10000;
-                        listLuaslHardwood.add(luas);
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i]!.namaTipeSisi.toString() == "2 Sisi Opsi 1 (TL + WL)") {
-                        num tPlusW = (double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.wFinal.toString()));
-                        num luas = (tPlusW * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.lFinal.toString()))/10000;
-                        listLuaslHardwood.add(luas);
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i]!.namaTipeSisi.toString() == "2 Sisi Opsi 2 (2TL)") {
-                        num tPlusT = (double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.tFinal.toString()));
-                        num luas = (tPlusT * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.lFinal.toString()))/10000;
-                        listLuaslHardwood.add(luas);
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i]!.namaTipeSisi.toString() == "2 Sisi Opsi 3 (2WL)") {
-                        num wPlusW = (double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.wFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.wFinal.toString()));
-                        num luas = (wPlusW * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.lFinal.toString()))/10000;
-                        listLuaslHardwood.add(luas);
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i]!.namaTipeSisi.toString() == "1 Sisi Opsi 1 (TL)") {
-                        num luas = (double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.tFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.lFinal.toString()))/10000;
-                        listLuaslHardwood.add(luas);
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i]!.namaTipeSisi.toString() == "1 Sisi Opsi 2 (WL)") {
-                        num luas = (double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.wFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i]!.lFinal.toString()))/10000;
-                        listLuaslHardwood.add(luas);
-                        luasHardwood = luasHardwood + luas;
-                      } else {
-                        num luas = 0;
-                        listLuaslHardwood.add(luas);
-                        luasHardwood = luasHardwood + luas;
+                 var analisaSinglePeluang = snapshot.data;
+                  num totalFactorySupply = 0;
+                  num totalLabourCost = 0;
+                  num totalMachineProcess = 0;
+                  num totalBiayaOverhead = 0; 
+                  indexanalisaFinFnBp.clear();
+                  indexanalisaFinFnSc.clear();
+                  indexanalisaFinFnLc.clear();
+
+                  if (analisaSinglePeluang!.data!.analisaFinFnBp!.isNotEmpty) {//analisa_fin_fn_bp
+                    for (var i = 0; i < analisaSinglePeluang.data!.analisaFinFnBp!.length; i++) {
+                      if(widget.namaFinishing.toString().contains(analisaSinglePeluang.data!.analisaFinFnBp![i].namaFinishingBarangJadi.toString())){
+                        indexanalisaFinFnBp.add(i);
+                        num subTotal = double.parse(analisaSinglePeluang.data!.analisaFinFnBp![i].qty.toString()) * double.parse(analisaSinglePeluang.data!.analisaFinFnBp![i].hargaSatuan.toString()) * double.parse(analisaSinglePeluang.data!.analisaFinFnBp![i].koefisien.toString());
+                        subTotalFactorySupply.add(subTotal);
+                        totalFactorySupply = totalFactorySupply + subTotal.round();
                       }
                     }
                   }
-                  if (analisaSingleRAE.data!.analisaPlywood!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaPlywood!.length; i++) {
-                      num volume = (double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.tRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.wRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.lRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString()))/1000000;
-                      volumePlywood = volumePlywood + volume;
-                      listVolumePlywood.add(volume);
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.konstanta.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString());
-                      subTotalPlywood.add(subTotal);
-                      totalPlywood = totalPlywood + subTotal;
-                      if (analisaSingleRAE.data!.analisaPlywood![i]!.namaTipeSisi.toString() == "4 Sisi (2TL + 2WL)") {
-                        num tPlusW = (double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.wRaw.toString()));
-                        num luas = (tPlusW * 2 * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.lRaw.toString()))/10000;
-                        listLuasPlywood.add(luas);
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i]!.namaTipeSisi.toString() == "3 Sisi Opsi 1 (2TL + WL)") {
-                        num tPlusWPlusT = (double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.wRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.tRaw.toString()));
-                        num luas = (tPlusWPlusT * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.lRaw.toString()))/10000;
-                        listLuasPlywood.add(luas);
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i]!.namaTipeSisi.toString() == "3 Sisi Opsi 2 (TL + 2WL)") {
-                        num tPlusWPlusW = (double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.wRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.wRaw.toString()));
-                        num luas = (tPlusWPlusW * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.lRaw.toString()))/10000;
-                        listLuasPlywood.add(luas);
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i]!.namaTipeSisi.toString() == "2 Sisi Opsi 1 (TL + WL)") {
-                        num tPlusW = (double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.wRaw.toString()));
-                        num luas = (tPlusW * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.lRaw.toString()))/10000;
-                        listLuasPlywood.add(luas);
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i]!.namaTipeSisi.toString() == "2 Sisi Opsi 2 (2TL)") {
-                        num tPlusT = (double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.tRaw.toString()));
-                        num luas = (tPlusT * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.lRaw.toString()))/10000;
-                        listLuasPlywood.add(luas);
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i]!.namaTipeSisi.toString() == "2 Sisi Opsi 3 (2WL)") {
-                        num wPlusW = (double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.wRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.wRaw.toString()));
-                        num luas = (wPlusW * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.lRaw.toString()))/10000;
-                        listLuasPlywood.add(luas);
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i]!.namaTipeSisi.toString() == "1 Sisi Opsi 1 (TL)") {
-                        num luas = (double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.tRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.lRaw.toString()))/10000;
-                        listLuasPlywood.add(luas);
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i]!.namaTipeSisi.toString() == "1 Sisi Opsi 2 (WL)") {
-                        num luas = (double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.wRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i]!.lRaw.toString()))/10000;
-                        listLuasPlywood.add(luas);
-                        luasPlywood = luasPlywood + luas;
-                      } else {
-                        num luas = 0;
-                        listLuasPlywood.add(luas);
-                        luasPlywood = luasPlywood + luas;
+                  if (analisaSinglePeluang.data!.analisaFinFnSc!.isNotEmpty) {//analisa_fin_fn_sc
+                    for (var i = 0; i < analisaSinglePeluang.data!.analisaFinFnSc!.length; i++) {
+                      if(widget.namaFinishing.toString().contains(analisaSinglePeluang.data!.analisaFinFnSc![i].namaFinishingBarangJadi.toString())){
+                        indexanalisaFinFnSc.add(i);
+                        num subTotal = double.parse(analisaSinglePeluang.data!.analisaFinFnSc![i].qty.toString()) * double.parse(analisaSinglePeluang.data!.analisaFinFnSc![i].hargaSatuan.toString()) * double.parse(analisaSinglePeluang.data!.analisaFinFnSc![i].koefisien.toString());
+                        subTotalLabourCost.add(subTotal);
+                        totalLabourCost = totalLabourCost + subTotal.round();
                       }
                     }
                   }
-                  grandTotalHardwood = totalHardwood.toString();
-                  totalLuasHardwood = luasHardwood.toString();
-                  totalVolumeHardwood = volumeHardwood.toString();
-                  grandTotalPlywood = totalPlywood.toString();
-                  totalLuasPlywood = luasPlywood.toString();
-                  totalVolumePlywood = volumePlywood.toString();
+                  if (analisaSinglePeluang.data!.analisaFinFnLc!.isNotEmpty) {//analisa_fin_fn_lc
+                    for (var i = 0; i < analisaSinglePeluang.data!.analisaFinFnLc!.length; i++) {
+                      if(widget.namaFinishing.toString().contains(analisaSinglePeluang.data!.analisaFinFnLc![i].namaFinishingBarangJadi.toString())){
+                        indexanalisaFinFnLc.add(i);
+                        num subTotal = double.parse(analisaSinglePeluang.data!.analisaFinFnLc![i].qty.toString()) * double.parse(analisaSinglePeluang.data!.analisaFinFnLc![i].hargaSatuan.toString()) * double.parse(analisaSinglePeluang.data!.analisaFinFnLc![i].koefisien.toString());
+                        subTotalMachineProcess.add(subTotal);
+                        totalMachineProcess = totalMachineProcess + subTotal.round();
+                      }
+                    }
+                  }
+
+                  grandTotalFactorySupply = totalFactorySupply.toString();
+                  grandTotalLabourCost = totalLabourCost.toString();
+                  grandTotalMachineProcess = totalMachineProcess.toString();
+                  grandTotalBiayaOverhead = totalBiayaOverhead.toString();
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 10,
-                      ),
                       SizedBox(
-                        width: double.infinity,
-                        child: Card(
-                          elevation: 8.0,
-                          margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
-                          shape: ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(25)
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: ExpansionTile(
-                              title: const Text(
-                                "Hardwood",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14
-                                ),
-                              ),
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    ListView.separated(
-                                      separatorBuilder: (context, index) => const Divider(
-                                        color: Colors.black,
-                                      ),
-                                      itemCount: analisaSingleRAE.data!.analisaHardwood!.length,
-                                      itemBuilder: (context, index){
-                                        return ListTile(
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                          title: Text(
-                                            analisaSingleRAE.data!.analisaHardwood![index]!.deskripsi.toString(),
-                                            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14),
-                                            overflow: TextOverflow.ellipsis,
+                        height: getProportionateScreenHeight(10).h,
+                      ),
+                      CardExpansionDetail(
+                        label: "List Item Bahan Penunjang Finishing",
+                        children: <Widget> [
+                          ListView.separated(
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: getProportionateScreenHeight(10).h,
+                            ),
+                            itemCount: indexanalisaFinFnBp.length,
+                            itemBuilder: (context, index){
+                              return Column(
+                                children: [
+                                  if(analisaSinglePeluang.data!.analisaFinFnBp![indexanalisaFinFnBp[index]].namaFinishingBarangJadi.toString().contains(widget.namaFinishing.toString()))...[
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                      child: CardItemExpansionDetail(
+                                        child: ListTile(
+                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                          title: HighlightItemName(
+                                            child: Text(
+                                              analisaSinglePeluang.data!.analisaFinFnBp![indexanalisaFinFnBp[index]].kodeItemBahan.toString(),
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
                                           subtitle: Padding(
-                                            padding: const EdgeInsets.only(top: 15),
+                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,14 +151,14 @@ class _BodyState extends State<Body> {
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Spesifikasi Kayu",
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text("Item Factory Supply",
                                                               style: TextStyle(
                                                                 color: Colors.black,
                                                               ),
@@ -249,18 +169,35 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(analisaSingleRAE.data!.analisaHardwood![index]!.namaJenisKayu.toString(),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text(analisaSinglePeluang.data!.analisaFinFnBp![indexanalisaFinFnBp[index]].namaItem.toString(),
                                                               style: const TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.right,
+                                                              textAlign: TextAlign.left,
                                                             ),
                                                           ),
                                                         ],
@@ -268,18 +205,18 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Part Kayu",
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text("Qty",
                                                               style: TextStyle(
                                                                 color: Colors.black,
                                                               ),
@@ -290,172 +227,37 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(analisaSingleRAE.data!.analisaHardwood![index]!.namaPartKayu.toString(),
-                                                              style: const TextStyle(
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.right,
                                                             ),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 20,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Tipe Finishing",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: (analisaSingleRAE.data!.analisaHardwood![index]!.namaFinishingBarangJadi != null)
-                                                            ? Text(analisaSingleRAE.data!.analisaHardwood![index]!.namaFinishingBarangJadi.toString(),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            )
-                                                            : const Text("Tanpa Finishing",
-                                                              style: TextStyle(
-                                                                color: Colors.black
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            )
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Tipe Sisi",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(analisaSingleRAE.data!.analisaHardwood![index]!.namaTipeSisi.toString(),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Qty Final",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text(
                                                               formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.qtyFinal.toString()
+                                                                double.parse(analisaSinglePeluang.data!.analisaFinFnBp![indexanalisaFinFnBp[index]].qty.toString()
                                                                 )
-                                                              ),
+                                                              )+" "+
+                                                              analisaSinglePeluang.data!.analisaFinFnBp![indexanalisaFinFnBp[index]].namaSatuan.toString(),
                                                               style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("T x W x L (Final cm)",
-                                                              style: TextStyle(
                                                                 color: Colors.black,
                                                               ),
                                                               textAlign: TextAlign.left,
@@ -464,237 +266,19 @@ class _BodyState extends State<Body> {
                                                         ],
                                                       ),
                                                     ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.tFinal.toString()
-                                                                )
-                                                              )+" x "+
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.wFinal.toString()
-                                                                )
-                                                              )+" x "+
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.lFinal.toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Qty Raw",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.qtyFinal.toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("T x W x L (Raw cm)",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.tRaw.toString()
-                                                                )
-                                                              )+" x "+
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.wRaw.toString()
-                                                                )
-                                                              )+" x "+
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.lRaw.toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Luas (m2)",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(listLuaslHardwood[index].toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Volume (m3)",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(listVolumeHardwood[index].toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text("Unit Price",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -706,21 +290,38 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text(
                                                               formatCurrency.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.unitPrice.toString())
+                                                                double.parse(analisaSinglePeluang.data!.analisaFinFnBp![indexanalisaFinFnBp[index]].kodeItemBahan.toString())
                                                               ),
                                                               style: const TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.right,
+                                                              textAlign: TextAlign.left,
                                                             ),
                                                           ),
                                                         ],
@@ -728,17 +329,17 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text("Konstanta",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -750,22 +351,39 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text(
                                                               formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaHardwood![index]!.konstanta.toString()
+                                                                double.parse(analisaSinglePeluang.data!.analisaFinFnBp![indexanalisaFinFnBp[index]].kodeItemBahan.toString()
                                                                 )
                                                               ),
                                                               style: const TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.right,
+                                                              textAlign: TextAlign.left,
                                                             ),
                                                           ),
                                                         ],
@@ -773,17 +391,17 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text("Sub Total",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -795,21 +413,38 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text(
                                                               formatCurrency.format(
-                                                                double.parse(subTotalHardwood[index].toString())
+                                                                double.parse(subTotalFactorySupply[index].toString())
                                                               ),
                                                               style: const TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.right,
+                                                              textAlign: TextAlign.left,
                                                             ),
                                                           ),
                                                         ],
@@ -820,345 +455,120 @@ class _BodyState extends State<Body> {
                                               ],
                                             ),
                                           ),
-                                        );
-                                      },
-                                      shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                    ),
-                                    const Divider(color: Colors.black),
-                                    Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 10,
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context).size.width / 1.5,
-                                            child: ListTile(
-                                              title: Column(
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          children: const <Widget>[
-                                                            Padding(
-                                                              padding: EdgeInsets.only(left: 0),
-                                                              child: Text("Total Luas",
-                                                                style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.left,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                                          mainAxisAlignment: MainAxisAlignment.end,
-                                                          children: <Widget>[
-                                                            Padding(
-                                                              padding: const EdgeInsets.only(right: 0),
-                                                              child: Text(
-                                                                formatDecimal.format(
-                                                                    double.parse(totalLuasHardwood
-                                                                  )
-                                                                ),
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.right,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
                                         ),
-                                      ],
+                                      ),
                                     ),
+                                  ],
+                                ],
+                              );
+                            },
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                          ),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            child: CardItemExpansionDetail(
+                              child: ListTile(
+                                title: Column(
+                                  children: <Widget>[
                                     Row(
                                       children: <Widget>[
                                         Expanded(
-                                          flex: 10,
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context).size.width / 1.5,
-                                            child: ListTile(
-                                              title: Column(
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          children: const <Widget>[
-                                                            Padding(
-                                                              padding: EdgeInsets.only(left: 0),
-                                                              child: Text("Total Volume",
-                                                                style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.left,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                                          mainAxisAlignment: MainAxisAlignment.end,
-                                                          children: <Widget>[
-                                                            Padding(
-                                                              padding: const EdgeInsets.only(right: 0),
-                                                              child: Text(
-                                                                formatDecimal.format(
-                                                                    double.parse(totalVolumeHardwood
-                                                                  )
-                                                                ),
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.right,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
+                                          flex: 4,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 0),
+                                                child: Text("Grand Total",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14.sp
                                                   ),
-                                                ],
+                                                  textAlign: TextAlign.left,
+                                                ),
                                               ),
-                                            ),
-                                          )
+                                            ],
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
                                         Expanded(
-                                          flex: 10,
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context).size.width / 1.5,
-                                            child: ListTile(
-                                              title: Column(
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          children: const <Widget>[
-                                                            Padding(
-                                                              padding: EdgeInsets.only(left: 0),
-                                                              child: Text("Grand Total",
-                                                                style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.left,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                                          mainAxisAlignment: MainAxisAlignment.end,
-                                                          children: <Widget>[
-                                                            Padding(
-                                                              padding: const EdgeInsets.only(right: 0),
-                                                              child: Text(
-                                                                formatCurrency.format(
-                                                                    double.parse(grandTotalHardwood
-                                                                  )
-                                                                ),
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.right,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
+                                          flex: 6,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 0),
+                                                child: Text(
+                                                  formatCurrency.format(
+                                                      double.parse(grandTotalFactorySupply
+                                                    )
                                                   ),
-                                                ],
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14.sp
+                                                  ),
+                                                  textAlign: TextAlign.right,
+                                                ),
                                               ),
-                                            ),
-                                          )
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
+                        ]
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Card(
-                          elevation: 8.0,
-                          margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
-                          shape: ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(25)
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: ExpansionTile(
-                              title: const Text(
-                                "Plywood",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14
-                                ),
-                              ),
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    ListView.separated(
-                                      separatorBuilder: (context, index) => const Divider(
-                                        color: Colors.black,
-                                      ),
-                                      itemCount: analisaSingleRAE.data!.analisaPlywood!.length,
-                                      itemBuilder: (context, index){
-                                        return ListTile(
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                          title: Text(
-                                            analisaSingleRAE.data!.analisaPlywood![index]!.deskripsi.toString(),
-                                            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14),
-                                            overflow: TextOverflow.ellipsis,
+                      CardExpansionDetail(
+                        label: "List Item Subkon Finishing",
+                        children: <Widget> [
+                          ListView.separated(
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: getProportionateScreenHeight(10).h,
+                            ),
+                            itemCount: indexanalisaFinFnSc.length,
+                            itemBuilder: (context, index){
+                              return Column(
+                                children: [
+                                  if(widget.namaFinishing.toString().contains(analisaSinglePeluang.data!.analisaFinFnSc![indexanalisaFinFnSc[index]].namaFinishingBarangJadi.toString()))...[
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                      child: CardItemExpansionDetail(
+                                        child: ListTile(
+                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                          title: HighlightItemName(
+                                            child: Text(
+                                              analisaSinglePeluang.data!.analisaFinFnSc![indexanalisaFinFnSc[index]].kodeItemBahan.toString(),
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
                                           subtitle: Padding(
-                                            padding: const EdgeInsets.only(top: 15),
+                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                // Row(
-                                                //   children: <Widget>[
-                                                //     Expanded(
-                                                //       flex: 10,
-                                                //       child: Column(
-                                                //         crossAxisAlignment: CrossAxisAlignment.start,
-                                                //         mainAxisAlignment: MainAxisAlignment.start,
-                                                //         children: const <Widget>[
-                                                //           Padding(
-                                                //             padding: EdgeInsets.only(left: 0),
-                                                //             child: Text("Spesifikasi Plywood",
-                                                //               style: TextStyle(
-                                                //                 color: Colors.black,
-                                                //               ),
-                                                //               textAlign: TextAlign.left,
-                                                //             ),
-                                                //           ),
-                                                //         ],
-                                                //       ),
-                                                //     ),
-                                                //     Expanded(
-                                                //       flex: 20,
-                                                //       child: Column(
-                                                //         crossAxisAlignment: CrossAxisAlignment.end,
-                                                //         mainAxisAlignment: MainAxisAlignment.end,
-                                                //         children: <Widget>[
-                                                //           Padding(
-                                                //             padding: const EdgeInsets.only(right: 0),
-                                                //             child: Text(analisaSingleRAE.data!.analisaPlywood![index]!..toString(),
-                                                //               style: const TextStyle(
-                                                //                 color: Colors.black,
-                                                //               ),
-                                                //               textAlign: TextAlign.right,
-                                                //             ),
-                                                //           ),
-                                                //         ],
-                                                //       ),
-                                                //     ),
-                                                //   ],
-                                                // ),
-                                                // const SizedBox(height: 10),
-                                                // Row(
-                                                //   children: <Widget>[
-                                                //     Expanded(
-                                                //       flex: 10,
-                                                //       child: Column(
-                                                //         crossAxisAlignment: CrossAxisAlignment.start,
-                                                //         mainAxisAlignment: MainAxisAlignment.start,
-                                                //         children: const <Widget>[
-                                                //           Padding(
-                                                //             padding: EdgeInsets.only(left: 0),
-                                                //             child: Text("Part Kayu",
-                                                //               style: TextStyle(
-                                                //                 color: Colors.black,
-                                                //               ),
-                                                //               textAlign: TextAlign.left,
-                                                //             ),
-                                                //           ),
-                                                //         ],
-                                                //       ),
-                                                //     ),
-                                                //     Expanded(
-                                                //       flex: 20,
-                                                //       child: Column(
-                                                //         crossAxisAlignment: CrossAxisAlignment.end,
-                                                //         mainAxisAlignment: MainAxisAlignment.end,
-                                                //         children: <Widget>[
-                                                //           Padding(
-                                                //             padding: const EdgeInsets.only(right: 0),
-                                                //             child: Text(analisaSingleRAE.data!.analisaPlywood![index]!.namaPartKayu.toString(),
-                                                //               style: const TextStyle(
-                                                //                 color: Colors.black,
-                                                //               ),
-                                                //               textAlign: TextAlign.right,
-                                                //             ),
-                                                //           ),
-                                                //         ],
-                                                //       ),
-                                                //     ),
-                                                //   ],
-                                                // ),
-                                                // const SizedBox(height: 10),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Tipe Finishing",
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text("Item Labour Cost",
                                                               style: TextStyle(
                                                                 color: Colors.black,
                                                               ),
@@ -1169,48 +579,17 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: (analisaSingleRAE.data!.analisaPlywood![index]!.namaFinishingBarangJadi != null)
-                                                            ? Text(analisaSingleRAE.data!.analisaPlywood![index]!.namaFinishingBarangJadi.toString(),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            )
-                                                            : const Text("Tanpa Finishing",
-                                                              style: TextStyle(
-                                                                color: Colors.black
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            )
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Tipe Sisi",
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.left,
                                                             ),
                                                           ),
                                                         ],
@@ -1219,16 +598,16 @@ class _BodyState extends State<Body> {
                                                     Expanded(
                                                       flex: 20,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(analisaSingleRAE.data!.analisaPlywood![index]!.namaTipeSisi.toString(),
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text(analisaSinglePeluang.data!.analisaFinFnSc![indexanalisaFinFnSc[index]].namaItem.toString(),
                                                               style: const TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.right,
+                                                              textAlign: TextAlign.left,
                                                             ),
                                                           ),
                                                         ],
@@ -1236,18 +615,18 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Qty Final",
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text("Qty",
                                                               style: TextStyle(
                                                                 color: Colors.black,
                                                               ),
@@ -1258,42 +637,37 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text(
                                                               formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.qtyFinal.toString()
+                                                                double.parse(analisaSinglePeluang.data!.analisaFinFnSc![indexanalisaFinFnSc[index]].qty.toString()
                                                                 )
-                                                              ),
+                                                              )+" "+
+                                                              analisaSinglePeluang.data!.analisaFinFnSc![indexanalisaFinFnSc[index]].namaSatuan.toString(),
                                                               style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("T x W x L (Final cm)",
-                                                              style: TextStyle(
                                                                 color: Colors.black,
                                                               ),
                                                               textAlign: TextAlign.left,
@@ -1302,237 +676,19 @@ class _BodyState extends State<Body> {
                                                         ],
                                                       ),
                                                     ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.tFinal.toString()
-                                                                )
-                                                              )+" x "+
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.wFinal.toString()
-                                                                )
-                                                              )+" x "+
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.lFinal.toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Qty Raw",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.qtyFinal.toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("T x W x L (Raw cm)",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.tRaw.toString()
-                                                                )
-                                                              )+" x "+
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.wRaw.toString()
-                                                                )
-                                                              )+" x "+
-                                                              formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.lRaw.toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Luas (m2)",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(listLuasPlywood[index].toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
-                                                            child: Text("Volume (m3)",
-                                                              style: TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.left,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 20,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
-                                                            child: Text(
-                                                              formatDecimal.format(
-                                                                double.parse(listVolumePlywood[index].toString()
-                                                                )
-                                                              ),
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                              ),
-                                                              textAlign: TextAlign.right,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 10,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: const <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 0),
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text("Unit Price",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -1544,21 +700,38 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text(
                                                               formatCurrency.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.unitPrice.toString())
+                                                                double.parse(analisaSinglePeluang.data!.analisaFinFnSc![indexanalisaFinFnSc[index]].koefisien.toString())
                                                               ),
                                                               style: const TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.right,
+                                                              textAlign: TextAlign.left,
                                                             ),
                                                           ),
                                                         ],
@@ -1566,17 +739,17 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text("Konstanta",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -1588,22 +761,39 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text(
                                                               formatDecimal.format(
-                                                                double.parse(analisaSingleRAE.data!.analisaPlywood![index]!.konstanta.toString()
+                                                                double.parse(analisaSinglePeluang.data!.analisaFinFnSc![indexanalisaFinFnSc[index]].koefisien.toString()
                                                                 )
                                                               ),
                                                               style: const TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.right,
+                                                              textAlign: TextAlign.left,
                                                             ),
                                                           ),
                                                         ],
@@ -1611,17 +801,17 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
-                                                      flex: 10,
+                                                      flex: 12,
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         children: const <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.only(left: 0),
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text("Sub Total",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -1633,21 +823,38 @@ class _BodyState extends State<Body> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 20,
+                                                      flex: 0,
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: const EdgeInsets.only(right: 0),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
                                                             child: Text(
                                                               formatCurrency.format(
-                                                                double.parse(subTotalHardwood[index].toString())
+                                                                double.parse(subTotalLabourCost[index].toString())
                                                               ),
                                                               style: const TextStyle(
                                                                 color: Colors.black,
                                                               ),
-                                                              textAlign: TextAlign.right,
+                                                              textAlign: TextAlign.left,
                                                             ),
                                                           ),
                                                         ],
@@ -1658,212 +865,490 @@ class _BodyState extends State<Body> {
                                               ],
                                             ),
                                           ),
-                                        );
-                                      },
-                                      shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                    ),
-                                    const Divider(color: Colors.black),
-                                    Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 10,
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context).size.width / 1.5,
-                                            child: ListTile(
-                                              title: Column(
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          children: const <Widget>[
-                                                            Padding(
-                                                              padding: EdgeInsets.only(left: 0),
-                                                              child: Text("Total Luas",
-                                                                style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.left,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                                          mainAxisAlignment: MainAxisAlignment.end,
-                                                          children: <Widget>[
-                                                            Padding(
-                                                              padding: const EdgeInsets.only(right: 0),
-                                                              child: Text(
-                                                                formatDecimal.format(
-                                                                    double.parse(totalLuasPlywood
-                                                                  )
-                                                                ),
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.right,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
                                         ),
-                                      ],
+                                      ),
                                     ),
+                                  ],
+                                ],
+                              );
+                            },
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                          ),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            child: CardItemExpansionDetail(
+                              child: ListTile(
+                                title: Column(
+                                  children: <Widget>[
                                     Row(
                                       children: <Widget>[
                                         Expanded(
-                                          flex: 10,
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context).size.width / 1.5,
-                                            child: ListTile(
-                                              title: Column(
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          children: const <Widget>[
-                                                            Padding(
-                                                              padding: EdgeInsets.only(left: 0),
-                                                              child: Text("Total Volume",
-                                                                style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.left,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                                          mainAxisAlignment: MainAxisAlignment.end,
-                                                          children: <Widget>[
-                                                            Padding(
-                                                              padding: const EdgeInsets.only(right: 0),
-                                                              child: Text(
-                                                                formatDecimal.format(
-                                                                    double.parse(totalVolumePlywood
-                                                                  )
-                                                                ),
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.right,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
+                                          flex: 4,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 0),
+                                                child: Text("Grand Total",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14.sp
                                                   ),
-                                                ],
+                                                  textAlign: TextAlign.left,
+                                                ),
                                               ),
-                                            ),
-                                          )
+                                            ],
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
                                         Expanded(
-                                          flex: 10,
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context).size.width / 1.5,
-                                            child: ListTile(
-                                              title: Column(
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          children: const <Widget>[
-                                                            Padding(
-                                                              padding: EdgeInsets.only(left: 0),
-                                                              child: Text("Grand Total",
-                                                                style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.left,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                                          mainAxisAlignment: MainAxisAlignment.end,
-                                                          children: <Widget>[
-                                                            Padding(
-                                                              padding: const EdgeInsets.only(right: 0),
-                                                              child: Text(
-                                                                formatCurrency.format(
-                                                                    double.parse(grandTotalPlywood
-                                                                  )
-                                                                ),
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 14
-                                                                ),
-                                                                textAlign: TextAlign.right,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
+                                          flex: 6,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 0),
+                                                child: Text(
+                                                  formatCurrency.format(
+                                                      double.parse(grandTotalLabourCost
+                                                    )
                                                   ),
-                                                ],
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14.sp
+                                                  ),
+                                                  textAlign: TextAlign.right,
+                                                ),
                                               ),
-                                            ),
-                                          )
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
+                        ]
                       ),
-                      const SizedBox(height: 30),
+                      CardExpansionDetail(
+                        label: "List Item Labour Cost Finishing",
+                        children: <Widget> [
+                          ListView.separated(
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: getProportionateScreenHeight(10).h,
+                            ),
+                            itemCount: indexanalisaFinFnLc.length,
+                            itemBuilder: (context, index){
+                              return Column(
+                                children: [
+                                  if(widget.namaFinishing.toString().contains(analisaSinglePeluang.data!.analisaFinFnLc![indexanalisaFinFnLc[index]].namaFinishingBarangJadi.toString()))...[
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                      child: CardItemExpansionDetail(
+                                        child: ListTile(
+                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                          title: HighlightItemName(
+                                            child: Text(
+                                              analisaSinglePeluang.data!.analisaFinFnLc![indexanalisaFinFnLc[index]].kodeItemBahan.toString(),
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          subtitle: Padding(
+                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: const <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text("Item Machine Process",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 0,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text(analisaSinglePeluang.data!.analisaFinFnLc![indexanalisaFinFnLc[index]].namaItem.toString(),
+                                                              style: const TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: const <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text("Qty",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 0,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text(
+                                                              formatDecimal.format(
+                                                                double.parse(analisaSinglePeluang.data!.analisaFinFnLc![indexanalisaFinFnLc[index]].qty.toString()
+                                                                )
+                                                              )+" "+
+                                                              analisaSinglePeluang.data!.analisaFinFnLc![indexanalisaFinFnLc[index]].namaSatuan.toString(),
+                                                              style: const TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: const <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text("Unit Price",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 0,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text(
+                                                              formatCurrency.format(
+                                                                double.parse(analisaSinglePeluang.data!.analisaFinFnLc![indexanalisaFinFnLc[index]].koefisien.toString())
+                                                              ),
+                                                              style: const TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: const <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text("Konstanta",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 0,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text(
+                                                              formatDecimal.format(
+                                                                double.parse(analisaSinglePeluang.data!.analisaFinFnLc![indexanalisaFinFnLc[index]].koefisien.toString()
+                                                                )
+                                                              ),
+                                                              style: const TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 12,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: const <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text("Sub Total",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 0,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            child: const Text(":",
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 20,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 0),
+                                                            child: Text(
+                                                              formatCurrency.format(
+                                                                double.parse(subTotalMachineProcess[index].toString())
+                                                              ),
+                                                              style: const TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              );
+                            },
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                          ),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            child: CardItemExpansionDetail(
+                              child: ListTile(
+                                title: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 4,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 0),
+                                                child: Text("Grand Total",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14.sp
+                                                  ),
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 0),
+                                                child: Text(
+                                                  formatCurrency.format(
+                                                      double.parse(grandTotalMachineProcess
+                                                    )
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14.sp
+                                                  ),
+                                                  textAlign: TextAlign.right,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
+                        ]
+                      ),
+                      SizedBox(height: getProportionateScreenHeight(30).h),
                     ],
                   );
                 } else {

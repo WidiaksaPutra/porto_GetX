@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/main_page/main_page.dart';
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval/body_approval.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval/body_history.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class ApprovalView extends StatefulWidget {
   const ApprovalView({Key? key}) : super(key: key);
@@ -65,22 +67,22 @@ class _ApprovalViewState extends State<ApprovalView> with SingleTickerProviderSt
             Material(
               elevation: 2,
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: 1,
-                      color: Color.fromRGBO(0, 0, 0, 0.08)
+                      width: getProportionateScreenWidth(1).w,
+                      color: const Color.fromRGBO(0, 0, 0, 0.08)
                     )
                   )
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: 40,
+                  height: getProportionateScreenHeight(40).h,
                   child: TabBar(
                     controller: controller,
                     indicatorColor: kPrimaryColor,
-                    labelStyle: const TextStyle(
-                      fontSize: 14,
+                    labelStyle: TextStyle(
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins"
                     ),

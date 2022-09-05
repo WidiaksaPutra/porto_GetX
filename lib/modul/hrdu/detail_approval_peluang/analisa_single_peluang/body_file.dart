@@ -2,16 +2,19 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_gambar.dart';
 import 'package:mgp_mobile_app/widget/component/card_file.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 class BodyFile extends StatefulWidget {
-  final Future<AnalisaSingleRegrae> futureAnalisaSingleRae;
-  const BodyFile({Key? key, required this.futureAnalisaSingleRae}) : super(key: key);
+  final Future<AnalisaSingleRegplgGambar> futureAnalisaSingleFile;
+  const BodyFile({Key? key, required this.futureAnalisaSingleFile}) : super(key: key);
 
   @override
   State<BodyFile> createState() => _BodyFileState();
@@ -66,18 +69,18 @@ class _BodyFileState extends State<BodyFile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
       child: FutureBuilder(
-        future: widget.futureAnalisaSingleRae,
-        builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegrae> snapshot) {
+        future: widget.futureAnalisaSingleFile,
+        builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegplgGambar> snapshot) {
           if (snapshot.hasData) {
             var listFile = snapshot.data;
-            if (listFile!.data!.gambar!.isNotEmpty) {
+            if (listFile!.data!.gambar.isNotEmpty) {
               file.clear();
               for (var i = 0; i < extensionFile.length; i++) {
-                for (var j = 0; j < listFile.data!.gambar!.length; j++) {
-                  if (listFile.data!.gambar![j]!.pathGambar!.contains(extensionFile[i])) {
-                    var completePath = listFile.data!.gambar![j]!.pathGambar.toString();
+                for (var j = 0; j < listFile.data!.gambar.length; j++) {
+                  if (listFile.data!.gambar[j].pathGambar!.contains(extensionFile[i])) {
+                    var completePath = listFile.data!.gambar[j].pathGambar.toString();
                     var fileName = (completePath.split('/').last);
                     file.add(fileName);
                     linkFile.add(completePath);
@@ -107,7 +110,7 @@ class _BodyFileState extends State<BodyFile> {
                       }
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: getProportionateScreenHeight(10).h),
                 ],
               );
             } else {
@@ -119,27 +122,27 @@ class _BodyFileState extends State<BodyFile> {
             return Center(
               child: Column(
                 children: <Widget>[
-                  const SizedBox(height: 5),
+                  SizedBox(height: getProportionateScreenHeight(5).h),
                   Row(
-                    children: const <Widget>[
+                    children: <Widget>[
                       Expanded(
-                        child: Skeleton(height: 100, width: 100)
+                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: getProportionateScreenWidth(10).w),
                       Expanded(
-                        child: Skeleton(height: 100, width: 100)
+                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: getProportionateScreenHeight(20).h),
                   Row(
-                    children: const <Widget>[
+                    children: <Widget>[
                       Expanded(
-                        child: Skeleton(height: 100, width: 100)
+                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: getProportionateScreenWidth(10).w),
                       Expanded(
-                        child: Skeleton(height: 100, width: 100)
+                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
                       ),
                     ],
                   ),

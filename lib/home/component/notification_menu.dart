@@ -3,10 +3,12 @@ import 'package:mgp_mobile_app/model/history_notification/history_notification_m
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/component/card_list.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationMenu extends StatefulWidget {
   const NotificationMenu({Key? key}) : super(key: key);
@@ -92,10 +94,10 @@ class _NotificationMenuState extends State<NotificationMenu> {
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        const EdgeInsets.symmetric(horizontal: 10),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 10),
+            SizedBox(height: getProportionateScreenHeight(10).h),
             FutureBuilder(
               future: _future,
               builder: (BuildContext context, AsyncSnapshot<List<Datum>> snapshot){
@@ -117,15 +119,15 @@ class _NotificationMenuState extends State<NotificationMenu> {
                                   itemBuilder: (context, index){
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         leading: SizedBox(
-                                          height: 60,
-                                          width: 60,
+                                          height: getProportionateScreenHeight(60).h,
+                                          width: getProportionateScreenWidth(60).w,
                                           child: CircleAvatar(
                                             backgroundColor: Colors.white,
                                             child: ClipRRect(
                                               child: Image.asset("assets/images/LogoMGP.png"),
-                                              borderRadius: BorderRadius.circular(50),
+                                              borderRadius: BorderRadius.circular(50).r,
                                             ),
                                           ),
                                         ),
@@ -134,7 +136,7 @@ class _NotificationMenuState extends State<NotificationMenu> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Padding(
-                                              padding: const EdgeInsets.only(top: 5),
+                                              padding: EdgeInsets.only(top: getProportionateScreenHeight(5).h),
                                               child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,16 +148,16 @@ class _NotificationMenuState extends State<NotificationMenu> {
                                                         child: Column(
                                                           children: <Widget>[
                                                             Padding(
-                                                              padding: const EdgeInsets.only(left: 0.0),
+                                                              padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
                                                               child: Text(
                                                                 dataHistoryNotification[index].title.toString()
                                                                 +" diajukan oleh "+
                                                                 dataHistoryNotification[index].namaPengaju.toString()
                                                                 +" dengan No.Transaksi "+
                                                                 dataHistoryNotification[index].noTransaksi.toString(),
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                   color: Colors.black,
-                                                                  fontSize: 14,
+                                                                  fontSize: 14.sp,
                                                                   fontWeight: FontWeight.w600
                                                                 ),
                                                                 textAlign: TextAlign.left,
@@ -169,7 +171,7 @@ class _NotificationMenuState extends State<NotificationMenu> {
                                                 ],
                                               ),
                                             ),
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: getProportionateScreenHeight(10).h),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: <Widget>[
@@ -179,9 +181,9 @@ class _NotificationMenuState extends State<NotificationMenu> {
                                                       DateTime.parse(dataHistoryNotification[index].createdAt.toString()
                                                     )
                                                   ).toString(),
-                                                  style: const TextStyle(
-                                                    color: Color.fromRGBO(119, 119, 119, 1),
-                                                    fontSize: 12
+                                                  style: TextStyle(
+                                                    color: const Color.fromRGBO(119, 119, 119, 1),
+                                                    fontSize: 12.sp
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -191,10 +193,10 @@ class _NotificationMenuState extends State<NotificationMenu> {
                                                       DateTime.parse(dataHistoryNotification[index].createdAt.toString()
                                                     )
                                                   ).toString(),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: Colors.black, 
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 12
+                                                    fontSize: 12.sp
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -215,7 +217,7 @@ class _NotificationMenuState extends State<NotificationMenu> {
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: 80,
+                                    height: getProportionateScreenHeight(80).h,
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -244,14 +246,14 @@ class _NotificationMenuState extends State<NotificationMenu> {
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                           child: Column(
-                            children: const <Widget>[
+                            children: <Widget>[
                               Skeleton(
                                 width: double.infinity,
-                                height: 125,
+                                height: getProportionateScreenHeight(125).h,
                               ),
-                              SizedBox(height: 15),
+                              SizedBox(height: getProportionateScreenHeight(15).h),
                             ],
                           ),
                         );

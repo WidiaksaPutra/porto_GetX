@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/detail_rae_model.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,12 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/widget/component/card_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/component/card_item_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   final Future<AnalisaSingleRegrae> analisaSingleRegrae;
-  const Body({Key? key, required this.analisaSingleRegrae}) : super(key: key);
+  final String totalAnalisaBahanBaku, totalAnalisaPenunjanProduksi, totalAnalisaFinishing;
+  const Body({Key? key, required this.analisaSingleRegrae, required this.totalAnalisaBahanBaku, required this.totalAnalisaPenunjanProduksi, required this.totalAnalisaFinishing}) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -29,7 +32,7 @@ class _BodyState extends State<Body> {
   bool visibilityPemeriksa = false;
   bool visibilityPengesah = false;
   late List subTotalBiayaOverheadKantor = [];
-  late String grandTotalBiayaOverheadKantor;
+  // late String grandTotalBiayaOverheadKantor;
 
   @override
   void initState() {
@@ -42,7 +45,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
@@ -51,20 +54,25 @@ class _BodyState extends State<Body> {
                 if (snapshot.hasData) {
                  var analisaSingleRAE = snapshot.data;
                   num totalBiayaOverheadKantor = 0;
+                  num unitPrice = double.parse(widget.totalAnalisaBahanBaku.toString()) + double.parse(widget.totalAnalisaPenunjanProduksi.toString()) + double.parse(widget.totalAnalisaFinishing.toString());
                   if (analisaSingleRAE!.data!.analisaBiayaOverheadKantor!.isNotEmpty) {
                     for (var i = 0; i < analisaSingleRAE.data!.analisaBiayaOverheadKantor!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![i]!.qty.toString()) * double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![i]!.unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![i]!.konstanta.toString());
+                      num subTotal = double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![i].qty.toString()) * unitPrice.round() * double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![i].konstanta.toString());
                       subTotalBiayaOverheadKantor.add(subTotal);
-                      totalBiayaOverheadKantor = totalBiayaOverheadKantor + subTotal;
+                      totalBiayaOverheadKantor = totalBiayaOverheadKantor + subTotal.round();
                     }
                   }
-                  grandTotalBiayaOverheadKantor = totalBiayaOverheadKantor.toString();
+                  // print(widget.totalAnalisaBahanBaku.toString());
+                  // print(widget.totalAnalisaPenunjanProduksi.toString());
+                  // print(widget.totalAnalisaFinishing.toString());
+                  // print(unitPrice.round());
+                  // grandTotalBiayaOverheadKantor = totalBiayaOverheadKantor.toString();
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 10,
+                     SizedBox(
+                        height: getProportionateScreenHeight(10).h,
                       ),
                       CardExpansionDetail(
                         label: "Biaya Overhead Kantor",
@@ -76,19 +84,19 @@ class _BodyState extends State<Body> {
                             itemCount: analisaSingleRAE.data!.analisaBiayaOverheadKantor!.length,
                             itemBuilder: (context, index){
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                 child: CardItemExpansionDetail(
                                   child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                     title: HighlightItemName(
                                       child: Text(
-                                        analisaSingleRAE.data!.analisaBiayaOverheadKantor![index]!.kodeItem.toString(),
-                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                        analisaSingleRAE.data!.analisaBiayaOverheadKantor![index].kodeItem.toString(),
+                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     subtitle: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
+                                      padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +110,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Item Biaya Overhead Kantor",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -118,10 +126,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -138,7 +146,7 @@ class _BodyState extends State<Body> {
                                                   children: <Widget>[
                                                     Padding(
                                                       padding: const EdgeInsets.only(left: 0),
-                                                      child: Text(analisaSingleRAE.data!.analisaBiayaOverheadKantor![index]!.namaItem.toString(),
+                                                      child: Text(analisaSingleRAE.data!.analisaBiayaOverheadKantor![index].namaItem.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -150,7 +158,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -160,7 +168,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Qty",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -176,10 +184,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -198,10 +206,10 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![index]!.qty.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![index].qty.toString()
                                                           )
                                                         )+" "+
-                                                        analisaSingleRAE.data!.analisaBiayaOverheadKantor![index]!.namaSatuan.toString(),
+                                                        analisaSingleRAE.data!.analisaBiayaOverheadKantor![index].namaSatuan.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -213,7 +221,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -223,7 +231,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Unit Price",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -239,10 +247,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -261,7 +269,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatCurrency.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![index]!.unitPrice.toString())
+                                                          double.parse(unitPrice.round().toString())
                                                         ),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -274,7 +282,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -284,7 +292,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Konstanta",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -300,10 +308,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -322,7 +330,7 @@ class _BodyState extends State<Body> {
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: Text(
                                                         formatDecimal.format(
-                                                          double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![index]!.konstanta.toString()
+                                                          double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![index].konstanta.toString()
                                                           )
                                                         ),
                                                         style: const TextStyle(
@@ -336,7 +344,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10).h),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -346,7 +354,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: const <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: 0),
+                                                      padding: const EdgeInsets.only(left: 0),
                                                       child: Text("Sub Total",
                                                         style: TextStyle(
                                                           color: Colors.black,
@@ -362,10 +370,10 @@ class _BodyState extends State<Body> {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const <Widget>[
+                                                  children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Text(":",
+                                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                      child: const Text(":",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                         ),
@@ -407,70 +415,70 @@ class _BodyState extends State<Body> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),
-                          const SizedBox(height: 10),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: CardItemExpansionDetail(
-                              child: ListTile(
-                                title: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 4,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: const <Widget>[
-                                              Padding(
-                                                padding: EdgeInsets.only(left: 0),
-                                                child: Text("Grand Total",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14
-                                                  ),
-                                                  textAlign: TextAlign.left,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(right: 0),
-                                                child: Text(
-                                                  formatCurrency.format(
-                                                      double.parse(grandTotalBiayaOverheadKantor
-                                                    )
-                                                  ),
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14
-                                                  ),
-                                                  textAlign: TextAlign.right,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
+                          // SizedBox(height: getProportionateScreenHeight(10).h),
+                          // Padding(
+                          //   padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                          //   child: CardItemExpansionDetail(
+                          //     child: ListTile(
+                          //       title: Column(
+                          //         children: <Widget>[
+                          //           Row(
+                          //             children: <Widget>[
+                          //               Expanded(
+                          //                 flex: 4,
+                          //                 child: Column(
+                          //                   crossAxisAlignment: CrossAxisAlignment.start,
+                          //                   mainAxisAlignment: MainAxisAlignment.start,
+                          //                   children: <Widget>[
+                          //                     Padding(
+                          //                       padding: const EdgeInsets.only(left: 0),
+                          //                       child: Text("Grand Total",
+                          //                         style: TextStyle(
+                          //                           color: Colors.black,
+                          //                           fontWeight: FontWeight.bold,
+                          //                           fontSize: 14.sp
+                          //                         ),
+                          //                         textAlign: TextAlign.left,
+                          //                       ),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //               ),
+                          //               Expanded(
+                          //                 flex: 6,
+                          //                 child: Column(
+                          //                   crossAxisAlignment: CrossAxisAlignment.end,
+                          //                   mainAxisAlignment: MainAxisAlignment.end,
+                          //                   children: <Widget>[
+                          //                     Padding(
+                          //                       padding: const EdgeInsets.only(right: 0),
+                          //                       child: Text(
+                          //                         formatCurrency.format(
+                          //                             double.parse(grandTotalBiayaOverheadKantor
+                          //                           )
+                          //                         ),
+                          //                         style: TextStyle(
+                          //                           color: Colors.black,
+                          //                           fontWeight: FontWeight.bold,
+                          //                           fontSize: 14.sp
+                          //                         ),
+                          //                         textAlign: TextAlign.right,
+                          //                       ),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          SizedBox(height: getProportionateScreenHeight(10).h),
                         ]
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: getProportionateScreenHeight(30).h),
                     ],
                   );
                 } else {

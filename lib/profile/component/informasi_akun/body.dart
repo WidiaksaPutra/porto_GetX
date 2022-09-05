@@ -1,10 +1,12 @@
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/login/login.dart';
 import 'package:mgp_mobile_app/model/profil/profil_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
@@ -41,23 +43,23 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(height: 10),
+                SizedBox(height: getProportionateScreenHeight(10).h),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)
+                      borderRadius: BorderRadius.circular(25.r)
                     ),
                     elevation: 8.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
                     child: Container(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      padding: EdgeInsets.only(top: getProportionateScreenHeight(10).h, bottom: getProportionateScreenHeight(10).h),
                       width: double.infinity,
                       child: Row(
                         children: <Widget>[
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            child: const SizedBox(
                               height: 115,
                               width: 115,
                               child: CircleAvatar(
@@ -70,26 +72,26 @@ class _BodyState extends State<Body> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                 child: (profilData!.data!.namaKaryawan != null)
                                 ? Text(profilData.data!.namaKaryawan.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 18
-                                  ),
-                                )
-                                : const Text("-",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w800,
-                                    fontSize: 18
+                                    fontSize: 18.sp
+                                  ),
+                                )
+                                : Text("-",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 18.sp
                                   ),
                                 )
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                 child: (profilData.data!.noHp != null) 
                                 ? Text(profilData.data!.noHp.toString(),
                                   style: const TextStyle(
@@ -106,9 +108,9 @@ class _BodyState extends State<Body> {
                                   ),
                                 )
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: getProportionateScreenHeight(10).h),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                                 child: (profilData.data!.email != null)
                                 ? Text(profilData.data!.email.toString(),
                                   style: const TextStyle(
@@ -132,26 +134,26 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
+                SizedBox(height: getProportionateScreenHeight(15).h),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
                     "Pengaturan Akun",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w800,
-                      fontSize: 14 
+                      fontSize: 14.sp 
                     ),
                   )
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)
+                      borderRadius: BorderRadius.circular(25.r)
                     ),
                     elevation: 8.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
                     child: SizedBox(
                       width: double.infinity,
                       child: Column(
@@ -161,11 +163,11 @@ class _BodyState extends State<Body> {
                               height: 25,
                               width: 25,
                             ),
-                            title: const Text("Profil",
+                            title: Text("Profil",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14 
+                                fontSize: 14.sp 
                               ),
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios),
@@ -177,11 +179,11 @@ class _BodyState extends State<Body> {
                               height: 25,
                               width: 25,
                             ),
-                            title: const Text("Informasi Akun",
+                            title: Text("Informasi Akun",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14 
+                                fontSize: 14.sp 
                               ),
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios),
@@ -192,26 +194,26 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
+                SizedBox(height: getProportionateScreenHeight(15).h),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
                     "Pengaturan Keamanan",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w800,
-                      fontSize: 14 
+                      fontSize: 14.sp 
                     ),
                   )
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)
+                      borderRadius: BorderRadius.circular(25.r)
                     ),
                     elevation: 8.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
                     child: SizedBox(
                       width: double.infinity,
                       child: Column(
@@ -221,11 +223,11 @@ class _BodyState extends State<Body> {
                               height: 25,
                               width: 25,
                             ),
-                            title: const Text("Ganti Password",
+                            title: Text("Ganti Password",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14 
+                                fontSize: 14.sp 
                               ),
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios),
@@ -236,26 +238,26 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
+                SizedBox(height: getProportionateScreenHeight(15).h),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
                     "Preferensi",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w800,
-                      fontSize: 14 
+                      fontSize: 14.sp 
                     ),
                   )
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)
+                      borderRadius: BorderRadius.circular(25.r)
                     ),
                     elevation: 8.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
                     child: SizedBox(
                       width: double.infinity,
                       child: Column(
@@ -265,11 +267,11 @@ class _BodyState extends State<Body> {
                               height: 30,
                               width: 30,
                             ),
-                            title: const Text("Bahasa",
+                            title: Text("Bahasa",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14 
+                                fontSize: 14.sp 
                               ),
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios),
@@ -281,11 +283,11 @@ class _BodyState extends State<Body> {
                               height: 25,
                               width: 25,
                             ),
-                            title: const Text("Mode Gelap",
+                            title: Text("Mode Gelap",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14 
+                                fontSize: 14.sp 
                               ),
                             ),
                             trailing: Transform.scale(
@@ -305,15 +307,15 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
+                SizedBox(height: getProportionateScreenHeight(15).h),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)
+                      borderRadius: BorderRadius.circular(25.r)
                     ),
                     elevation: 8.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6.0),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
                     child: SizedBox(
                       width: double.infinity,
                       child: Column(
@@ -323,11 +325,11 @@ class _BodyState extends State<Body> {
                               height: 25,
                               width: 25,
                             ),
-                            title: const Text("Keluar",
+                            title: Text("Keluar",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14 
+                                fontSize: 14.sp 
                               ),
                             ),
                             onTap: () async {

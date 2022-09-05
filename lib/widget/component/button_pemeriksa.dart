@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/widget/component/button_approval.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class ButtonPemeriksa extends StatelessWidget {
   final bool visibilityPemeriksa;
@@ -26,7 +28,7 @@ class ButtonPemeriksa extends StatelessWidget {
             color: reviseButtonColor,
             onClicked: onClickedRevise,
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: getProportionateScreenHeight(15).h),
           Row(
             children: <Widget> [
               Expanded(
@@ -36,7 +38,7 @@ class ButtonPemeriksa extends StatelessWidget {
                   onClicked: onClickedReject,
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: getProportionateScreenWidth(10).w),
               Expanded(
                 child: ButtonApproval(
                   label: "VERIFY",

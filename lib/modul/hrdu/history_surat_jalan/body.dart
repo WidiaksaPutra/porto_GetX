@@ -1,9 +1,8 @@
-import 'dart:convert';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_surat_jalan/detail_approval_surat_jalan.dart';
-import 'package:mgp_mobile_app/model/hrdu/surat_jalan/history_surat_jalan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_surat_jalan.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_right_row.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_date.dart';
@@ -13,7 +12,7 @@ import 'package:mgp_mobile_app/widget/component/card_list.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/component/search_field.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class BodyHistory extends StatefulWidget {
   const BodyHistory({Key? key}) : super(key: key);
@@ -22,10 +21,8 @@ class BodyHistory extends StatefulWidget {
   _BodyHistoryState createState() => _BodyHistoryState();
 }
 
-class _BodyHistoryState extends State<BodyHistory> {
-  late String? tokens;
-  late List<Datum> dataList = [];
-  late Future<List<Datum>> _future;
+class _BodyHistoryState extends State<BodyHistory> with SuratJalanClass {
+  late Future<List<dynamic>> _future;
   final ScrollController _scrollController = ScrollController();
   bool loading = false;
   int pages = 1;
@@ -37,34 +34,6 @@ class _BodyHistoryState extends State<BodyHistory> {
       pages = 1;
     });
     _future = fetchHistorySuratJalan(page: pages);
-  }
-
-  Future<List<Datum>> fetchHistorySuratJalan({required int page}) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    int? perPage = 10;
-    Map<String, String>? queryParams = {
-      'page' : page.toString(),
-      'per_page' : perPage.toString(),
-    };
-    String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_surat_jalan/history/?' + queryString;
-    final response =
-      await MGPAPI.client.get(Uri.parse(requestUrl),
-      headers: {
-        'Authorization': 'Bearer $tokens',
-      }
-    );
-    if (response.statusCode == 200) {
-      final parsed = json.decode(response.body);
-      HistoryRegsj suratJalanData = HistoryRegsj.fromJson(parsed);
-      dataList.addAll(suratJalanData.data);
-      pages++;
-      return dataList;
-    } else {
-      throw Exception('Failed to load data');
-    }
   }
 
   @override
@@ -99,18 +68,18 @@ class _BodyHistoryState extends State<BodyHistory> {
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        const EdgeInsets.symmetric(horizontal: 20),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 15),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: SearchField(),
+            SizedBox(height: getProportionateScreenHeight(15).h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+              child: const SearchField(),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: getProportionateScreenHeight(5).h),
             FutureBuilder(
               future: _future,
-              builder: (BuildContext context, AsyncSnapshot<List<Datum>> snapshot){
+              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot){
                 if (snapshot.hasData) {
                   var dataSuratJalan = snapshot.data;
                   if (dataSuratJalan!.isNotEmpty) {
@@ -129,7 +98,7 @@ class _BodyHistoryState extends State<BodyHistory> {
                                   itemBuilder: (context, index){
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
                                         title: HighlightItemName(
                                           child: Text(
                                             dataSuratJalan[index].noSuratJalan.toString(),
@@ -138,7 +107,7 @@ class _BodyHistoryState extends State<BodyHistory> {
                                           ),
                                         ),
                                         subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,47 +118,47 @@ class _BodyHistoryState extends State<BodyHistory> {
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Jabatan",
                                                 contentData: dataSuratJalan[index].namaJabatanPengaju,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemDate(
                                                 label: "Tgl. Surat Jalan",
                                                 date: dataSuratJalan[index].tglSuratJalan,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "No. Delivery Order",
                                                 contentData: dataSuratJalan[index].noDeliveryOrder,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Gudang",
                                                 contentData: dataSuratJalan[index].namaGudang,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemText(
                                                 label: "Petugas Pengiriman",
                                                 contentData: dataSuratJalan[index].namaSopir,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemRightRow(
                                                 label: "Armada Pengiriman",
                                                 rightRow: <Widget> [
                                                   Padding(
-                                                    padding: const EdgeInsets.only(left: 0.0),
+                                                    padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
                                                     child: (dataSuratJalan[index].platNomor != null)
                                                     ? Text(
                                                       dataSuratJalan[index].platNomor.toString()
@@ -211,7 +180,7 @@ class _BodyHistoryState extends State<BodyHistory> {
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: getProportionateScreenHeight(10).h),
                                               CardFieldItemStatus(
                                                 contentData: dataSuratJalan[index].statusApproval,
                                               ),
@@ -236,7 +205,7 @@ class _BodyHistoryState extends State<BodyHistory> {
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: 80,
+                                    height: getProportionateScreenHeight(80).h,
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -265,15 +234,15 @@ class _BodyHistoryState extends State<BodyHistory> {
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
                           child: Column(
-                            children: const <Widget>[
-                              SizedBox(height: 5),
+                            children: <Widget>[
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                               Skeleton(
                                 width: double.infinity,
-                                height: 450,
+                                height: getProportionateScreenHeight(450).h,
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: getProportionateScreenHeight(5).h),
                             ],
                           ),
                         );

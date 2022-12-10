@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:mgp_mobile_app/widget/component/card_catatan_approval.dart';
@@ -25,9 +25,9 @@ class FieldCatatanApproval extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10.0).h),
+        contentPadding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10.0)),
         title: Column(
           children: <Widget> [
             Row(
@@ -37,7 +37,7 @@ class FieldCatatanApproval extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25.r),
+                        borderRadius: BorderRadius.circular(25),
                         gradient: const LinearGradient(
                           colors: <Color> [
                             kPrimaryColor,
@@ -48,19 +48,19 @@ class FieldCatatanApproval extends StatelessWidget {
                       child: FittedBox(
                         child: Center(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
                             child: (statusApproval.toString() != "APP")
                             ? Text("Pemeriksa ${index+1}",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold
                               ),
                             )
                             : Text("Pengesah",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold
                               ),
                             ),
@@ -75,29 +75,29 @@ class FieldCatatanApproval extends StatelessWidget {
                   children: <Widget> [
                     if(statusApproval.toString() == "VER")...[
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                         child: Row(
                           children: <Widget> [
                             Text(
                               "VERIFIED",
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                              padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                               child: SvgPicture.asset("assets/icons/verify_icon.svg",
-                                width: getProportionateScreenWidth(20).w,
-                                height: getProportionateScreenHeight(20).h,
+                                width: getProportionateScreenWidth(20),
+                                height: getProportionateScreenHeight(20),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(5).h),
+                      SizedBox(height: getProportionateScreenHeight(5)),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                         child: SizedBox(
                           child: (tglApproval != null)
                           ? Text(
@@ -107,7 +107,7 @@ class FieldCatatanApproval extends StatelessWidget {
                               )
                             ).toString(),
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600
                             ),
                             textAlign: TextAlign.left,
@@ -115,7 +115,7 @@ class FieldCatatanApproval extends StatelessWidget {
                           : Text(
                             "-",
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600
                             ),
                           )
@@ -124,29 +124,29 @@ class FieldCatatanApproval extends StatelessWidget {
                     ],
                     if(statusApproval.toString() == "REV")...[
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                         child: Row(
                           children: <Widget> [
                             Text(
                               "REVISI",
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                              padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                               child: SvgPicture.asset("assets/icons/revise_icon.svg",
-                                width: getProportionateScreenWidth(20).w,
-                                height: getProportionateScreenHeight(20).h,
+                                width: getProportionateScreenWidth(20),
+                                height: getProportionateScreenHeight(20),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(5).h),
+                      SizedBox(height: getProportionateScreenHeight(5)),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                         child: SizedBox(
                           child: (tglApproval != null)
                           ? Text(
@@ -156,7 +156,7 @@ class FieldCatatanApproval extends StatelessWidget {
                               )
                             ).toString(),
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600
                             ),
                             textAlign: TextAlign.left,
@@ -164,7 +164,7 @@ class FieldCatatanApproval extends StatelessWidget {
                           : Text(
                             "-",
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600
                             ),
                           )
@@ -173,29 +173,29 @@ class FieldCatatanApproval extends StatelessWidget {
                     ],
                     if(statusApproval.toString() == "REJ")...[
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                         child: Row(
                           children: <Widget> [
                             Text(
                               "REJECT",
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                              padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                               child: SvgPicture.asset("assets/icons/reject_icon.svg",
-                                width: getProportionateScreenWidth(20).w,
-                                height: getProportionateScreenHeight(20).h,
+                                width: getProportionateScreenWidth(20),
+                                height: getProportionateScreenHeight(20),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(5).h),
+                      SizedBox(height: getProportionateScreenHeight(5)),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                         child: SizedBox(
                           child: (tglApproval != null)
                           ? Text(
@@ -205,7 +205,7 @@ class FieldCatatanApproval extends StatelessWidget {
                               )
                             ).toString(),
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600
                             ),
                             textAlign: TextAlign.left,
@@ -213,7 +213,7 @@ class FieldCatatanApproval extends StatelessWidget {
                           : Text(
                             "-",
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600
                             ),
                           )
@@ -222,29 +222,29 @@ class FieldCatatanApproval extends StatelessWidget {
                     ],
                     if(statusApproval.toString() == "APP")...[
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                         child: Row(
                           children: <Widget> [
                             Text(
                               "APPROVED",
                               style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                              padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                               child: SvgPicture.asset("assets/icons/verify_icon.svg",
-                                width: getProportionateScreenWidth(20).w,
-                                height: getProportionateScreenHeight(20).h,
+                                width: getProportionateScreenWidth(20),
+                                height: getProportionateScreenHeight(20),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(5).h),
+                      SizedBox(height: getProportionateScreenHeight(5)),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                         child: SizedBox(
                           child: (tglApproval != null)
                           ? Text(
@@ -254,7 +254,7 @@ class FieldCatatanApproval extends StatelessWidget {
                               )
                             ).toString(),
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600
                             ),
                             textAlign: TextAlign.left,
@@ -262,7 +262,7 @@ class FieldCatatanApproval extends StatelessWidget {
                           : Text(
                             "-",
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600
                             ),
                           )
@@ -273,42 +273,42 @@ class FieldCatatanApproval extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: getProportionateScreenHeight(20).h),
+            SizedBox(height: getProportionateScreenHeight(20)),
             CardItemExpansionDetail(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
                 child: SizedBox(
                   width: double.infinity,
                   child: (catatanApproval != null)
                   ? Text(
                     catatanApproval.toString(),
                     style: TextStyle(
-                      fontSize: 15.sp,
+                      fontSize: 15,
                     ),
                   )
                   : Text(
                     "-",
                     style: TextStyle(
-                      fontSize: 15.sp,
+                      fontSize: 15,
                     ),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(20).h),
+            SizedBox(height: getProportionateScreenHeight(20)),
             CardCatatanApproval(
               child: Row(
                 children: <Widget> [
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
+                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
                       child: (namaKaryawan != null)
                       ? Text(
                         namaKaryawan.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
-                          fontSize: 14.sp
+                          fontSize: 14,
                         ),
                       ) 
                       : Text(
@@ -316,7 +316,7 @@ class FieldCatatanApproval extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
-                          fontSize: 14.sp
+                          fontSize: 14,
                         ),
                       ),
                     ),

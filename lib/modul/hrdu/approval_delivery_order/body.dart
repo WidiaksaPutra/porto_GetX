@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_delivery_order/detail_approval_delivery_order.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_delivery_order.dart';
@@ -69,15 +69,15 @@ class _BodyState extends State<Body> with DeliveryOrderClass{
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: Column(
           children: <Widget>[
-            SizedBox(height: getProportionateScreenHeight(15).h),
+            SizedBox(height: getProportionateScreenHeight(15)),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
               child: const SearchField(),
             ),
-            SizedBox(height: getProportionateScreenHeight(5).h),
+            SizedBox(height: getProportionateScreenHeight(5)),
             FutureBuilder(
               future: _future,
               builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot){
@@ -99,7 +99,7 @@ class _BodyState extends State<Body> with DeliveryOrderClass{
                                   itemBuilder: (context, index){
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                         title: HighlightItemName(
                                           child: Text(
                                             dataDeliveryOrder[index].noDeliveryOrder.toString(),
@@ -108,7 +108,7 @@ class _BodyState extends State<Body> with DeliveryOrderClass{
                                           ),
                                         ),
                                         subtitle: Padding(
-                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,42 +119,42 @@ class _BodyState extends State<Body> with DeliveryOrderClass{
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Jabatan",
                                                 contentData: dataDeliveryOrder[index].namaJabatanPengaju,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemDate(
                                                 label: "Tgl. Delivery Order",
                                                 date: dataDeliveryOrder[index].tglDeliveryOrder,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Gudang",
                                                 contentData: dataDeliveryOrder[index].namaGudang,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Customer",
                                                 contentData: dataDeliveryOrder[index].namaCustomer,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemDate(
                                                 label: "Tgl. Batas Waktu",
                                                 date: dataDeliveryOrder[index].batasWaktu,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemStatus(
                                                 contentData: dataDeliveryOrder[index].statusApproval,
                                               ),
@@ -179,7 +179,7 @@ class _BodyState extends State<Body> with DeliveryOrderClass{
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: getProportionateScreenHeight(80).h,
+                                    height: getProportionateScreenHeight(80),
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -208,15 +208,15 @@ class _BodyState extends State<Body> with DeliveryOrderClass{
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               Skeleton(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(380).h,
+                                height: getProportionateScreenHeight(380),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                             ],
                           ),
                         );

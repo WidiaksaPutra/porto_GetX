@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
@@ -25,16 +25,16 @@ class _FormAccountState extends State<FormAccount> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: getProportionateScreenHeight(10).h, bottom: getProportionateScreenHeight(10).h),
+      padding: EdgeInsets.only(top: getProportionateScreenHeight(10), bottom: getProportionateScreenHeight(10)),
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            width: getProportionateScreenWidth(1).w,
+            width: getProportionateScreenWidth(1),
             color: const Color.fromRGBO(0, 0, 0, 0.08)
           ),
           bottom: BorderSide(
-            width: getProportionateScreenWidth(1).w,
+            width: getProportionateScreenWidth(1),
             color: const Color.fromRGBO(0, 0, 0, 0.08)
           ),
         ),
@@ -48,7 +48,7 @@ class _FormAccountState extends State<FormAccount> {
             child: Column(
               children: <Widget>[
                 ListTile(
-                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30).w, right: getProportionateScreenWidth(30).w),
+                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30), right: getProportionateScreenWidth(30)),
                   leading: ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return const LinearGradient(
@@ -63,21 +63,21 @@ class _FormAccountState extends State<FormAccount> {
                     },
                     child: SvgPicture.asset("assets/icons/profile_menu.svg",
                       color: kPrimaryColor,
-                      height: getProportionateScreenHeight(25).h,
-                      width: getProportionateScreenWidth(25).w,
+                      height: getProportionateScreenHeight(25),
+                      width: getProportionateScreenWidth(25),
                     ),
                   ),
                   title: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-20).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-20), getProportionateScreenHeight(0)),
                     child: Text("Profile",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16.sp
+                        fontSize: 16,
                       ),
                     ),
                   ),
                   trailing: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-12).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-12), getProportionateScreenHeight(0)),
                     child: ShaderMask(
                       shaderCallback: (Rect bounds) {
                         return const LinearGradient(
@@ -91,8 +91,8 @@ class _FormAccountState extends State<FormAccount> {
                         ).createShader(bounds);
                       },
                       child: SvgPicture.asset("assets/icons/arrow_ios.svg",
-                        height: getProportionateScreenHeight(15).h,
-                        width: getProportionateScreenWidth(15).w,
+                        height: getProportionateScreenHeight(15),
+                        width: getProportionateScreenWidth(15),
                         color: kPrimaryColor,
                       ),
                     ),
@@ -100,7 +100,7 @@ class _FormAccountState extends State<FormAccount> {
                   onTap: () {},
                 ),
                 ListTile(
-                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30).w, right: getProportionateScreenWidth(30).w),
+                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30), right: getProportionateScreenWidth(30)),
                   leading: ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return const LinearGradient(
@@ -115,21 +115,21 @@ class _FormAccountState extends State<FormAccount> {
                     },
                     child: SvgPicture.asset("assets/icons/akun_informasi_menu.svg",
                       color: kPrimaryColor,
-                      height: getProportionateScreenHeight(25).h,
-                      width: getProportionateScreenWidth(25).w,
+                      height: getProportionateScreenHeight(25),
+                      width: getProportionateScreenWidth(25),
                     ),
                   ),
                   title: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-20).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-20), getProportionateScreenHeight(0)),
                     child: Text("Account Information",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16.sp
+                        fontSize: 16,
                       ),
                     ),
                   ),
                   trailing: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-12).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-12), getProportionateScreenHeight(0)),
                     child: ShaderMask(
                       shaderCallback: (Rect bounds) {
                         return const LinearGradient(
@@ -143,8 +143,8 @@ class _FormAccountState extends State<FormAccount> {
                         ).createShader(bounds);
                       },
                       child: SvgPicture.asset("assets/icons/arrow_ios.svg",
-                        height: getProportionateScreenHeight(15).h,
-                        width: getProportionateScreenWidth(15).w,
+                        height: getProportionateScreenHeight(15),
+                        width: getProportionateScreenWidth(15),
                         color: kPrimaryColor,
                       ),
                     ),
@@ -152,7 +152,7 @@ class _FormAccountState extends State<FormAccount> {
                   onTap: () {},
                 ),
                 ListTile(
-                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30).w, right: getProportionateScreenWidth(30).w),
+                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30), right: getProportionateScreenWidth(30)),
                   leading: ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return const LinearGradient(
@@ -167,21 +167,21 @@ class _FormAccountState extends State<FormAccount> {
                     },
                     child: SvgPicture.asset("assets/icons/change_password_menu.svg",
                       color: kPrimaryColor,
-                      height: getProportionateScreenHeight(25).h,
-                      width: getProportionateScreenWidth(25).w,
+                      height: getProportionateScreenHeight(25),
+                      width: getProportionateScreenWidth(25),
                     ),
                   ),
                   title: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-20).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-20), getProportionateScreenHeight(0)),
                     child: Text("Change Password",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16.sp
+                        fontSize: 16,
                       ),
                     ),
                   ),
                   trailing: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-12).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-12), getProportionateScreenHeight(0)),
                     child: ShaderMask(
                       shaderCallback: (Rect bounds) {
                         return const LinearGradient(
@@ -195,8 +195,8 @@ class _FormAccountState extends State<FormAccount> {
                         ).createShader(bounds);
                       },
                       child: SvgPicture.asset("assets/icons/arrow_ios.svg",
-                        height: getProportionateScreenHeight(15).h,
-                        width: getProportionateScreenWidth(15).w,
+                        height: getProportionateScreenHeight(15),
+                        width: getProportionateScreenWidth(15),
                         color: kPrimaryColor,
                       ),
                     ),
@@ -204,7 +204,7 @@ class _FormAccountState extends State<FormAccount> {
                   onTap: () {},
                 ),
                 ListTile(
-                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30).w, right: getProportionateScreenWidth(30).w),
+                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30), right: getProportionateScreenWidth(30)),
                   leading: ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return const LinearGradient(
@@ -219,21 +219,21 @@ class _FormAccountState extends State<FormAccount> {
                     },
                     child: SvgPicture.asset("assets/icons/language_profile.svg",
                       color: kPrimaryColor,
-                      height: getProportionateScreenHeight(25).h,
-                      width: getProportionateScreenWidth(25).w,
+                      height: getProportionateScreenHeight(25),
+                      width: getProportionateScreenWidth(25),
                     ),
                   ),
                   title: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-20).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-20), getProportionateScreenHeight(0)),
                     child: Text("Language",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16.sp
+                        fontSize: 16,
                       ),
                     ),
                   ),
                   trailing: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-12).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-12), getProportionateScreenHeight(0)),
                     child: ShaderMask(
                       shaderCallback: (Rect bounds) {
                         return const LinearGradient(
@@ -247,8 +247,8 @@ class _FormAccountState extends State<FormAccount> {
                         ).createShader(bounds);
                       },
                       child: SvgPicture.asset("assets/icons/arrow_ios.svg",
-                        height: getProportionateScreenHeight(15).h,
-                        width: getProportionateScreenWidth(15).w,
+                        height: getProportionateScreenHeight(15),
+                        width: getProportionateScreenWidth(15),
                         color: kPrimaryColor,
                       ),
                     ),
@@ -256,7 +256,7 @@ class _FormAccountState extends State<FormAccount> {
                   onTap: () {},
                 ),
                 ListTile(
-                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30).w, right: getProportionateScreenWidth(30).w),
+                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30), right: getProportionateScreenWidth(30)),
                   leading: ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return const LinearGradient(
@@ -271,16 +271,16 @@ class _FormAccountState extends State<FormAccount> {
                     },
                     child: SvgPicture.asset("assets/icons/darkmode_menu.svg",
                       color: kPrimaryColor,
-                      height: getProportionateScreenHeight(25).h,
-                      width: getProportionateScreenWidth(25).w,
+                      height: getProportionateScreenHeight(25),
+                      width: getProportionateScreenWidth(25),
                     ),
                   ),
                   title: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-20).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-20), getProportionateScreenHeight(0)),
                     child: Text("Dark Mode",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16.sp
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -298,7 +298,7 @@ class _FormAccountState extends State<FormAccount> {
                   onTap: () {},
                 ),
                 ListTile(
-                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30).w, right: getProportionateScreenWidth(30).w),
+                  contentPadding: EdgeInsets.only(left: getProportionateScreenWidth(30), right: getProportionateScreenWidth(30)),
                   leading: ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return const LinearGradient(
@@ -313,16 +313,16 @@ class _FormAccountState extends State<FormAccount> {
                     },
                     child: SvgPicture.asset("assets/icons/logout_menu.svg",
                       color: kPrimaryColor,
-                      height: getProportionateScreenHeight(25).h,
-                      width: getProportionateScreenWidth(25).w,
+                      height: getProportionateScreenHeight(25),
+                      width: getProportionateScreenWidth(25),
                     ),
                   ),
                   title: Transform.translate(
-                    offset: Offset(getProportionateScreenWidth(-20).w, getProportionateScreenHeight(0).h),
+                    offset: Offset(getProportionateScreenWidth(-20), getProportionateScreenHeight(0)),
                     child: Text("Logout",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16.sp
+                        fontSize: 16,
                       ),
                     ),
                   ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 
 class CardItemExpansionDetail extends StatelessWidget {
@@ -12,7 +12,7 @@ class CardItemExpansionDetail extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: colorCardItem,
-        borderRadius: BorderRadius.circular(15.r),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: child,
     );

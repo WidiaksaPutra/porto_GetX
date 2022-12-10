@@ -28,19 +28,19 @@ class Regpnw {
     factory Regpnw.fromJson(Map<String, dynamic> json) => Regpnw(
         status: json["status"],
         message: json["message"] == null ? "-" : json["message"].toString(),
-        xqry: json["xqry"] == null ? null : Xqry.fromJson(json["xqry"]),
-        data: json["data"] == List.empty() ? [] : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        xqry: Xqry.fromJson(json["xqry"]),
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
         dataCount: json["data_count"] == null ? 0 : json["data_count"].toInt(),
         totalPage: json["total_page"] == null ? 0 : json["total_page"].toInt(),
     );
 
     Map<String, dynamic> toJson() => {
-        "status": status == null ? "-" : status.toString(),
+        "status": status,
         "message": message == null ? "-" : message.toString(),
-        "xqry": xqry == null ? null : xqry!.toJson(),
-        "data": data == List.empty() ? [] : List<dynamic>.from(data.map((x) => x.toJson())),
-        "data_count": dataCount == null ? "-" : dataCount!.toInt(),
-        "total_page": totalPage == null ? "-" : totalPage!.toInt(),
+        "xqry": xqry!.toJson(),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data_count": dataCount == null ? 0 : dataCount!.toInt(),
+        "total_page": totalPage == null ? 0 : totalPage!.toInt(),
     };
 }
 
@@ -86,6 +86,10 @@ class Datum {
         this.approvalLevel,
         this.namaKaryawan,
         this.namaJabatan,
+        this.idKaryawanPengaju,
+        this.idJabatanPengaju,
+        this.namaKaryawanPengaju,
+        this.namaJabatanPengaju,
         this.namaPeringkatPeluang,
         this.baseline,
         this.statusDeal,
@@ -136,6 +140,10 @@ class Datum {
     final String? approvalLevel;
     final String? namaKaryawan;
     final String? namaJabatan;
+    final String? idKaryawanPengaju;
+    final String? idJabatanPengaju;
+    final String? namaKaryawanPengaju;
+    final String? namaJabatanPengaju;
     final String? namaPeringkatPeluang;
     final String? baseline;
     final String? statusDeal;
@@ -190,6 +198,10 @@ class Datum {
         approvalLevel: json["approval_level"] == null ? "-" : json["approval_level"].toString(),
         namaKaryawan: json["nama_karyawan"] == null ? "-" : json["nama_karyawan"].toString(),
         namaJabatan: json["nama_jabatan"] == null ? "-" : json["nama_jabatan"].toString(),
+        idKaryawanPengaju: json["id_karyawan_pengaju"] == null ? "-" : json["id_karyawan_pengaju"].toString(),
+        idJabatanPengaju: json["id_jabatan_pengaju"] == null ? "-" : json["id_jabatan_pengaju"].toString(),
+        namaKaryawanPengaju: json["nama_karyawan_pengaju"] == null ? "-" : json["nama_karyawan_pengaju"].toString(),
+        namaJabatanPengaju: json["nama_jabatan_pengaju"] == null ? "-" : json["nama_jabatan_pengaju"].toString(),
         namaPeringkatPeluang: json["nama_peringkat_peluang"] == null ? "-" : json["nama_peringkat_peluang"].toString(),
         baseline: json["baseline"] == null ? "-" : json["baseline"].toString(),
         statusDeal: json["status_deal"] == null ? "-" : json["status_deal"].toString(),
@@ -197,7 +209,7 @@ class Datum {
         namaProyek: json["nama_proyek"] == null ? "-" : json["nama_proyek"].toString(),
         realisasiPenawaran: json["realisasi_penawaran"] == null ? null : DateTime.parse(json["realisasi_penawaran"]),
         keterangan: json["keterangan"] == null ? "-" : json["keterangan"].toString(),
-        barangJadi: json["barang_jadi"] == List.empty() ? [] : List<BarangJadi>.from(json["barang_jadi"].map((x) => BarangJadi.fromJson(x))),
+        barangJadi: json["barang_jadi"] == List.empty() ? [] : json["barang_jadi"] == null ? null : List<BarangJadi>.from(json["barang_jadi"].map((x) => BarangJadi.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -241,6 +253,10 @@ class Datum {
         "approval_level": approvalLevel == null ? "-" : approvalLevel.toString(),
         "nama_karyawan": namaKaryawan == null ? "-" : namaKaryawan.toString(),
         "nama_jabatan": namaJabatan == null ? "-" : namaJabatan.toString(),
+        "id_karyawan_pengaju": idKaryawanPengaju == null ? "-" : idKaryawanPengaju.toString(),
+        "id_jabatan_pengaju": idJabatanPengaju == null ? "-" : idJabatanPengaju.toString(),
+        "nama_karyawan_pengaju": namaKaryawanPengaju == null ? "-" : namaKaryawanPengaju.toString(),
+        "nama_jabatan_pengaju": namaJabatanPengaju == null ? "-" : namaJabatanPengaju.toString(),
         "nama_peringkat_peluang": namaPeringkatPeluang == null ? "-" : namaPeringkatPeluang.toString(),
         "baseline": baseline == null ? "-" : baseline.toString(),
         "status_deal": statusDeal == null ? "-" : statusDeal.toString(),
@@ -248,7 +264,7 @@ class Datum {
         "nama_proyek": namaProyek == null ? "-" : namaProyek.toString(),
         "realisasi_penawaran": realisasiPenawaran == null ? null : "${realisasiPenawaran?.year.toString().padLeft(4, '0')}-${realisasiPenawaran?.month.toString().padLeft(2, '0')}-${realisasiPenawaran?.day.toString().padLeft(2, '0')}",
         "keterangan": keterangan == null ? "-" : keterangan.toString(),
-        "barang_jadi": barangJadi == List.empty() ? [] : List<dynamic>.from(barangJadi!.map((x) => x.toJson())),
+        "barang_jadi": barangJadi == List.empty() ? [] : barangJadi == null ? null : List<dynamic>.from(barangJadi!.map((x) => x.toJson())),
     };
 }
 
@@ -353,13 +369,13 @@ class Xqry {
         this.page,
         this.perPage,
         this.approvalLevel,
-        required this.statusApproval,
+        this.statusApproval,
     });
 
     final String? page;
     final String? perPage;
     final int? approvalLevel;
-    final List<String> statusApproval;
+    final List<String>? statusApproval;
 
     factory Xqry.fromRawJson(String str) => Xqry.fromJson(json.decode(str));
 
@@ -369,13 +385,13 @@ class Xqry {
         page: json["page"] == null ? "-" : json["page"].toString(),
         perPage: json["per_page"] == null ? "-" : json["per_page"].toString(),
         approvalLevel: json["approval_level"] == null ? 0 : json["approval_level"].toInt(),
-        statusApproval: json["status_approval"] == List.empty() ? [] : List<String>.from(json["status_approval"].map((x) => x)),
+        statusApproval: json["status_approval"] == null ? null : List<String>.from(json["status_approval"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
         "page": page == null ? "-" : page.toString(),
         "per_page": perPage == null ? "-" : perPage.toString(),
-        "approval_level": approvalLevel == null ? "-" : approvalLevel.toString(),
-        "status_approval": statusApproval == List.empty() ? [] : List<dynamic>.from(statusApproval.map((x) => x)),
+        "approval_level": approvalLevel == null ? 0 : approvalLevel!.toInt(),
+        "status_approval": statusApproval == List.empty() ? [] : statusApproval == null ? null : List<dynamic>.from(statusApproval!.map((x) => x)),
     };
 }

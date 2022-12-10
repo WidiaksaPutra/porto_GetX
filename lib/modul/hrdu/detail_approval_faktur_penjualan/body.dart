@@ -1,9 +1,10 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/model/hrdu/faktur_penjualan/detail_faktur_penjualan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_faktur_penjualan/approval_faktur_penjualan.dart';
+import 'package:mgp_mobile_app/modul/hrdu/detail_approval_penawaran/prelim_penawaran/prelim_penawaran.dart';
 import 'package:mgp_mobile_app/widget/component/alert_approval.dart';
 import 'package:mgp_mobile_app/widget/component/button_pemeriksa.dart';
 import 'package:mgp_mobile_app/widget/component/button_pengesah.dart';
@@ -46,6 +47,7 @@ class _BodyState extends State<Body> {
   );
   final formatDecimal = NumberFormat("###.###", "id_ID");
   late List subTotalHarga = [];
+  late List totalAkumulasiArr = [];
   late String grandTotalHarga;
   late String diskonHarga;
   late String totalSetelahDiskon;
@@ -62,6 +64,7 @@ class _BodyState extends State<Body> {
   bool visibilityPengesah = false;
   bool catatanError = false;
   bool visibilityStatusMenu = false;
+  bool isLoading = false;
 
   Future showAlertDialog(
     final String title,
@@ -82,6 +85,10 @@ class _BodyState extends State<Body> {
           labelButton: label,
           colorButton: color,
           onClicked: () async {
+            Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
+            setState(() {
+              isLoading = true;
+            });
             final _postProses = await MGPAPI().postFakturPenjualan(
               noTransaksi: noTransaksi,
               statusApproval: status,
@@ -90,10 +97,12 @@ class _BodyState extends State<Body> {
               approvalBaseline: approvalBaseline,
             );
             if (_postProses == "berhasil") {
-              Get.offAll(const FakturPenjualanView());
-              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
+              setState(() {
+                Get.off(const FakturPenjualanView());
+                isLoading = false;
+              });
             }
-          },
+          }, isLoading: isLoading,
         );
       }
     );
@@ -111,7 +120,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -136,24 +145,27 @@ class _BodyState extends State<Body> {
                     double valuePPN = double.parse(detailFakturPenjualan.data!.detail!.ppn.toString());
                     double valueDiskon = double.parse(detailFakturPenjualan.data!.detail!.diskon.toString());
                     double uangMuka = double.parse(detailFakturPenjualan.data!.detail!.uangMuka.toString());
-                    double persentasePrelim = double.parse(detailFakturPenjualan.data!.detail!.persentasePrelim.toString());
                     num totalHarga = 0;
                     num subTotalPerlim = 0;
+                    num totalPerlim = 0;
                     for(var i = 0; i < detailFakturPenjualan.data!.detail!.detail!.length; i++){
-                      num subTotal = (double.parse(detailFakturPenjualan.data!.detail!.detail![i].hargaSatuanJual.toString())) * double.parse(detailFakturPenjualan.data!.detail!.detail![i].qty.toString());
-                      totalHarga = totalHarga + (double.parse(detailFakturPenjualan.data!.detail!.detail![i].hargaSatuanJual.toString())) * double.parse(detailFakturPenjualan.data!.detail!.detail![i].qty.toString());
-                      subTotalHarga.add(subTotal.toString());        
+                      num getSubTotal = double.parse(detailFakturPenjualan.data!.detail!.detail![i].qty.toString()) * double.parse(detailFakturPenjualan.data!.detail!.detail![i].hargaSatuanJual.toString());
+                      subTotalHarga.add(getSubTotal);
+                      num sum = (double.parse(detailFakturPenjualan.data!.detail!.detail![i].akumulasiProgress.toString()) < 100 ) 
+                      ? double.parse(detailFakturPenjualan.data!.detail!.detail![i].akumulasiProgress.toString()) + double.parse(detailFakturPenjualan.data!.detail!.detail![i].persentaseProgress.toString())
+                      : 100;
+                      num totalAkumulasi = (getSubTotal/100) * sum;
+                      totalAkumulasiArr.add(totalAkumulasi);
+                      totalHarga = totalHarga + totalAkumulasi;     
                     }
-                    if (detailFakturPenjualan.data!.detail!.detail!.isNotEmpty) {
-                      for (var i = 0; i < detailFakturPenjualan.data!.detail!.prelim!.length; i++) {
-                        subTotalPerlim = double.parse(detailFakturPenjualan.data!.detail!.prelim![i].qtyAnalisa.toString())
-                        * double.parse(detailFakturPenjualan.data!.detail!.prelim![i].unitPrice.toString())
-                        * double.parse(detailFakturPenjualan.data!.detail!.prelim![i].konstanta.toString());
-                        totalPrelim = totalPrelim + subTotalPerlim;
-                      }
+
+                    for(var i = 0; i < detailFakturPenjualan.data!.detail!.prelim!.length; i++){
+                      num total = double.parse(detailFakturPenjualan.data!.detail!.prelim![i].unitPrice.toString()) * double.parse(detailFakturPenjualan.data!.detail!.prelim![i].qtyAnalisa.toString()) * double.parse(detailFakturPenjualan.data!.detail!.prelim![i].konstanta.toString());
+                      subTotalPerlim = subTotalPerlim + total;
+                      totalPerlim = (double.parse(detailFakturPenjualan.data!.detail!.persentasePrelim.toString()) / 100) * subTotalPerlim; 
                     }
-                    num prelimTotal = (totalPrelim * persentasePrelim)/100;
-                    num hargaTotal = (totalHarga + prelimTotal);
+                   
+                    num hargaTotal = (totalHarga + totalPerlim);
                     num diskonTotal = (hargaTotal * valueDiskon)/100;
                     num totalDiskon = (hargaTotal - diskonTotal);
                     num ppnTotal = (totalDiskon * valuePPN)/100;
@@ -167,13 +179,11 @@ class _BodyState extends State<Body> {
                     totalSetelahPpn = totalPPN.toString();
                     uangMukaHarga = uangMukaTotal.toString();
                     totalUangMukaHarga = totalUangMukaTotal.toString();
-                    grandTotalPrelim = totalPrelim.toString();
-                    perlimPersentase = prelimTotal.toString();
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: getProportionateScreenHeight(5).h),
+                        SizedBox(height: getProportionateScreenHeight(5)),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(
@@ -184,42 +194,49 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemText(
                                   label: "No. Sales Order",
                                   contentData: detailFakturPenjualan.data!.detail!.noSalesOrder,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemText(
                                   label: "Sales",
                                   contentData: detailFakturPenjualan.data!.detail!.namaSales,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
+                                CardFieldItemText(
+                                  label: "Proyek",
+                                  contentData: detailFakturPenjualan.data!.detail!.namaProyek,
+                                  flexLeftRow: 12,
+                                  flexRightRow: 20,
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemText(
                                   label: "Customer",
                                   contentData: detailFakturPenjualan.data!.detail!.namaCustomer,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemDate(
                                   label: "Tgl. Faktur",
                                   date: detailFakturPenjualan.data!.detail!.tglFaktur,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemText(
                                   label: "No. Faktur",
                                   contentData: detailFakturPenjualan.data!.detail!.noFaktur,
                                   flexLeftRow: 12,
                                   flexRightRow: 20,
                                 ),
-                                // SizedBox(height: getProportionateScreenHeight(5).h),
+                                // SizedBox(height: getProportionateScreenHeight(5)),
                                 // CardFieldItemText(
                                 //   label: "Proyek",
                                 //   contentData: detailFakturPenjualan.data!.detail!.namaProyek,
@@ -235,56 +252,63 @@ class _BodyState extends State<Body> {
                           children: <Widget> [
                             ListView.separated(
                               separatorBuilder: (context, index) => SizedBox(
-                                height: getProportionateScreenHeight(10).h,
+                                height: getProportionateScreenHeight(10),
                               ),
                               itemCount: detailFakturPenjualan.data!.detail!.detail!.length,
                               itemBuilder: (BuildContext context, index){
                                 return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                   child: CardItemExpansionDetail(
                                     child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                       title: HighlightItemName(
                                         child: Text(
                                           detailFakturPenjualan.data!.detail!.detail![index].noSuratJalan.toString(),
-                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       subtitle: Padding(
-                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
+                                            CardFieldItemDate(
+                                              label: "Tgl. Penerimaan Surat Jalan",
+                                              date: detailFakturPenjualan.data!.detail!.detail![index].tglPenerimaanSuratJalan,
+                                              flexLeftRow: 10,
+                                              flexRightRow: 20,
+                                            ),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemDate(
                                               label: "Tgl. Surat Jalan",
                                               date: detailFakturPenjualan.data!.detail!.detail![index].tglSuratJalan,
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),  
+                                            SizedBox(height: getProportionateScreenHeight(10)),  
                                             CardFieldItemText(
                                               label: "No. Surat Jalan",
-                                              contentData: detailFakturPenjualan.data!.detail!.detail![index].noSuratJalan,
+                                              contentData: detailFakturPenjualan.data!.detail!.detail![index].noPenerimaanSuratJalan,
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemDate(
                                               label: "Tgl. Delivery Order",
                                               date: detailFakturPenjualan.data!.detail!.detail![index].tglDeliveryOrder,
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemText(
                                               label: "No. Delivery Order",
                                               contentData: detailFakturPenjualan.data!.detail!.detail![index].noDeliveryOrder,
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemRightRow(
                                               label: "Item Barang",
                                               rightRow: <Widget> [
@@ -298,7 +322,7 @@ class _BodyState extends State<Body> {
                                                     detailFakturPenjualan.data!.detail!.detail![index].namaItem.toString(),
                                                     style: TextStyle(
                                                       color: Colors.black,
-                                                      fontSize: 14.sp
+                                                      fontSize: 14,
                                                     ),
                                                     textAlign: TextAlign.left,
                                                   )
@@ -313,7 +337,14 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
+                                            CardFieldItemText(
+                                              label: "Akumulasi Progress",
+                                              contentData: detailFakturPenjualan.data!.detail!.detail![index].akumulasiProgress,
+                                              flexLeftRow: 10,
+                                              flexRightRow: 20,
+                                            ),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemRightRow(
                                               label: "Qty. Surat Jalan",
                                               rightRow: <Widget> [
@@ -326,7 +357,7 @@ class _BodyState extends State<Body> {
                                                     detailFakturPenjualan.data!.detail!.detail![index].namaSatuan.toString(),
                                                     style: TextStyle(
                                                       color: Colors.black,
-                                                      fontSize: 14.sp
+                                                      fontSize: 14,
                                                     ),
                                                     textAlign: TextAlign.left,
                                                   )
@@ -341,17 +372,31 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemFormatCurrency(
                                               label: "Harga Satuan",
                                               contentData: detailFakturPenjualan.data!.detail!.detail![index].hargaSatuanJual,
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemFormatCurrency(
                                               label: "Sub Total",
-                                              contentData: subTotalHarga[index],
+                                              contentData: subTotalHarga[index].toString(),
+                                              flexLeftRow: 10,
+                                              flexRightRow: 20,
+                                            ),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
+                                            CardFieldItemText(
+                                              label: "Progress",
+                                              contentData: "${double.parse(detailFakturPenjualan.data!.detail!.detail![index].persentaseProgress.toString())}%",
+                                              flexLeftRow: 10,
+                                              flexRightRow: 20,
+                                            ),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
+                                            CardFieldItemFormatCurrency(
+                                              label: "Total",
+                                              contentData: totalAkumulasiArr[index].toString(),
                                               flexLeftRow: 10,
                                               flexRightRow: 20,
                                             ),
@@ -365,35 +410,71 @@ class _BodyState extends State<Body> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                             ),
-                            SizedBox(height: getProportionateScreenHeight(10).h),
+                            SizedBox(height: getProportionateScreenHeight(10)),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                              child: CardItemExpansionDetail(
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
+                                  title: Text(
+                                    "PRELIM",
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14,),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  subtitle: Padding(
+                                    padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        CardFieldItemText(
+                                          label: "Akumulasi Progress",
+                                          contentData: "${detailFakturPenjualan.data!.detail!.akumulasiPrelim}%",
+                                          flexLeftRow: 10,
+                                          flexRightRow: 20,
+                                        ),
+                                        SizedBox(height: getProportionateScreenHeight(10)),
+                                        CardFieldItemFormatCurrency(
+                                          label: "Sub Total",
+                                          contentData: subTotalPerlim.toString(),
+                                          flexLeftRow: 10,
+                                          flexRightRow: 20,
+                                        ),
+                                        SizedBox(height: getProportionateScreenHeight(10)),
+                                        CardFieldItemText(
+                                          label: "Progress",
+                                          contentData: "${detailFakturPenjualan.data!.detail!.persentasePrelim}%",
+                                          flexLeftRow: 10,
+                                          flexRightRow: 20,
+                                        ),
+                                        SizedBox(height: getProportionateScreenHeight(10)),
+                                        CardFieldItemFormatCurrency(
+                                          label: "Total",
+                                          contentData: totalPerlim.toString(),
+                                          flexLeftRow: 10,
+                                          flexRightRow: 20,
+                                        ),
+                                        SizedBox(height: getProportionateScreenHeight(10)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: getProportionateScreenHeight(10)),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                               child: CardItemExpansionDetail(
                                 child: ListTile(
                                   title: Column(
                                     children: <Widget> [
-                                      CardFieldItemTotal(
-                                        label: "Total Prelim",
-                                        total: grandTotalPrelim,
-                                        flexLeftRow: 15,
-                                        flexRightRow: 20,
-                                      ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
-                                      CardFieldItemPercent(
-                                        label: "Prelim Disertakan Dalam Faktur",
-                                        labelValue: detailFakturPenjualan.data!.detail!.persentasePrelim,
-                                        total: perlimPersentase,
-                                        flexLeftRow: 15,
-                                        flexRightRow: 20,
-                                      ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
                                       CardFieldItemTotal(
                                         label: "Total",
                                         total: grandTotalHarga,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      SizedBox(height: getProportionateScreenHeight(5)),
                                       CardFieldItemPercent(
                                         label: "Diskon",
                                         labelValue: detailFakturPenjualan.data!.detail!.diskon,
@@ -401,14 +482,14 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      SizedBox(height: getProportionateScreenHeight(5)),
                                       CardFieldItemTotal(
                                         label: "Total Setelah Diskon",
                                         total: totalSetelahDiskon,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      SizedBox(height: getProportionateScreenHeight(5)),
                                       CardFieldItemPercent(
                                         label: "PPN",
                                         labelValue: detailFakturPenjualan.data!.detail!.ppn,
@@ -416,14 +497,14 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      SizedBox(height: getProportionateScreenHeight(5)),
                                       CardFieldItemTotal(
                                         label: "Total Setelah PPN",
                                         total: totalSetelahPpn,
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      SizedBox(height: getProportionateScreenHeight(5)),
                                       CardFieldItemPercent(
                                         label: "Uang Muka",
                                         labelValue: detailFakturPenjualan.data!.detail!.uangMuka,
@@ -431,7 +512,7 @@ class _BodyState extends State<Body> {
                                         flexLeftRow: 15,
                                         flexRightRow: 20,
                                       ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
+                                      SizedBox(height: getProportionateScreenHeight(5)),
                                       CardFieldItemTotal(
                                         label: "Sisa",
                                         total: totalUangMukaHarga,
@@ -443,7 +524,7 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: getProportionateScreenHeight(10).h),
+                            SizedBox(height: getProportionateScreenHeight(10)),
                           ],
                         ),
                         if (detailFakturPenjualan.data!.approval.isNotEmpty)...[
@@ -452,7 +533,7 @@ class _BodyState extends State<Body> {
                             children: <Widget> [
                               ListView.separated(
                                 separatorBuilder: (context, index) => SizedBox(
-                                  height: getProportionateScreenHeight(10).h,
+                                  height: getProportionateScreenHeight(10),
                                 ),
                                 itemCount: detailFakturPenjualan.data!.approval.length,
                                 itemBuilder: (context, index){
@@ -467,14 +548,14 @@ class _BodyState extends State<Body> {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(10).h),
+                              SizedBox(height: getProportionateScreenHeight(10)),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10), horizontal: getProportionateScreenWidth(3)),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -500,15 +581,15 @@ class _BodyState extends State<Body> {
                           visible: catatanError,
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               const FormErrors(errors: kCatatanError),
-                              SizedBox(height: getProportionateScreenHeight(8).h),
+                              SizedBox(height: getProportionateScreenHeight(8)),
                             ],
                           )
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
-                          child: SizedBox(height: getProportionateScreenHeight(10).h)
+                          child: SizedBox(height: getProportionateScreenHeight(10))
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
@@ -558,7 +639,7 @@ class _BodyState extends State<Body> {
                                   );
                                 }
                               }
-                            },
+                            }, isLoading: isLoading,
                           ),
                         ),
                         Visibility(
@@ -594,10 +675,10 @@ class _BodyState extends State<Body> {
                                   );
                                 }
                               }
-                            },
+                            }, isLoading: isLoading,
                           ),
                         ),
-                        SizedBox(height: getProportionateScreenHeight(30).h),
+                        SizedBox(height: getProportionateScreenHeight(30)),
                       ],
                     );
                   } else {

@@ -1,4 +1,4 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -30,7 +30,7 @@ class _NamaBodyState extends State<NamaBody> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
@@ -67,7 +67,7 @@ class _NamaBodyState extends State<NamaBody> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(height: getProportionateScreenHeight(10).h),
+                      SizedBox(height: getProportionateScreenHeight(10)),
                       for(int j = 0 ; j < listNamaFinishingBarangJadi.length ; j++)...[
                         if(listNamaFinishingBarangJadi[j].toString() != "-")...[
                           CardFieldAnalisa(

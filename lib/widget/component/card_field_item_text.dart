@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardFieldItemText extends StatelessWidget {
@@ -26,11 +26,11 @@ class CardFieldItemText extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0)),
                 child: Text(label,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 )
@@ -45,7 +45,7 @@ class CardFieldItemText extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(10).w, right: getProportionateScreenWidth(10).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(10), right: getProportionateScreenWidth(10)),
                 child: const Text(":",
                   style: TextStyle(
                     color: Colors.black,
@@ -63,12 +63,12 @@ class CardFieldItemText extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0)),
                 child: (contentData != null)
                 ? Text(contentData.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 )
@@ -112,11 +112,11 @@ class CardFieldItemText2 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0)),
                 child: Text(label,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 )
@@ -131,7 +131,7 @@ class CardFieldItemText2 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(10).w, right: getProportionateScreenWidth(10).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(10), right: getProportionateScreenWidth(10)),
                 child: const Text(":",
                   style: TextStyle(
                     color: Colors.black,
@@ -149,12 +149,12 @@ class CardFieldItemText2 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0)),
                 child: (contentData != null)
                 ? Text(contentData.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 )

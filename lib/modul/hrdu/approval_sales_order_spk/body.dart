@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_sales_order_spk/detail_approval_sales_order_spk.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_sales_order_spk.dart';
@@ -67,15 +67,15 @@ class _BodyState extends State<Body> with SalesOrderSPKClass{
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: Column(
           children: <Widget>[
-            SizedBox(height: getProportionateScreenHeight(15).h),
+            SizedBox(height: getProportionateScreenHeight(15)),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
               child: const SearchField(),
             ),
-            SizedBox(height: getProportionateScreenHeight(5).h),
+            SizedBox(height: getProportionateScreenHeight(5)),
             FutureBuilder(
               future: _future,
               builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot){
@@ -97,7 +97,7 @@ class _BodyState extends State<Body> with SalesOrderSPKClass{
                                   itemBuilder: (context, index){
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                         title: HighlightItemName(
                                           child: Text(
                                             dataHistorySalesOrder[index].noSalesOrderSpk.toString(),
@@ -106,7 +106,7 @@ class _BodyState extends State<Body> with SalesOrderSPKClass{
                                           ),
                                         ),
                                         subtitle: Padding(
-                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,28 +117,28 @@ class _BodyState extends State<Body> with SalesOrderSPKClass{
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Jabatan",
                                                 contentData: dataHistorySalesOrder[index].namaJabatanPengaju,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemDate(
                                                 label: "Tgl. Sales Order SPK",
                                                 date: dataHistorySalesOrder[index].tglSalesOrderSpk,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Customer",
                                                 contentData: dataHistorySalesOrder[index].namaCustomer,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemStatus(
                                                 contentData: dataHistorySalesOrder[index].statusApproval
                                               ),
@@ -164,7 +164,7 @@ class _BodyState extends State<Body> with SalesOrderSPKClass{
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: getProportionateScreenHeight(80).h,
+                                    height: getProportionateScreenHeight(80),
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -193,15 +193,15 @@ class _BodyState extends State<Body> with SalesOrderSPKClass{
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               Skeleton(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(270).h,
+                                height: getProportionateScreenHeight(270),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                             ],
                           ),
                         );

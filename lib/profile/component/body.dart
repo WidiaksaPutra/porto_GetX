@@ -1,4 +1,4 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/model/profil/profil_model.dart';
@@ -43,14 +43,14 @@ class _BodyState extends State<Body> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: getProportionateScreenHeight(5).h),
+                  SizedBox(height: getProportionateScreenHeight(5)),
                   Container(
-                    padding: EdgeInsets.only(top: getProportionateScreenHeight(10).h, bottom: getProportionateScreenHeight(10).h),
+                    padding: EdgeInsets.only(top: getProportionateScreenHeight(10), bottom: getProportionateScreenHeight(10)),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          width: getProportionateScreenWidth(1).w,
+                          width: getProportionateScreenWidth(1),
                           color: const Color.fromRGBO(0, 0, 0, 0.08)
                         )
                       )
@@ -68,10 +68,10 @@ class _BodyState extends State<Body> {
                               child: Row(
                                 children: <Widget> [
                                   Padding(
-                                    padding: EdgeInsets.only(left: getProportionateScreenWidth(30).w),
+                                    padding: EdgeInsets.only(left: getProportionateScreenWidth(30)),
                                     child: SizedBox(
-                                      height: getProportionateScreenHeight(105).h,
-                                      width: getProportionateScreenWidth(105).w,
+                                      height: getProportionateScreenHeight(105),
+                                      width: getProportionateScreenWidth(105),
                                       child: const CircleAvatar(
                                         backgroundImage: NetworkImage("https://picsum.photos/250?image=9"),
                                       ),
@@ -79,20 +79,20 @@ class _BodyState extends State<Body> {
                                   ),
                                   Flexible(
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(10).w),
+                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(10)),
                                       child: (profilData!.data!.namaKaryawan != null)
                                       ? Text(profilData.data!.namaKaryawan.toString(),
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w800,
-                                          fontSize: 17.sp
+                                          fontSize: 17,
                                         ),
                                       )
                                       : Text("-",
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w800,
-                                          fontSize: 18.sp
+                                          fontSize: 18,
                                         ),
                                       )
                                     ),
@@ -102,7 +102,7 @@ class _BodyState extends State<Body> {
                             ),
                           ],
                         ),
-                        SizedBox(height: getProportionateScreenHeight(10).h),
+                        SizedBox(height: getProportionateScreenHeight(10)),
                         Row(
                           children: <Widget>[
                             Flexible(
@@ -112,7 +112,7 @@ class _BodyState extends State<Body> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Padding(
-                                    padding: EdgeInsets.only(left: getProportionateScreenWidth(30).w),
+                                    padding: EdgeInsets.only(left: getProportionateScreenWidth(30)),
                                     child: ShaderMask(
                                       shaderCallback: (Rect bounds) {
                                         return const LinearGradient(
@@ -126,27 +126,27 @@ class _BodyState extends State<Body> {
                                         ).createShader(bounds);
                                       },
                                       child: SvgPicture.asset("assets/icons/email_menu_profile.svg",
-                                        width: getProportionateScreenWidth(25).w,
-                                        height: getProportionateScreenHeight(25).h,
+                                        width: getProportionateScreenWidth(25),
+                                        height: getProportionateScreenHeight(25),
                                         color: kPrimaryColor,
                                       ),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                    padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                     child: (profilData.data!.email != null) 
                                     ? Text(profilData.data!.email.toString(),
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 14.sp
+                                        fontSize: 14,
                                       ),
                                     )
                                     : Text("-",
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 14.sp
+                                        fontSize: 14,
                                       ),
                                     )
                                   ),
@@ -155,7 +155,7 @@ class _BodyState extends State<Body> {
                             ),
                           ],
                         ),
-                        SizedBox(height: getProportionateScreenHeight(10).h),
+                        SizedBox(height: getProportionateScreenHeight(10)),
                         Row(
                           children: <Widget>[
                             Flexible(
@@ -165,7 +165,7 @@ class _BodyState extends State<Body> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Padding(
-                                    padding: EdgeInsets.only(left: getProportionateScreenWidth(30).w),
+                                    padding: EdgeInsets.only(left: getProportionateScreenWidth(30)),
                                     child: ShaderMask(
                                       shaderCallback: (Rect bounds) {
                                         return const LinearGradient(
@@ -179,27 +179,27 @@ class _BodyState extends State<Body> {
                                         ).createShader(bounds);
                                       },
                                       child: SvgPicture.asset("assets/icons/phone_menu_profile.svg",
-                                        width: getProportionateScreenWidth(25).w,
-                                        height: getProportionateScreenHeight(25).h,
+                                        width: getProportionateScreenWidth(25),
+                                        height: getProportionateScreenHeight(25),
                                         color: kPrimaryColor,
                                       ),
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                    padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                     child: (profilData.data!.noHp != null) 
                                     ? Text(profilData.data!.noHp.toString(),
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 14.sp
+                                        fontSize: 14,
                                       ),
                                     )
                                     : Text("-",
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 14.sp
+                                        fontSize: 14,
                                       ),
                                     )
                                   ),
@@ -211,7 +211,7 @@ class _BodyState extends State<Body> {
                       ],
                     ),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(15).h),
+                  SizedBox(height: getProportionateScreenHeight(15)),
                   const FormAccount(),
                 ],
               ),
@@ -220,7 +220,7 @@ class _BodyState extends State<Body> {
         } else {
           return SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.only(top: getProportionateScreenHeight(10).h, bottom: getProportionateScreenHeight(10).h, left: getProportionateScreenWidth(30).w),
+              padding: EdgeInsets.only(top: getProportionateScreenHeight(10), bottom: getProportionateScreenHeight(10), left: getProportionateScreenWidth(30)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,56 +228,56 @@ class _BodyState extends State<Body> {
                   Row(
                     children: <Widget> [
                       CircleSkeleton(
-                        size: 105.r,
+                        size: 105,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: getProportionateScreenWidth(10).w, right: getProportionateScreenWidth(10).w),
+                        padding: EdgeInsets.only(left: getProportionateScreenWidth(10), right: getProportionateScreenWidth(10)),
                         child: Skeleton(
-                          width: getProportionateScreenWidth(230).w,
-                          height: getProportionateScreenHeight(35).h,
+                          width: getProportionateScreenWidth(230),
+                          height: getProportionateScreenHeight(35),
                         ),
                       )
                     ],
                   ),
-                  SizedBox(height: getProportionateScreenHeight(10).h),
+                  SizedBox(height: getProportionateScreenHeight(10)),
                   Skeleton(
-                    width: getProportionateScreenWidth(270).w,
-                    height: getProportionateScreenHeight(30).h,
+                    width: getProportionateScreenWidth(270),
+                    height: getProportionateScreenHeight(30),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(10).h),
+                  SizedBox(height: getProportionateScreenHeight(10)),
                   Skeleton(
-                    width: getProportionateScreenWidth(200).w,
-                    height: getProportionateScreenHeight(30).h,
+                    width: getProportionateScreenWidth(200),
+                    height: getProportionateScreenHeight(30),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(40).h),
+                  SizedBox(height: getProportionateScreenHeight(40)),
                   Skeleton(
-                    width: getProportionateScreenWidth(350).w,
-                    height: getProportionateScreenHeight(45).h,
+                    width: getProportionateScreenWidth(350),
+                    height: getProportionateScreenHeight(45),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(10).h),
+                  SizedBox(height: getProportionateScreenHeight(10)),
                   Skeleton(
-                    width: getProportionateScreenWidth(350).w,
-                    height: getProportionateScreenHeight(45).h,
+                    width: getProportionateScreenWidth(350),
+                    height: getProportionateScreenHeight(45),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(10).h),
+                  SizedBox(height: getProportionateScreenHeight(10)),
                   Skeleton(
-                    width: getProportionateScreenWidth(350).w,
-                    height: getProportionateScreenHeight(45).h,
+                    width: getProportionateScreenWidth(350),
+                    height: getProportionateScreenHeight(45),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(10).h),
+                  SizedBox(height: getProportionateScreenHeight(10)),
                   Skeleton(
-                    width: getProportionateScreenWidth(350).w,
-                    height: getProportionateScreenHeight(45).h,
+                    width: getProportionateScreenWidth(350),
+                    height: getProportionateScreenHeight(45),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(10).h),
+                  SizedBox(height: getProportionateScreenHeight(10)),
                   Skeleton(
-                    width: getProportionateScreenWidth(350).w,
-                    height: getProportionateScreenHeight(45).h,
+                    width: getProportionateScreenWidth(350),
+                    height: getProportionateScreenHeight(45),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(10).h),
+                  SizedBox(height: getProportionateScreenHeight(10)),
                   Skeleton(
-                    width: getProportionateScreenWidth(350).w,
-                    height: getProportionateScreenHeight(45).h,
+                    width: getProportionateScreenWidth(350),
+                    height: getProportionateScreenHeight(45),
                   ),
                 ],
               ),

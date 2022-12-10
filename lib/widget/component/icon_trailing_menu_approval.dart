@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
@@ -24,8 +24,8 @@ class IconTrailingMenuApproval extends StatelessWidget {
           ).createShader(bounds);
         },
         child: SvgPicture.asset("assets/icons/arrow_ios.svg",
-          height: getProportionateScreenHeight(15).h,
-          width: getProportionateScreenWidth(15).w,
+          height: getProportionateScreenHeight(15),
+          width: getProportionateScreenWidth(15),
           color: kPrimaryColor,
         ),
       ),

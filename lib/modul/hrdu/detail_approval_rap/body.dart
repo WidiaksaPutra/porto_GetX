@@ -1,4 +1,4 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/model/hrdu/rap/detail_rap_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -57,6 +57,7 @@ class _BodyState extends State<Body> {
   bool visibilityPengesah = false;
   bool catatanError = false;
   bool visibilityStatusMenu = false;
+  bool isLoading = false;
 
   Future showAlertDialog(
     final String title,
@@ -77,6 +78,10 @@ class _BodyState extends State<Body> {
           labelButton: label,
           colorButton: color,
           onClicked: () async {
+            setState(() {
+              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
+              isLoading = true;
+            });
             final _postProses = await MGPAPI().postRAP(
               noTransaksi: noTransaksi,
               statusApproval: status,
@@ -85,10 +90,12 @@ class _BodyState extends State<Body> {
               approvalBaseline: approvalBaseline,
             );
             if (_postProses == "berhasil") {
-              Get.offAll(const RencanaAnggaranProduksiView());
-              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
+              setState(() {
+                Get.off(const RencanaAnggaranProduksiView());
+                isLoading = false;
+              });
             }
-          },
+          }, isLoading: isLoading,
         );
       }
     );
@@ -106,7 +113,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -139,7 +146,7 @@ class _BodyState extends State<Body> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: getProportionateScreenHeight(5).h),
+                        SizedBox(height: getProportionateScreenHeight(5)),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(
@@ -150,49 +157,49 @@ class _BodyState extends State<Body> {
                                   flexLeftRow: 9,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemText(
                                   label: "No. Peluang",
                                   contentData: detailRAP.data!.detail!.noPeluang,
                                   flexLeftRow: 9,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemDate(
                                   label: "Tgl. RAP",
                                   date: detailRAP.data!.detail!.tglRap,
                                   flexLeftRow: 9,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemText(
                                   label: "No. RAP",
                                   contentData: detailRAP.data!.detail!.noRap,
                                   flexLeftRow: 9,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemText(
                                   label: "Customer",
                                   contentData: detailRAP.data!.detail!.namaCustomer,
                                   flexLeftRow: 9,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemText(
                                   label: "ATT",
                                   contentData: detailRAP.data!.detail!.att,
                                   flexLeftRow: 9,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemDate(
                                   label: "Tgl. Selesai",
                                   date: detailRAP.data!.detail!.tglSelesai,
                                   flexLeftRow: 9,
                                   flexRightRow: 20,
                                 ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
+                                SizedBox(height: getProportionateScreenHeight(5)),
                                 CardFieldItemText(
                                   label: "Peringkat Peluang",
                                   contentData: detailRAP.data!.detail!.namaPeringkatPeluang,
@@ -208,24 +215,24 @@ class _BodyState extends State<Body> {
                           children: <Widget> [
                             ListView.separated(
                               separatorBuilder: (context, index) => SizedBox(
-                                height: getProportionateScreenHeight(10).h,
+                                height: getProportionateScreenHeight(10),
                               ),
                               itemCount: detailRAP.data!.detail!.detailBarangJadi!.length,
                               itemBuilder: (context, index){
                                 return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                   child: CardItemExpansionDetail(
                                     child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                       title: HighlightItemName(
                                         child: Text(
                                           detailRAP.data!.detail!.detailBarangJadi![index]!.kodeItem.toString(),
-                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       subtitle: Padding(
-                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,7 +243,7 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemRightRow(
                                               label: "Qty",
                                               rightRow: <Widget> [
@@ -266,14 +273,14 @@ class _BodyState extends State<Body> {
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemFormatCurrency(
                                               label: "Harga Satuan",
                                               contentData: detailRAP.data!.detail!.detailBarangJadi![index]!.hargaSatuanRap,
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemFormatCurrency(
                                               label: "Sub Total",
                                               contentData: subTotalHargaRAP[index],
@@ -293,9 +300,9 @@ class _BodyState extends State<Body> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                             ),
-                            SizedBox(height: getProportionateScreenHeight(10).h),
+                            SizedBox(height: getProportionateScreenHeight(10)),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                               child: CardItemExpansionDetail(
                                 child: ListTile(
                                   title: Column(
@@ -311,7 +318,7 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: getProportionateScreenHeight(10).h),
+                            SizedBox(height: getProportionateScreenHeight(10)),
                           ],
                         ),
                         if (detailRAP.data!.approval!.isNotEmpty)...[
@@ -320,7 +327,7 @@ class _BodyState extends State<Body> {
                             children: <Widget> [
                               ListView.separated(
                                 separatorBuilder: (context, index) => SizedBox(
-                                  height: getProportionateScreenHeight(10).h,
+                                  height: getProportionateScreenHeight(10),
                                 ),
                                 itemCount: detailRAP.data!.approval!.length,
                                 itemBuilder: (context, index){
@@ -335,14 +342,14 @@ class _BodyState extends State<Body> {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(10).h),
+                              SizedBox(height: getProportionateScreenHeight(10)),
                             ]
                           ),
                         ],
                         Visibility(
                           visible: visibilityStatusMenu,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
+                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10), horizontal: getProportionateScreenWidth(3)),
                             child: CatatanApproval(
                               controller: _catatanTextEditingController,
                               onChanged: (value) {
@@ -368,15 +375,15 @@ class _BodyState extends State<Body> {
                           visible: catatanError,
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               const FormErrors(errors: kCatatanError),
-                              SizedBox(height: getProportionateScreenHeight(8).h),
+                              SizedBox(height: getProportionateScreenHeight(8)),
                             ],
                           )
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
-                          child: SizedBox(height: getProportionateScreenHeight(10).h)
+                          child: SizedBox(height: getProportionateScreenHeight(10))
                         ),
                         Visibility(
                           visible: visibilityStatusMenu,
@@ -426,7 +433,7 @@ class _BodyState extends State<Body> {
                                   );
                                 }
                               }
-                            },
+                            }, isLoading: isLoading,
                           ),
                         ),
                         Visibility(
@@ -462,10 +469,10 @@ class _BodyState extends State<Body> {
                                   );
                                 }
                               }
-                            },
+                            }, isLoading: isLoading,
                           ),
                         ),
-                        SizedBox(height: getProportionateScreenHeight(30).h),
+                        SizedBox(height: getProportionateScreenHeight(30)),
                       ],
                     );
                   } else {

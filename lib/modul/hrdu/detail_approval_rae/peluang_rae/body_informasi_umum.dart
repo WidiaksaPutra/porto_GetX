@@ -1,5 +1,5 @@
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/detail_peluang_rae.dart';
 import 'package:mgp_mobile_app/widget/component/card_expansion_detail.dart';
@@ -47,7 +47,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
@@ -59,7 +59,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(height: getProportionateScreenHeight(5).h),
+                      SizedBox(height: getProportionateScreenHeight(5)),
                       CardDetail(
                         child: ListTile(
                           subtitle: Column(
@@ -70,84 +70,84 @@ class _BodyInformasiState extends State<BodyInformasi> {
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "No. Peluang",
                                 contentData: detailPeluangRAE.data!.noPeluang,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemDate(
                                 label: "Target Penawaran",
                                 date: detailPeluangRAE.data!.tglSelesai,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemDate(
                                 label: "Realisasi Penawaran",
                                 date: detailPeluangRAE.data!.realisasiPenawaran,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Peringkat Peluang",
                                 contentData: detailPeluangRAE.data!.namaPeringkatPeluang,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Customer",
                                 contentData: detailPeluangRAE.data!.namaCustomer,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Proyek",
                                 contentData: detailPeluangRAE.data!.namaProyek,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "ATT",
                                 contentData: detailPeluangRAE.data!.att,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Kelompok Proyek",
                                 contentData: detailPeluangRAE.data!.kelompokProyek,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Keterangan Pengiriman",
                                 contentData: detailPeluangRAE.data!.keteranganPengiriman,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Schedule Kebutuhan Proyek (Total Hari)",
                                 contentData: detailPeluangRAE.data!.scheduleKebutuhanProyek,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Lokasi Pengiriman",
                                 contentData: detailPeluangRAE.data!.lokasiPengiriman,
                                 flexLeftRow: 10,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemIcon(
                                 label: "Instalasi",
                                 status: detailPeluangRAE.data!.instalasi,
@@ -162,12 +162,12 @@ class _BodyInformasiState extends State<BodyInformasi> {
                         label: "Informasi Lainnya",
                         children: <Widget> [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                             child: CardItemExpansionDetail(
                               child: SizedBox(
                                 width: double.infinity,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
                                   child : (detailPeluangRAE.data!.lainLain != null)
                                   ? Html(
                                       data: detailPeluangRAE.data!.lainLain
@@ -175,7 +175,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                                   : Text("-",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 14.sp
+                                      fontSize: 14,
                                     ),
                                     textAlign: TextAlign.left,
                                   ),
@@ -183,7 +183,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                               ),
                             ),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          SizedBox(height: getProportionateScreenHeight(10)),
                         ],
                       ),
                       if (detailPeluangRAE.data!.detail!.isNotEmpty)...[
@@ -192,24 +192,24 @@ class _BodyInformasiState extends State<BodyInformasi> {
                           children: <Widget> [
                             ListView.separated(
                               separatorBuilder: (context, index) => SizedBox(
-                                height: getProportionateScreenHeight(10).h,
+                                height: getProportionateScreenHeight(10),
                               ),
                               itemCount: detailPeluangRAE.data!.detail!.length,
                               itemBuilder: (context, index){
                                 return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                   child: CardItemExpansionDetail(
                                     child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                       title: HighlightItemName(
                                         child: Text(
                                           detailPeluangRAE.data!.detail![index].kodeItem.toString(),
-                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       subtitle: Padding(
-                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,7 +220,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                                               flexLeftRow: 12,
                                               flexRightRow: 20,
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             CardFieldItemRightRow(
                                               label: "Qty",
                                               rightRow: <Widget> [
@@ -253,21 +253,21 @@ class _BodyInformasiState extends State<BodyInformasi> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                             ),
-                            SizedBox(height: getProportionateScreenHeight(10).h),
+                            SizedBox(height: getProportionateScreenHeight(10)),
                           ]
                         ),
                       ],
-                      SizedBox(height: getProportionateScreenHeight(30).h),
+                      SizedBox(height: getProportionateScreenHeight(30)),
                     ],
                   );
                 } else {
                   return Center(
                     child: Column(
                       children: <Widget>[
-                        SizedBox(height: getProportionateScreenHeight(20).h),
-                        Skeleton(height: getProportionateScreenHeight(300).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(10).h),
-                        Skeleton(height: getProportionateScreenHeight(100).h, width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(20)),
+                        Skeleton(height: getProportionateScreenHeight(300), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(10)),
+                        Skeleton(height: getProportionateScreenHeight(100), width: double.infinity),
                       ],
                     ),
                   );

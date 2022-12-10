@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardFieldItemHtml extends StatelessWidget {
@@ -31,7 +31,7 @@ class CardFieldItemHtml extends StatelessWidget {
                 child: Text(label,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -46,11 +46,11 @@ class CardFieldItemHtml extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5).w),
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
                 child: Text(":",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -64,13 +64,13 @@ class CardFieldItemHtml extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                 child: (htmlUraian != null)
                 ? Html(data: htmlUraian)
-                : Text("-",
+                : const Text("-",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 )

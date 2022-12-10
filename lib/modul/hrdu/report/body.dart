@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mgp_mobile_app/modul/hrdu/menu_report_hrdu/report_harga_perkiraan_sendiri/report_harga_perkiraan_sendiri.dart';
@@ -59,7 +59,7 @@ class _BodyState extends State<Body> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(height: getProportionateScreenHeight(15).h),
+          SizedBox(height: getProportionateScreenHeight(15)),
           CardMenuApproval(
             child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(
@@ -68,7 +68,7 @@ class _BodyState extends State<Body> {
               itemCount: hakAksesReport.length,
               itemBuilder: (BuildContext context, index){
                 return ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15.0).w),
+                  contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15.0)),
                   leading: const IconMenuApproval(),
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

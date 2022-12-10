@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -29,9 +29,9 @@ class CardFieldItemUrlLauncher extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 0),
                 child: Text(label,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -46,11 +46,11 @@ class CardFieldItemUrlLauncher extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5).w),
-                child: Text(":",
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
+                child: const Text(":",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -64,14 +64,14 @@ class CardFieldItemUrlLauncher extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                 child: (linkReferensi != null && linkReferensi.toString() != "")
                 ? InkWell(
-                  child: Text("Lihat Referensi",
+                  child: const Text("Lihat Referensi",
                     style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
-                      fontSize: 14.sp
+                      fontSize: 14,
                     ),
                     textAlign: TextAlign.left,
                   ),
@@ -79,10 +79,10 @@ class CardFieldItemUrlLauncher extends StatelessWidget {
                     launch(linkReferensi.toString());
                   },
                 )
-                : Text("-",
+                : const Text("-",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 )

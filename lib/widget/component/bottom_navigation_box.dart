@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class BottomNavigationBox extends StatelessWidget {
@@ -13,27 +13,27 @@ class BottomNavigationBox extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            offset: Offset(getProportionateScreenWidth(0).w, getProportionateScreenHeight(-15).h),
-            blurRadius: 20.r,
-            color: const Color(0xFFDADADA).withOpacity(0.15.r),
+            offset: Offset(getProportionateScreenWidth(0), getProportionateScreenHeight(-15)),
+            blurRadius: 20,
+            color: const Color(0xFFDADADA).withOpacity(0.15),
           ),
         ],
         borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(20).r,
-          topRight: const Radius.circular(20).r,
+          topLeft: const Radius.circular(20),
+          topRight: const Radius.circular(20),
         ),
         border: Border.all(
-          width: getProportionateScreenWidth(0.4).w,
+          width: getProportionateScreenWidth(0.4),
           color: Colors.grey
         ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.only(                                           
-          topLeft: const Radius.circular(20.0).r,                                            
-          topRight: const Radius.circular(20.0).r,                                           
+          topLeft: const Radius.circular(20.0),                                            
+          topRight: const Radius.circular(20.0),                                           
         ),
         child: SizedBox(
-          height: getProportionateScreenHeight(85).h,
+          height: getProportionateScreenHeight(85),
           width: double.infinity,
           child: child
         ),

@@ -1,4 +1,4 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/rab/analisa_single_rab.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rab/analisa_alat_bantu_on_site/alat_bantu_on_site.dart';
@@ -79,7 +79,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
@@ -292,7 +292,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                     children: <Widget>[
                       CardDetail(
                         child: ListTile(
-                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
+                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
                           title: Column(
                             children: <Widget>[
                               CardFieldItemText(
@@ -301,28 +301,28 @@ class _BodyInformasiState extends State<BodyInformasi> {
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Nama Barang Jadi",
                                 contentData: analisaSingleRAE.data!.namaItem,
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              // SizedBox(height: getProportionateScreenHeight(5).h),
+                              // SizedBox(height: getProportionateScreenHeight(5)),
                               // CardFieldItemText(
                               //   label: "Sumber Barang Jadi",
                               //   contentData: analisaSingleRAE.data!.namaKelompok,
                               //   flexLeftRow: 14,
                               //   flexRightRow: 20,
                               // ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Satuan Jual",
                                 contentData: analisaSingleRAE.data!.namaSatuan,
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              // SizedBox(height: getProportionateScreenHeight(5).h),
+                              // SizedBox(height: getProportionateScreenHeight(5)),
                               // CardFieldItemUrlLauncher(
                               //   label: "Link Referensi",
                               //   linkReferensi: analisaSingleRAE.data!.linkReferensi,
@@ -337,12 +337,12 @@ class _BodyInformasiState extends State<BodyInformasi> {
                       //   label: "Uraian",
                       //   children: <Widget> [
                       //     Padding(
-                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                       //       child: CardItemExpansionDetail(
                       //         child: SizedBox(
                       //           width: double.infinity,
                       //           child: Padding(
-                      //             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
+                      //             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
                       //             child: (analisaSingleRAE.data!.uraian != null)
                       //             ? Expanded(
                       //                 child: Html(
@@ -352,7 +352,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                       //             : const Text("-",
                       //               style: TextStyle(
                       //                 color: Colors.black,
-                      //                 fontSize: 14.sp
+                      //                 fontSize: 14,
                       //               ),
                       //               textAlign: TextAlign.left,
                       //             )
@@ -360,7 +360,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                       //         ),
                       //       ),
                       //     ),
-                      //     SizedBox(height: getProportionateScreenHeight(10).h),
+                      //     SizedBox(height: getProportionateScreenHeight(10)),
                       //   ],
                       // ),
                       CardFieldAnalisa(
@@ -426,25 +426,25 @@ class _BodyInformasiState extends State<BodyInformasi> {
                           ),
                         ),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(10).h),
+                      SizedBox(height: getProportionateScreenHeight(10)),
                     ],
                   );
                 } else {
                   return Center(
                     child: Column(
                       children: <Widget>[
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(200).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(200), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
                       ],
                     ),
                   );

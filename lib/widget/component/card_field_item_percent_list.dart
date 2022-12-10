@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
@@ -47,7 +47,7 @@ class _CardFieldItemPercentListState extends State<CardFieldItemPercentList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0)),
                 child: (widget.labelValue != null)
                 ? Text(widget.label+
                   " ("+
@@ -57,7 +57,7 @@ class _CardFieldItemPercentListState extends State<CardFieldItemPercentList> {
                   +"%)",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 )
@@ -65,7 +65,7 @@ class _CardFieldItemPercentListState extends State<CardFieldItemPercentList> {
                   " (0%)",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 )
@@ -80,7 +80,7 @@ class _CardFieldItemPercentListState extends State<CardFieldItemPercentList> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(10).w, right: getProportionateScreenWidth(10).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(10), right: getProportionateScreenWidth(10)),
                 child: const Text(":",
                   style: TextStyle(
                     color: Colors.black,
@@ -106,7 +106,7 @@ class _CardFieldItemPercentListState extends State<CardFieldItemPercentList> {
                   ),
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 ),

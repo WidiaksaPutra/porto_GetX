@@ -1,4 +1,4 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/detail_approval_rae.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -67,15 +67,15 @@ class _BodyHistoryState extends State<BodyHistory> with RAEClass{
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: Column(
           children: <Widget>[
-            SizedBox(height: getProportionateScreenHeight(15).h),
+            SizedBox(height: getProportionateScreenHeight(15)),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
               child: const SearchField(),
             ),
-            SizedBox(height: getProportionateScreenHeight(5).h),
+            SizedBox(height: getProportionateScreenHeight(5)),
             FutureBuilder(
               future: _future,
               builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot){
@@ -97,7 +97,7 @@ class _BodyHistoryState extends State<BodyHistory> with RAEClass{
                                   itemBuilder: (context, index){
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                         title: HighlightItemName(
                                           child: Text(
                                             dataRAE[index].noRae.toString(),
@@ -106,7 +106,7 @@ class _BodyHistoryState extends State<BodyHistory> with RAEClass{
                                           ),
                                         ),
                                         subtitle: Padding(
-                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,42 +117,42 @@ class _BodyHistoryState extends State<BodyHistory> with RAEClass{
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Jabatan",
                                                 contentData: dataRAE[index].namaJabatanPengaju,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemDate(
                                                 label: "Tgl. RAE",
                                                 date: dataRAE[index].tglRae,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Customer",
                                                 contentData: dataRAE[index].namaCustomer,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               // CardFieldItemText(
                                               //   label: "Proyek",
                                               //   contentData: dataRAE[index].namaProyek,
                                               //   flexLeftRow: 12,
                                               //   flexRightRow: 20,
                                               // ),
-                                              // SizedBox(height: getProportionateScreenHeight(10).h),
+                                              // SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Baseline",
                                                 contentData: dataRAE[index].baseline,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemStatus(
                                                 contentData: dataRAE[index].statusApproval,
                                               ),
@@ -178,7 +178,7 @@ class _BodyHistoryState extends State<BodyHistory> with RAEClass{
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: getProportionateScreenHeight(80).h,
+                                    height: getProportionateScreenHeight(80),
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -207,15 +207,15 @@ class _BodyHistoryState extends State<BodyHistory> with RAEClass{
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               Skeleton(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(290).h,
+                                height: getProportionateScreenHeight(290),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                             ],
                           ),
                         );

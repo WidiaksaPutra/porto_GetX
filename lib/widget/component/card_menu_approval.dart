@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardMenuApproval extends StatelessWidget {
@@ -12,23 +12,23 @@ class CardMenuApproval extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
       child: SizedBox(
         width: double.infinity,
         child: Card(
           shape: ContinuousRectangleBorder(
-            borderRadius: BorderRadius.circular(25.r),
+            borderRadius: BorderRadius.circular(25),
             side: BorderSide(
-              width: getProportionateScreenWidth(0.4).w, color: Colors.grey
+              width: getProportionateScreenWidth(0.4), color: Colors.grey
             )
           ),
           elevation: 8.0,
-          margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+          margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
           child: Container(
-            padding: EdgeInsets.only(top: getProportionateScreenHeight(10).h, bottom: getProportionateScreenHeight(10).h),
+            padding: EdgeInsets.only(top: getProportionateScreenHeight(10), bottom: getProportionateScreenHeight(10)),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(15.r),
+              borderRadius: BorderRadius.circular(15),
             ),
             child: child,
           ),

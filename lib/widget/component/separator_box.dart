@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -10,16 +10,16 @@ class SeparatorBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: getProportionateScreenHeight(15).h,
+      height: getProportionateScreenHeight(15),
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            width: getProportionateScreenWidth(2).w,
-            color: colorBorderSeparator
+            width: getProportionateScreenWidth(2),
+            color: colorCardItem
           ),
           bottom: BorderSide(
-            width: getProportionateScreenWidth(2).w,
-            color: colorBorderSeparator
+            width: getProportionateScreenWidth(2),
+            color: colorCardItem
           )
         )
       ),

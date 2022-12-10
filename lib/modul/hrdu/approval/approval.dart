@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/main_page/main_page.dart';
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
@@ -70,19 +70,19 @@ class _ApprovalViewState extends State<ApprovalView> with SingleTickerProviderSt
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: getProportionateScreenWidth(1).w,
+                      width: getProportionateScreenWidth(1),
                       color: const Color.fromRGBO(0, 0, 0, 0.08)
                     )
                   )
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: getProportionateScreenHeight(40).h,
+                  height: getProportionateScreenHeight(40),
                   child: TabBar(
                     controller: controller,
                     indicatorColor: kPrimaryColor,
-                    labelStyle: TextStyle(
-                      fontSize: 14.sp,
+                    labelStyle: const TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins"
                     ),

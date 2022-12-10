@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mgp_mobile_app/modul/hrdu/approval/approval.dart';
+import 'package:mgp_mobile_app/modul/hrdu/dashboard_hrdu/dashboard_hrdu.dart';
+import 'package:mgp_mobile_app/modul/hrdu/report/report.dart';
+import 'package:mgp_mobile_app/widget/component/bottom_navigation_box.dart';
 
 // List Color
 const kPrimaryColor = Color.fromRGBO(11, 163, 96, 1);

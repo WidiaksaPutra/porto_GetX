@@ -48,13 +48,13 @@ class Data {
     String toRawJson() => json.encode(toJson());
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        detail: json["detail"] == null ? null : DataDetail.fromJson(json["detail"]),
+        detail: DataDetail.fromJson(json["detail"]),
         behavior: json["behavior"] == null ? "-" : json["behavior"].toString(),
         approval: List<Approval>.from(json["approval"].map((x) => Approval.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "detail": detail == null ? null : detail!.toJson(),
+        "detail": detail!.toJson(),
         "behavior": behavior == null ? "-" : behavior.toString(),
         "approval": List<dynamic>.from(approval.map((x) => x.toJson())),
     };
@@ -124,7 +124,7 @@ class Approval {
         "approval_level": approvalLevel == null ? "-" : approvalLevel.toString(),
         "nama_karyawan": namaKaryawan == null ? "-" : namaKaryawan.toString(),
         "nama_jabatan": namaJabatan == null ? "-" : namaJabatan.toString(),
-        "approval_baseline": approvalBaseline == null ? "-" : approvalBaseline.toString()
+        "approval_baseline": approvalBaseline == null ? "-" : approvalBaseline.toString(),
     };
 }
 
@@ -152,6 +152,7 @@ class DataDetail {
         this.namaProyek,
         this.persentasePrelim,
         this.uangMuka,
+        this.akumulasiPrelim,
         this.detail,
         this.prelim,
     });
@@ -178,6 +179,7 @@ class DataDetail {
     final String? namaProyek;
     final String? persentasePrelim;
     final String? uangMuka;
+    final String? akumulasiPrelim;
     final List<DetailElement>? detail;
     final List<Prelim>? prelim;
 
@@ -196,8 +198,8 @@ class DataDetail {
         batasWaktu: json["batas_waktu"] == null ? null : DateTime.parse(json["batas_waktu"]),
         catatan: json["catatan"] == null ? "-" : json["catatan"].toString(),
         alamatPengiriman: json["alamat_pengiriman"] == null ? "-" : json["alamat_pengiriman"].toString(),
-        diskon: json["diskon"] == null ? "0.00" : json["diskon"].toString(),
-        ppn: json["ppn"] == null ? "0.00" : json["ppn"].toString(),
+        diskon: json["diskon"] == null ? "-" : json["diskon"].toString(),
+        ppn: json["ppn"] == null ? "-" : json["ppn"].toString(),
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         idSales: json["id_sales"] == null ? "-" : json["id_sales"].toString(),
         namaSales: json["nama_sales"] == null ? "-" : json["nama_sales"].toString(),
@@ -206,10 +208,11 @@ class DataDetail {
         baseline: json["baseline"] == null ? "-" : json["baseline"].toString(),
         idProyek: json["id_proyek"] == null ? "-" : json["id_proyek"].toString(),
         namaProyek: json["nama_proyek"] == null ? "-" : json["nama_proyek"].toString(),
-        persentasePrelim: json["persentase_prelim"] == null ? "0.00" : json["persentase_prelim"].toString(),
-        uangMuka: json["uang_muka"] == null ? "0.00" : json["uang_muka"].toString(),
-        detail: json["detail"] == List.empty() ? [] : List<DetailElement>.from(json["detail"].map((x) => DetailElement.fromJson(x))),
-        prelim: json["prelim"] == null ? [] : json["prelim"] == List.empty() ? [] : List<Prelim>.from(json["prelim"].map((x) => Prelim.fromJson(x))),
+        persentasePrelim: json["persentase_prelim"] == null ? "-" : json["persentase_prelim"].toString(),
+        uangMuka: json["uang_muka"] == null ? "-" : json["uang_muka"].toString(),
+        akumulasiPrelim: json["akumulasi_prelim"] == null ? "-" : json["akumulasi_prelim"].toString(),
+        detail: json["detail"] == List.empty() ? [] : json["detail"] == null ? null : List<DetailElement>.from(json["detail"].map((x) => DetailElement.fromJson(x))),
+        prelim: json["prelim"] == List.empty() ? [] : json["prelim"] == null ? null : List<Prelim>.from(json["prelim"].map((x) => Prelim.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -223,8 +226,8 @@ class DataDetail {
         "batas_waktu": batasWaktu == null ? null : "${batasWaktu?.year.toString().padLeft(4, '0')}-${batasWaktu?.month.toString().padLeft(2, '0')}-${batasWaktu?.day.toString().padLeft(2, '0')}",
         "catatan": catatan == null ? "-" : catatan.toString(),
         "alamat_pengiriman": alamatPengiriman == null ? "-" : alamatPengiriman.toString(),
-        "diskon": diskon == null ? "0.00" : diskon.toString(),
-        "ppn": ppn == null ? "0.00" : ppn.toString(),
+        "diskon": diskon == null ? "-" : diskon.toString(),
+        "ppn": ppn == null ? "-" : ppn.toString(),
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "id_sales": idSales == null ? "-" : idSales.toString(),
         "nama_sales": namaSales == null ? "-" : namaSales.toString(),
@@ -233,10 +236,11 @@ class DataDetail {
         "baseline": baseline == null ? "-" : baseline.toString(),
         "id_proyek": idProyek == null ? "-" : idProyek.toString(),
         "nama_proyek": namaProyek == null ? "-" : namaProyek.toString(),
-        "persentase_prelim": persentasePrelim == null ? "0.00" : persentasePrelim.toString(),
-        "uang_muka": uangMuka == null ? "0.00" : uangMuka.toString(),
-        "detail": detail == List.empty() ? [] : List<dynamic>.from(detail!.map((x) => x.toJson())),
-        "prelim": prelim == List.empty()? [] : List<dynamic>.from(prelim!.map((x) => x.toJson())),
+        "persentase_prelim": persentasePrelim == null ? "-" : persentasePrelim.toString(),
+        "uang_muka": uangMuka == null ? "-" : uangMuka.toString(),
+        "akumulasi_prelim": akumulasiPrelim == null ? "-" : akumulasiPrelim.toString(),
+        "detail": detail == List.empty() ? [] : detail == null ? null : List<dynamic>.from(detail!.map((x) => x.toJson())),
+        "prelim": prelim == List.empty() ? [] : prelim == null ? null : List<dynamic>.from(prelim!.map((x) => x.toJson())),
     };
 }
 
@@ -263,6 +267,8 @@ class DetailElement {
         this.tglPenerimaanSuratJalan,
         this.noPenerimaanSuratJalan,
         this.persentaseProgress,
+        this.akumulasiProgress,
+        this.instalasi,
     });
 
     final String? idFakturPenjualanDetail;
@@ -286,6 +292,8 @@ class DetailElement {
     final DateTime? tglPenerimaanSuratJalan;
     final String? noPenerimaanSuratJalan;
     final String? persentaseProgress;
+    final String? akumulasiProgress;
+    final bool? instalasi;
 
     factory DetailElement.fromRawJson(String str) => DetailElement.fromJson(json.decode(str));
 
@@ -307,12 +315,14 @@ class DetailElement {
         namaItem: json["nama_item"] == null ? "-" : json["nama_item"].toString(),
         idSatuan: json["id_satuan"] == null ? "-" : json["id_satuan"].toString(),
         namaSatuan: json["nama_satuan"] == null ? "-" : json["nama_satuan"].toString(),
-        hargaSatuanJual: json["harga_satuan_jual"] == null ? "0.00" : json["harga_satuan_jual"].toString(),
-        qty: json["qty"] == null ? "0.00" : json["qty"].toString(),
+        hargaSatuanJual: json["harga_satuan_jual"] == null ? "-" : json["harga_satuan_jual"].toString(),
+        qty: json["qty"] == null ? "-" : json["qty"].toString(),
         jumlah: json["jumlah"] == null ? "-" : json["jumlah"].toString(),
         tglPenerimaanSuratJalan: json["tgl_penerimaan_surat_jalan"] == null ? null : DateTime.parse(json["tgl_penerimaan_surat_jalan"]),
         noPenerimaanSuratJalan: json["no_penerimaan_surat_jalan"] == null ? "-" : json["no_penerimaan_surat_jalan"].toString(),
         persentaseProgress: json["persentase_progress"] == null ? "-" : json["persentase_progress"].toString(),
+        akumulasiProgress: json["akumulasi_progress"] == null ? "-" : json["akumulasi_progress"].toString(),
+        instalasi: json["instalasi"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -331,12 +341,14 @@ class DetailElement {
         "nama_item": namaItem == null ? "-" : namaItem.toString(),
         "id_satuan": idSatuan == null ? "-" : idSatuan.toString(),
         "nama_satuan": namaSatuan == null ? "-" : namaSatuan.toString(),
-        "harga_satuan_jual": hargaSatuanJual == null ? "0.00" : hargaSatuanJual.toString(),
-        "qty": qty == null ? "0.00" : qty.toString(),
+        "harga_satuan_jual": hargaSatuanJual == null ? "-" : hargaSatuanJual.toString(),
+        "qty": qty == null ? "-" : qty.toString(),
         "jumlah": jumlah == null ? "-" : jumlah.toString(),
-        "tgl_penerimaan_surat_jalan": tglPenerimaanSuratJalan == null ? null : "${tglPenerimaanSuratJalan?.year.toString().padLeft(4, '0')}-${tglPenerimaanSuratJalan?.month.toString().padLeft(2, '0')}-${tglPenerimaanSuratJalan?.day.toString().padLeft(2, '0')}",
+        "tgl_penerimaan_surat_jalan": tglPenerimaanSuratJalan == null ? "-" : "${tglPenerimaanSuratJalan?.year.toString().padLeft(4, '0')}-${tglPenerimaanSuratJalan?.month.toString().padLeft(2, '0')}-${tglPenerimaanSuratJalan?.day.toString().padLeft(2, '0')}",
         "no_penerimaan_surat_jalan": noPenerimaanSuratJalan == null ? "-" : noPenerimaanSuratJalan.toString(),
         "persentase_progress": persentaseProgress == null ? "-" : persentaseProgress.toString(),
+        "akumulasi_progress": akumulasiProgress == null ? "-" : akumulasiProgress.toString(),
+        "instalasi": instalasi == null ? "-" : instalasi.toString(),
     };
 }
 
@@ -393,7 +405,7 @@ class Prelim {
         idKelompok: json["id_kelompok"] == null ? "-" : json["id_kelompok"].toString(),
         namaKelompok: json["nama_kelompok"] == null ? "-" : json["nama_kelompok"].toString(),
         hargaSatuanPrelim: json["harga_satuan_prelim"] == null ? "-" : json["harga_satuan_prelim"].toString(),
-        qtyAnalisa: json["qty_analisa"] == null ? "0.00" : json["qty_analisa"].toString(),
+        qtyAnalisa: json["qty_analisa"] == null ? "-" : json["qty_analisa"].toString(),
         idSatuanPrelim: json["id_satuan_prelim"] == null ? "-" : json["id_satuan_prelim"].toString(),
         kodeSatuanPrelim: json["kode_satuan_prelim"] == null ? "-" : json["kode_satuan_prelim"].toString(),
         namaSatuanPrelim: json["nama_satuan_prelim"] == null ? "-" : json["nama_satuan_prelim"].toString(),
@@ -402,8 +414,8 @@ class Prelim {
         kodeSatuanWaktu: json["kode_satuan_waktu"] == null ? "-" : json["kode_satuan_waktu"].toString(),
         namaSatuanWaktu: json["nama_satuan_waktu"] == null ? "-" : json["nama_satuan_waktu"].toString(),
         idRab: json["id_rab"] == null ? "-" : json["id_rab"].toString(),
-        konstanta: json["konstanta"] == null ? "0.00" : json["konstanta"].toString(),
-        unitPrice: json["unit_price"] == null ? "0.00" : json["unit_price"].toString(),
+        konstanta: json["konstanta"] == null ? "-" : json["konstanta"].toString(),
+        unitPrice: json["unit_price"] == null ? "-" : json["unit_price"].toString(),
     );
 
     Map<String, dynamic> toJson() => {
@@ -414,7 +426,7 @@ class Prelim {
         "id_kelompok": idKelompok == null ? "-" : idKelompok.toString(),
         "nama_kelompok": namaKelompok == null ? "-" : namaKelompok.toString(),
         "harga_satuan_prelim": hargaSatuanPrelim == null ? "-" : hargaSatuanPrelim.toString(),
-        "qty_analisa": qtyAnalisa == null ? "0.00" : qtyAnalisa.toString(),
+        "qty_analisa": qtyAnalisa == null ? "-" : qtyAnalisa.toString(),
         "id_satuan_prelim": idSatuanPrelim == null ? "-" : idSatuanPrelim.toString(),
         "kode_satuan_prelim": kodeSatuanPrelim == null ? "-" : kodeSatuanPrelim.toString(),
         "nama_satuan_prelim": namaSatuanPrelim == null ? "-" : namaSatuanPrelim.toString(),
@@ -423,7 +435,7 @@ class Prelim {
         "kode_satuan_waktu": kodeSatuanWaktu == null ? "-" : kodeSatuanWaktu.toString(),
         "nama_satuan_waktu": namaSatuanWaktu == null ? "-" : namaSatuanWaktu.toString(),
         "id_rab": idRab == null ? "-" : idRab.toString(),
-        "konstanta": konstanta == null ? "0.00" : konstanta.toString(),
-        "unit_price": unitPrice == null ? "0.00" : unitPrice.toString(),
+        "konstanta": konstanta == null ? "-" : konstanta.toString(),
+        "unit_price": unitPrice == null ? "-" : unitPrice.toString(),
     };
 }

@@ -25,7 +25,6 @@ import 'package:mgp_mobile_app/main.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -45,8 +44,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     controller.addListener(() {});
     pushyRegister();
     Pushy.listen();
-    Pushy.setNotificationIcon('logo_mgp');
     Pushy.setNotificationListener(backgroundNotificationListener);
+    Pushy.setNotificationIcon('logo_mgp');
     Pushy.setNotificationClickListener((Map<String, dynamic> data) {
     // String message = data['message'];
     String jenis = data['jenis_transaksi'];
@@ -143,19 +142,19 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: getProportionateScreenWidth(1).w,
+                      width: getProportionateScreenWidth(1),
                       color: const Color.fromRGBO(0, 0, 0, 0.08)
                     )
                   )
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: getProportionateScreenHeight(40).h,
+                  height: getProportionateScreenHeight(40),
                   child: TabBar(
                     controller: controller,
                     indicatorColor: kPrimaryColor,
-                    labelStyle: TextStyle(
-                      fontSize: 14.sp,
+                    labelStyle: const TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins"
                     ),

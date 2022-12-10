@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -16,7 +16,7 @@ class ButtonLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: getProportionateScreenHeight(50).h,
+      height: getProportionateScreenHeight(50),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.centerLeft,
@@ -26,7 +26,7 @@ class ButtonLogin extends StatelessWidget {
             kSecondaryColor,
           ]
         ),
-        borderRadius: BorderRadius.circular(5).r,
+        borderRadius: BorderRadius.circular(5),
       ),
       child: TextButton(
         style: TextButton.styleFrom(
@@ -38,26 +38,26 @@ class ButtonLogin extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(
-              width: getProportionateScreenWidth(25).w,
-              height: getProportionateScreenHeight(25).h,
+              width: getProportionateScreenWidth(25),
+              height: getProportionateScreenHeight(25),
               child: const CircularProgressIndicator(
                 color: Colors.white,
               ),
             ),
-            SizedBox(width: getProportionateScreenWidth(24).w),
-            Text("Loading ...",
+            SizedBox(width: getProportionateScreenWidth(24)),
+            const Text("Loading ...",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
+                fontSize: 20,
                 color: Colors.white 
               ),
             )
           ],
         )
-        : Text("Login",
+        : const Text("Login",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20.sp,
+            fontSize: 20,
             color: Colors.white,
           ),
         )

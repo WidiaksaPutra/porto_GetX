@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/model/hrdu/harga_perkiraan_sendiri/harga_perkiraan_sendiri_model.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
@@ -147,12 +147,12 @@ class _BodyState extends State<Body> {
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: Column(
           children: <Widget>[
-            SizedBox(height: getProportionateScreenHeight(15).h),
+            SizedBox(height: getProportionateScreenHeight(15)),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
               child: Row(
                 children: <Widget> [
                   const Expanded(
@@ -183,7 +183,7 @@ class _BodyState extends State<Body> {
                       dropdownWidth: 153,
                       dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
                       dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
+                        borderRadius: BorderRadius.circular(10),
                         color: colorCardItem,
                       ),
                       dropdownElevation: 8,
@@ -193,7 +193,7 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(5).h),
+            SizedBox(height: getProportionateScreenHeight(5)),
             FutureBuilder(
               future: _future,
               builder: (BuildContext context, AsyncSnapshot<List<Datum>> snapshot){
@@ -215,7 +215,7 @@ class _BodyState extends State<Body> {
                                   itemBuilder: (context, index){
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                         title: HighlightItemName(
                                           child: Text(
                                             dataHargaPerkiraanSendiri[index].kodeItem.toString(),
@@ -224,7 +224,7 @@ class _BodyState extends State<Body> {
                                           ),
                                         ),
                                         subtitle: Padding(
-                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,42 +235,42 @@ class _BodyState extends State<Body> {
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Grup Buaso",
                                                 contentData: dataHargaPerkiraanSendiri[index].grupBuaso,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Satuan Pakai",
                                                 contentData: dataHargaPerkiraanSendiri[index].satuanPakai,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemFormatCurrency(
                                                 label: "HPS Pakai",
                                                 contentData: dataHargaPerkiraanSendiri[index].hpsPakai,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemText(
                                                 label: "Satuan Beli",
                                                 contentData: dataHargaPerkiraanSendiri[index].satuanBeli,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemFormatCurrency(
                                                 label: "HPS Beli",
                                                 contentData: dataHargaPerkiraanSendiri[index].hpsBeli,
                                                 flexLeftRow: 12,
                                                 flexRightRow: 20,
                                               ),
-                                              SizedBox(height: getProportionateScreenHeight(10).h),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
                                               CardFieldItemDate(
                                                 label: "Tgl. HPS",
                                                 date: dataHargaPerkiraanSendiri[index].tglHps,
@@ -298,7 +298,7 @@ class _BodyState extends State<Body> {
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: getProportionateScreenHeight(80).h,
+                                    height: getProportionateScreenHeight(80),
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -327,15 +327,15 @@ class _BodyState extends State<Body> {
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               Skeleton(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(380).h,
+                                height: getProportionateScreenHeight(380),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                             ],
                           ),
                         );

@@ -28,8 +28,10 @@ class Regrae {
     factory Regrae.fromJson(Map<String, dynamic> json) => Regrae(
         status: json["status"],
         message: json["message"] == null ? "-" : json["message"].toString(),
-        xqry: Xqry.fromJson(json["xqry"]),
-        data: json["data"] == List.empty() ? [] : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        xqry: json["xqry"] == null ? null : Xqry.fromJson(json["xqry"]),
+        data: json["data"] == null ? [] : 
+              json["data"] == List.empty() ? [] :
+              List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
         dataCount: json["data_count"] == null ? 0 : json["data_count"].toInt(),
         totalPage: json["total_page"] == null ? 0 : json["total_page"].toInt(),
     );
@@ -37,10 +39,12 @@ class Regrae {
     Map<String, dynamic> toJson() => {
         "status": status,
         "message": message == null ? "-" : message.toString(),
-        "xqry": xqry?.toJson(),
-        "data": data == List.empty() ? [] : List<dynamic>.from(data.map((x) => x.toJson())),
-        "data_count": dataCount == null ? 0 : dataCount?.toInt(),
-        "total_page": totalPage == null ? 0 : totalPage?.toInt(),
+        "xqry": xqry == null ? null : xqry!.toJson(),
+        "data": data == null ? [] :
+              data == List.empty() ? [] : 
+              List<dynamic>.from(data.map((x) => x.toJson())),
+        "data_count": dataCount == null ? 0 : dataCount!.toInt(),
+        "total_page": totalPage == null ? 0 : totalPage!.toInt(),
     };
 }
 
@@ -103,7 +107,7 @@ class Datum {
     final String? keteranganPengiriman;
     final String? lokasiPengiriman;
     final DateTime? tglSelesai;
-    final String? realisasiPenawaran;
+    final DateTime? realisasiPenawaran;
     final String? att;
     final bool? instalasi;
     final String? lainLain;
@@ -151,7 +155,7 @@ class Datum {
         keteranganPengiriman: json["keterangan_pengiriman"] == null ? "-" : json["keterangan_pengiriman"].toString(),
         lokasiPengiriman: json["lokasi_pengiriman"] == null ? "-" : json["lokasi_pengiriman"].toString(),
         tglSelesai: json["tgl_selesai"] == null ? null : DateTime.parse(json["tgl_selesai"]),
-        realisasiPenawaran: json["realisasi_penawaran"] == null ? "-" : json["realisasi_penawaran"].toString(),
+        realisasiPenawaran: json["realisasi_penawaran"] == null ? null : DateTime.parse(json["realisasi_penawaran"]),
         att: json["att"] == null ? "-" : json["att"].toString(),
         instalasi: json["instalasi"],
         lainLain: json["lain_lain"] == null ? "-" : json["lain_lain"].toString(),
@@ -179,7 +183,9 @@ class Datum {
         kelompokProyek: json["kelompok_proyek"] == null ? "-" : json["kelompok_proyek"].toString(),
         targetPenawaran: json["target_penawaran"] == null ? null : DateTime.parse(json["target_penawaran"]),
         isDraft: json["is_draft"],
-        barangJadi: json["barang_jadi"] == List.empty() ? [] : List<BarangJadi>.from(json["barang_jadi"].map((x) => BarangJadi.fromJson(x))),
+        barangJadi: json["barang_jadi"] == null ? [] :
+                    json["barang_jadi"] == List.empty() ? [] :
+                    List<BarangJadi>.from(json["barang_jadi"].map((x) => BarangJadi.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -193,22 +199,22 @@ class Datum {
         "nama_customer": namaCustomer == null ? "-" : namaCustomer.toString(),
         "id_peringkat_peluang": idPeringkatPeluang == null ? "-" : idPeringkatPeluang.toString(),
         "nama_peringkat_peluang": namaPeringkatPeluang == null ? "-" : namaPeringkatPeluang.toString(),
-        "keterangan_pengiriman": keteranganPengiriman == null ? null : keteranganPengiriman.toString(),
+        "keterangan_pengiriman": keteranganPengiriman == null ? "-" : keteranganPengiriman.toString(),
         "lokasi_pengiriman": lokasiPengiriman == null ? "-" : lokasiPengiriman.toString(),
         "tgl_selesai": tglSelesai == null ? null : "${tglSelesai?.year.toString().padLeft(4, '0')}-${tglSelesai?.month.toString().padLeft(2, '0')}-${tglSelesai?.day.toString().padLeft(2, '0')}",
-        "realisasi_penawaran": realisasiPenawaran == null ? "-" : realisasiPenawaran.toString(),
-        "att": att == null ? "-" : att.toString(),
-        "instalasi": instalasi == null ? "-" : instalasi.toString(),
-        "lain_lain": lainLain == null ? "-" : lainLain.toString(),
-        "is_hidden": isHidden == null ? "-" : isHidden.toString(),
-        "baseline": baseline == null ? "-" : baseline.toString(),
-        "id_approval_transaksi": idApprovalTransaksi == null ? "-" : idApprovalTransaksi.toString(),
-        "no_transaksi": noTransaksi == null ? "-" : noTransaksi.toString(),
-        "kode_transaksi": kodeTransaksi == null ? "-" : kodeTransaksi.toString(),
-        "id_karyawan": idKaryawan == null ? "-" : idKaryawan.toString(),
-        "id_jabatan": idJabatan == null ? "-" : idJabatan.toString(),
-        "status_approval": statusApproval == null ? "-" : statusApproval.toString(),
-        "catatan": catatan == null ? "-" : catatan.toString(),
+        "realisasi_penawaran": realisasiPenawaran == null ? null : "${realisasiPenawaran?.year.toString().padLeft(4, '0')}-${realisasiPenawaran?.month.toString().padLeft(2, '0')}-${realisasiPenawaran?.day.toString().padLeft(2, '0')}",
+        "att": att == null ? "-" : att.toString() ,
+        "instalasi": instalasi == null ? "-" : instalasi.toString() ,
+        "lain_lain": lainLain == null ? "-" : lainLain.toString() ,
+        "is_hidden": isHidden == null ? "-" : isHidden.toString() ,
+        "baseline": baseline == null ? "-" : baseline.toString() ,
+        "id_approval_transaksi": idApprovalTransaksi == null ? "-" : idApprovalTransaksi.toString() ,
+        "no_transaksi": noTransaksi == null ? "-" : noTransaksi.toString() ,
+        "kode_transaksi": kodeTransaksi == null ? "-" : kodeTransaksi.toString() ,
+        "id_karyawan": idKaryawan == null ? "-" : idKaryawan.toString() ,
+        "id_jabatan": idJabatan == null ? "-" : idJabatan.toString() ,
+        "status_approval": statusApproval == null ? "-" : statusApproval.toString() ,
+        "catatan": catatan == null ? "-" : catatan.toString() ,
         "created_at": createdAt == null ? null : createdAt!.toIso8601String(),
         "tgl_approval": tglApproval == null ? null : "${tglApproval?.year.toString().padLeft(4, '0')}-${tglApproval?.month.toString().padLeft(2, '0')}-${tglApproval?.day.toString().padLeft(2, '0')}",
         "approval_level": approvalLevel == null ? "-" : approvalLevel.toString(),
@@ -224,7 +230,9 @@ class Datum {
         "kelompok_proyek": kelompokProyek == null ? "-" : kelompokProyek.toString(),
         "target_penawaran": targetPenawaran == null ? null : "${targetPenawaran?.year.toString().padLeft(4, '0')}-${targetPenawaran?.month.toString().padLeft(2, '0')}-${targetPenawaran?.day.toString().padLeft(2, '0')}",
         "is_draft": isDraft == null ? "-" : isDraft.toString(),
-        "barang_jadi": barangJadi == List.empty() ? [] : List<dynamic>.from(barangJadi!.map((x) => x.toJson())),
+        "barang_jadi": barangJadi == null ? [] :
+                      barangJadi == List.empty() ? [] : 
+                      List<dynamic>.from(barangJadi!.map((x) => x.toJson())),
     };
 }
 
@@ -281,13 +289,17 @@ class Xqry {
         page: json["page"] == null ? "-" : json["page"].toString(),
         perPage: json["per_page"] == null ? "-" : json["per_page"].toString(),
         approvalLevel: json["approval_level"] == null ? 0 : json["approval_level"].toInt(),
-        statusApproval: json["status_approval"] == List.empty() ? [] : List<String>.from(json["status_approval"].map((x) => x)),
+        statusApproval: json["status_approval"] == null ? [] :
+                        json["status_approval"] == List.empty() ? [] : 
+                        List<String>.from(json["status_approval"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
-        "page": page == null ? "-" : page.toString(),
-        "per_page": perPage == null ? "-" : perPage.toString(),
-        "approval_level": approvalLevel == null ? 0 : approvalLevel?.toInt(),
-        "status_approval": statusApproval == List.empty() ? [] : List<dynamic>.from(statusApproval!.map((x) => x)),
+        "page": page == null ? "-" : page.toString() ,
+        "per_page": perPage == null ? "-" : perPage.toString() ,
+        "approval_level": approvalLevel == null ? 0 : approvalLevel!.toInt(),
+        "status_approval": statusApproval == null ? [] :
+                        statusApproval == List.empty() ? [] : 
+                        List<dynamic>.from(statusApproval!.map((x) => x)),
     };
 }

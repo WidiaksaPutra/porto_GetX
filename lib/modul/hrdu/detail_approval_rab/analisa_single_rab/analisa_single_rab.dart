@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/model/hrdu/rab/analisa_single_rab.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rab/analisa_single_rab/body_file.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rab/analisa_single_rab/body_gambar.dart';
@@ -60,7 +60,7 @@ class _DetailAnalisaSingleRABViewState extends State<DetailAnalisaSingleRABView>
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 18.sp
+              fontSize: 18,
             ),
           ),
           flexibleSpace: const AppBarThemeColor(),
@@ -73,19 +73,19 @@ class _DetailAnalisaSingleRABViewState extends State<DetailAnalisaSingleRABView>
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: getProportionateScreenWidth(1).w,
+                      width: getProportionateScreenWidth(1),
                       color: const Color.fromRGBO(0, 0, 0, 0.08)
                     )
                   )
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: getProportionateScreenHeight(40).h,
+                  height: getProportionateScreenHeight(40),
                   child: TabBar(
                     controller: controller,
                     indicatorColor: kPrimaryColor,
                     labelStyle: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins"
                     ),
@@ -100,7 +100,7 @@ class _DetailAnalisaSingleRABViewState extends State<DetailAnalisaSingleRABView>
                 ),
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(5).h),
+            SizedBox(height: getProportionateScreenHeight(5)),
             Expanded(
               child: TabBarView(
                 controller: controller,

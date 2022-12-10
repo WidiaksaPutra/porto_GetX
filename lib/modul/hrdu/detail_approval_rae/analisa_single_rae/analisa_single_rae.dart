@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_single_rae/body_file.dart';
@@ -51,11 +51,11 @@ class _DetailAnalisaSingleRAEViewState extends State<DetailAnalisaSingleRAEView>
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Analisa Barang Jadi RAE",
+          title: const Text("Analisa Barang Jadi RAE",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 18.sp
+              fontSize: 18,
             ),
           ),
           flexibleSpace: const AppBarThemeColor(),
@@ -68,19 +68,19 @@ class _DetailAnalisaSingleRAEViewState extends State<DetailAnalisaSingleRAEView>
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: getProportionateScreenWidth(1).w,
+                      width: getProportionateScreenWidth(1),
                       color: const Color.fromRGBO(0, 0, 0, 0.08)
                     )
                   )
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: getProportionateScreenHeight(40).h,
+                  height: getProportionateScreenHeight(40),
                   child: TabBar(
                     controller: controller,
                     indicatorColor: kPrimaryColor,
-                    labelStyle: TextStyle(
-                      fontSize: 14.sp,
+                    labelStyle: const TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins"
                     ),
@@ -95,12 +95,12 @@ class _DetailAnalisaSingleRAEViewState extends State<DetailAnalisaSingleRAEView>
                 ),
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(5).h),
+            SizedBox(height: getProportionateScreenHeight(5)),
             Expanded(
               child: TabBarView(
                 controller: controller,
                 children: <Widget>[
-                  BodyInformasi(futureAnalisaSingleRae: future),
+                  BodyInformasi(futureAnalisaSingleRae: future, idRaeDetail: widget.idRaeDetail,),
                   BodyGambar(futureAnalisaSingleRae: future),
                   BodyFile(futureAnalisaSingleRae: future),
                 ],

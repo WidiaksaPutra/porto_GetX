@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -31,7 +31,7 @@ class CardFieldItemIcon extends StatelessWidget {
                 child: Text(label,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -46,11 +46,11 @@ class CardFieldItemIcon extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5).w),
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
                 child: Text(":",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -64,17 +64,17 @@ class CardFieldItemIcon extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                 child: (status != null)
                 ? SvgPicture.asset(
                   "assets/icons/verify_icon.svg",
-                  height: getProportionateScreenHeight(25).h,
-                  width: getProportionateScreenWidth(25).w,
+                  height: getProportionateScreenHeight(25),
+                  width: getProportionateScreenWidth(25),
                 )
                 : SvgPicture.asset(
                   "assets/icons/reject_icon.svg",
-                  height: getProportionateScreenHeight(25).h,
-                  width: getProportionateScreenWidth(25).w,
+                  height: getProportionateScreenHeight(25),
+                  width: getProportionateScreenWidth(25),
                 )
               ),
             ],

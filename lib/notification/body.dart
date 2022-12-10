@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -155,10 +155,10 @@ class _BodyState extends State<Body> {
     return SizedBox(
       width: double.infinity,
       child: Padding(padding: 
-        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+        EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
         child: Column(
           children: <Widget>[
-            SizedBox(height: getProportionateScreenHeight(10).h),
+            SizedBox(height: getProportionateScreenHeight(10)),
             FutureBuilder(
               future: _future,
               builder: (BuildContext context, AsyncSnapshot<List<Datum>> snapshot){
@@ -182,15 +182,15 @@ class _BodyState extends State<Body> {
                                     // DateTime.parse(dataHistoryNotification[index].createdAt.toString()).timeZoneName.toString();
                                     return CardList(
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                         leading: SizedBox(
-                                          height: getProportionateScreenHeight(60).h,
-                                          width: getProportionateScreenWidth(60).w,
+                                          height: getProportionateScreenHeight(60),
+                                          width: getProportionateScreenWidth(60),
                                           child: CircleAvatar(
                                             backgroundColor: Colors.white,
                                             child: ClipRRect(
                                               child: Image.asset("assets/images/LogoMGP.png"),
-                                              borderRadius: BorderRadius.circular(50).r,
+                                              borderRadius: BorderRadius.circular(50),
                                             ),
                                           ),
                                         ),
@@ -199,7 +199,7 @@ class _BodyState extends State<Body> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Padding(
-                                              padding: EdgeInsets.only(top: getProportionateScreenHeight(5).h),
+                                              padding: EdgeInsets.only(top: getProportionateScreenHeight(5)),
                                               child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,7 +211,7 @@ class _BodyState extends State<Body> {
                                                         child: Column(
                                                           children: <Widget>[
                                                             Padding(
-                                                              padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
+                                                              padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0)),
                                                               child: Text(
                                                                 dataHistoryNotification[index].title.toString()
                                                                 +" diajukan oleh "+
@@ -220,9 +220,9 @@ class _BodyState extends State<Body> {
                                                                 dataHistoryNotification[index].noTransaksi.toString()
                                                                 +" baseline "+
                                                                 dataHistoryNotification[index].baseline.toString(),
-                                                                style: TextStyle(
+                                                                style: const TextStyle(
                                                                   color: Colors.black,
-                                                                  fontSize: 14.sp,
+                                                                  fontSize: 14,
                                                                   fontWeight: FontWeight.w600
                                                                 ),
                                                                 textAlign: TextAlign.left,
@@ -236,7 +236,7 @@ class _BodyState extends State<Body> {
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
+                                            SizedBox(height: getProportionateScreenHeight(10)),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: <Widget>[
@@ -246,9 +246,9 @@ class _BodyState extends State<Body> {
                                                       DateTime.parse(dataHistoryNotification[index].createdAt.toString()
                                                     )
                                                   ).toString(),
-                                                  style: TextStyle(
-                                                    color: const Color.fromRGBO(119, 119, 119, 1),
-                                                    fontSize: 12.sp
+                                                  style: const TextStyle(
+                                                    color: Color.fromRGBO(119, 119, 119, 1),
+                                                    fontSize: 12,
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -258,10 +258,10 @@ class _BodyState extends State<Body> {
                                                       DateTime.parse(dataHistoryNotification[index].createdAt.toString()
                                                     ).toLocal(),
                                                   ).toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black, 
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 12.sp
+                                                    fontSize: 12,
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -287,7 +287,7 @@ class _BodyState extends State<Body> {
                                   left: 0,
                                   bottom: 0,
                                   child: SizedBox(
-                                    height: getProportionateScreenHeight(80).h,
+                                    height: getProportionateScreenHeight(80),
                                     width: constraints.maxWidth,
                                     child: const Center(
                                       child: CircularProgressIndicator(),
@@ -316,14 +316,14 @@ class _BodyState extends State<Body> {
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                           child: Column(
                             children: <Widget>[
                               Skeleton(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(125).h,
+                                height: getProportionateScreenHeight(125),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(15).h),
+                              SizedBox(height: getProportionateScreenHeight(15)),
                             ],
                           ),
                         );

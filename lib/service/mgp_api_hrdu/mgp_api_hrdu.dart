@@ -8,6 +8,7 @@ import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_fin.dar
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_gambar.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_penunjang.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_umum.dart';
+import 'package:mgp_mobile_app/model/hrdu/rae/rekapitulasi.dart';
 import 'package:mgp_mobile_app/model/hrdu/rap/analisa_single_rap.dart';
 import 'package:mgp_mobile_app/model/hrdu/sales_order_spk/detail_sales_order_spk_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/sales_order_spk/list_kelompok_prelim_sales_order_spk.dart';
@@ -38,12 +39,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MGPAPI {
   static var client = http.Client();
-  static var baseURL = "https://devapi.mgp.bhawanaerp.com/v1/hrdu";
+  // static var baseURL = "https://devapi.mgp.bhawanaerp.com/v1/hrdu";
   // static var baseURL = "https://api.mgp.bhawanaerp.com/v1/hrdu";
+  // static var baseURL = "https://api.erpmgpwoodworks.com/v1/hrdu";
+  static var baseURL = "https://devapi.erpmgpwoodworks.com/v1/hrdu";
+  // static var baseURL = "https://api.erpmgpwoodworks.com/v1/hrdu";
+
   late String? tokens;
   var status = "";
 
-  //Login
+  //Login 
   Future loginUser({required String username, required String password}) async {
     try {
       final responseBody = await client.post(Uri.parse('$baseURL/auth/login'),
@@ -470,6 +475,7 @@ class MGPAPI {
     await Future.delayed(const Duration(milliseconds: 500));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
+    print(noPurchaseRequest);
     Map<String, String>? queryParams = {
       'no_purchase_request' : noPurchaseRequest,
     };
@@ -481,6 +487,8 @@ class MGPAPI {
         'Authorization': 'Bearer $tokens',
       }
     );
+    print("test hallo");
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body);
       DetailPr detailPurchaseRequestData = DetailPr.fromJson(parsed);
@@ -491,6 +499,7 @@ class MGPAPI {
   }
   // Approve Detail Purchase Request
   Future postPurchaseRequest({required String noTransaksi, required String statusApproval, required String catatan, required String tglApproval, required String approvalBaseline}) async {
+    print(noTransaksi);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
@@ -1224,7 +1233,7 @@ class MGPAPI {
       'id_item_buaso' : idItemBuaso,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_analisa_barang_jadi/detail?' + queryString;
+    var requestUrl = baseURL + '/approval_analisa_barang_jadi/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1256,5 +1265,36 @@ class MGPAPI {
       return status = "berhasil";
     } else {
     }
+  }
+
+  Future<Rekapitulasi> fetchRekapitulasi({required String idRae}) async{
+    Future.delayed(const Duration(milliseconds: 500));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    tokens = prefs.getString('token');
+    Map<String, String>? queryParams = {
+      'id_rae' : idRae,
+    };
+    String? quieryString = Uri(queryParameters: queryParams).query;   
+    var requestUrl = baseURL + '/approval_rae/rekapitulasi/?' + quieryString;
+    final resoponse = await client.get(
+      Uri.parse(requestUrl),
+      headers: {
+        'Authorization': 'Bearer $tokens',
+      }
+    );
+    print(resoponse.statusCode);
+    if(resoponse.statusCode == 200){
+      print("test 111");
+      final parsed = json.decode(resoponse.body);
+      print(resoponse.body);
+       
+      Rekapitulasi rekapitulasi = Rekapitulasi.fromJson(parsed);
+     print("==============");
+      print("test");
+      print(rekapitulasi.data);
+      return rekapitulasi;
+    }else{
+      throw Exception('Failed to load album');
+    } 
   }
 }

@@ -1,4 +1,6 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:mgp_mobile_app/controller_getX/default/getX_default_visibility_detail.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/sales_order/getX_item_sales_order.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/sales_order/mixin_sales_order.dart';
 import 'package:mgp_mobile_app/model/hrdu/sales_order/detail_sales_order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -37,26 +39,12 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
-  final formatCurrency = NumberFormat.currency(
-    locale: 'ID',
-    decimalDigits: 0,
-    symbol: "Rp"
-  );
+class _BodyState extends State<Body> with SeleksiSalesOrder{
+  late Future<DetailRegso> futures = fetchDataSalesOrderDetail(noSalesOrder: widget.noSalesOrder.toString());
   final formatDecimal = NumberFormat("###.###", "id_ID");
-  late List subTotalHarga = [];
-  late String grandTotalHarga;
-  late String diskonHarga;
-  late String totalSetelahDiskon;
-  late String ppnHarga;
-  late String totalSetelahPpn;
-  late Future<DetailRegso> futureDetailRegso;
   final _formKey = GlobalKey<FormState>();
   final _catatanTextEditingController = TextEditingController();
-  bool visibilityPemeriksa = false;
-  bool visibilityPengesah = false;
-  bool catatanError = false;
-  bool visibilityStatusMenu = false;
+  bool isLoading = false;
 
   Future showAlertDialog(
     final String title,
@@ -77,6 +65,10 @@ class _BodyState extends State<Body> {
           labelButton: label,
           colorButton: color,
           onClicked: () async {
+            Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
+            setState(() {
+              isLoading = true;
+            });
             final _postProses = await MGPAPI().postSalesOrder(
               noTransaksi: noTransaksi,
               statusApproval: status,
@@ -85,18 +77,19 @@ class _BodyState extends State<Body> {
               approvalBaseline: approvalBaseline,
             );
             if (_postProses == "berhasil") {
-              Get.offAll(const SalesOrderView());
-              Navigator.of(Get.overlayContext!, rootNavigator: true).pop();
+              setState(() {
+                Get.off(const SalesOrderView());
+                isLoading = false;
+              });
             }
-          },
+          }, isLoading: isLoading,
         );
       }
     );
   }
-  
+
   @override
   void initState() {
-    futureDetailRegso = MGPAPI().fetchApprovalDetailSalesOrder(noSalesOrder: widget.noSalesOrder);
     initializeDateFormatting();
     super.initState();
   }
@@ -106,408 +99,392 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
               key: _formKey,
               child: FutureBuilder<DetailRegso>(
-                future: futureDetailRegso,
+                future: futures,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    var detailSalesOrder = snapshot.data;
-                    String status = detailSalesOrder!.data!.behavior.toString();
-                    if (status == "V") {
-                      visibilityPemeriksa = true;
-                    } else {
-                      visibilityPengesah = true;
-                    }
-                    if (widget.statusMenu == "Approval") {
-                      visibilityStatusMenu = true;
-                    } else {
-                      visibilityStatusMenu = false;
-                    }
-                    double valuePPN = double.parse(snapshot.data!.data!.detail!.ppn.toString());
-                    double valueDiskon = double.parse(snapshot.data!.data!.detail!.diskon.toString());
-                    num totalHarga = 0;
-                    for(var i = 0; i< snapshot.data!.data!.detail!.detail!.length; i++){
-                      num subTotal = (double.parse(snapshot.data!.data!.detail!.detail![i].hargaSatuanJual.toString())) * double.parse(snapshot.data!.data!.detail!.detail![i].qtyItem.toString());
-                      totalHarga = totalHarga + (double.parse(snapshot.data!.data!.detail!.detail![i].hargaSatuanJual.toString())) * double.parse(snapshot.data!.data!.detail!.detail![i].qtyItem.toString());
-                      subTotalHarga.add(subTotal.toString());
-                    }
-                    grandTotalHarga = totalHarga.toString();
-                    num diskonTotal = (totalHarga * valueDiskon)/100;
-                    num totalDiskon = (totalHarga - diskonTotal);
-                    num ppnTotal = (totalDiskon * valuePPN)/100;
-                    num totalPPN = (totalDiskon + ppnTotal);
-                    diskonHarga = diskonTotal.toString();
-                    totalSetelahDiskon = totalDiskon.toString();
-                    ppnHarga = ppnTotal.toString();
-                    totalSetelahPpn = totalPPN.toString();
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        CardDetail(
-                          child: ListTile(
-                            subtitle: Column(
-                              children: <Widget>[
-                                CardFieldItemDate(
-                                  label: "Tgl. Sales Order",
-                                  date: detailSalesOrder.data!.detail!.tglSalesOrder,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
-                                CardFieldItemText(
-                                  label: "No. Sales Order",
-                                  contentData: detailSalesOrder.data!.detail!.noSalesOrder,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
-                                CardFieldItemText(
-                                  label: "Customer",
-                                  contentData: detailSalesOrder.data!.detail!.namaCustomer,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
-                                CardFieldItemText(
-                                  label: "Sales",
-                                  contentData: detailSalesOrder.data!.detail!.namaSales,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
-                                CardFieldItemText(
-                                  label: "Alamat Pengiriman",
-                                  contentData: detailSalesOrder.data!.detail!.alamatPengiriman,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
-                                CardFieldItemDate(
-                                  label: "Tgl. Batas Waktu",
-                                  date: detailSalesOrder.data!.detail!.batasWaktu,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
-                                CardFieldItemText(
-                                  label: "Proyek",
-                                  contentData: detailSalesOrder.data!.detail!.namaProyek,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5).h),
-                                CardFieldItemText(
-                                  label: "Catatan Sales Order",
-                                  contentData: detailSalesOrder.data!.detail!.catatanSo,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                              ],
+                    var detailSalesOrder = futureDetailSo!.data;
+                    String status = detailSalesOrder!.behavior.toString();
+ 
+                    Get.put(DefaultVisibilityDetail()).defaultButtonVisibilityDetail(status.toString());
+                    Get.put(DefaultVisibilityDetail()).defaultApprovalVisibilityDetail(widget.statusMenu);
+                    Get.put(GetxItemSalesOrder()).fetchDataItemSalesOrderDetail(widget.noSalesOrder);
+                    
+                    return GetX<GetxItemSalesOrder>(
+                      init: GetxItemSalesOrder(),
+                      builder: (controller) => Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: getProportionateScreenHeight(5)),
+                          CardDetail(
+                            child: ListTile(
+                              subtitle: Column(
+                                children: <Widget>[
+                                  CardFieldItemDate(
+                                    label: "Tgl. Sales Order",
+                                    date: detailSalesOrder.detail!.tglSalesOrder,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "No. Sales Order",
+                                    contentData: detailSalesOrder.detail!.noSalesOrder,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "Customer",
+                                    contentData: detailSalesOrder.detail!.namaCustomer,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "Sales",
+                                    contentData: detailSalesOrder.detail!.namaSales,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "Alamat Pengiriman",
+                                    contentData: detailSalesOrder.detail!.alamatPengiriman,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemDate(
+                                    label: "Tgl. Batas Waktu",
+                                    date: detailSalesOrder.detail!.batasWaktu,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "Proyek",
+                                    contentData: detailSalesOrder.detail!.namaProyek,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "Catatan Sales Order",
+                                    contentData: detailSalesOrder.detail!.catatanSo,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        CardExpansionDetail(
-                          label: "Item Sales Order",
-                          children: <Widget> [
-                            ListView.separated(
-                              separatorBuilder: (context, index) => SizedBox(
-                                height: getProportionateScreenHeight(10).h,
-                              ),
-                              itemCount: detailSalesOrder.data!.detail!.detail!.length,
-                              itemBuilder: (BuildContext context, index){
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
-                                  child: CardItemExpansionDetail(
-                                    child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
-                                      title: HighlightItemName(
-                                        child: Text(
-                                          detailSalesOrder.data!.detail!.detail![index].kodeBarang.toString(),
-                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            CardFieldItemText(
-                                              label: "Nama Barang",
-                                              contentData: detailSalesOrder.data!.detail!.detail![index].namaBarang,
-                                              flexLeftRow: 13,
-                                              flexRightRow: 20,
-                                            ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
-                                            CardFieldItemText(
-                                              label: "Nama Gudang",
-                                              contentData: detailSalesOrder.data!.detail!.detail![index].namaGudang,
-                                              flexLeftRow: 13,
-                                              flexRightRow: 20,
-                                            ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
-                                            CardFieldItemRightRow(
-                                              label: "Qty",
-                                              rightRow: <Widget> [
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
-                                                  child: (detailSalesOrder.data!.detail!.detail![index].qtyItem != null)
-                                                  ? Text(
-                                                    formatDecimal.format(double.parse(detailSalesOrder.data!.detail!.detail![index].qtyItem.toString())).toString()
-                                                    +' '+
-                                                    detailSalesOrder.data!.detail!.detail![index].namaSatuan.toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14.sp
-                                                    ),
-                                                    textAlign: TextAlign.left,
-                                                  )
-                                                  : const Text("-",
-                                                    style: TextStyle(
-                                                      color: Colors.black
-                                                    ),
-                                                    textAlign: TextAlign.left,
-                                                  )
-                                                ),
-                                              ],
-                                              flexLeftRow: 13,
-                                              flexRightRow: 20,
-                                            ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
-                                            CardFieldItemFormatCurrency(
-                                              label: "Harga Satuan",
-                                              contentData: detailSalesOrder.data!.detail!.detail![index].hargaSatuanJual,
-                                              flexLeftRow: 13, 
-                                              flexRightRow: 20,
-                                            ),
-                                            SizedBox(height: getProportionateScreenHeight(10).h),
-                                            CardFieldItemFormatCurrency(
-                                              label: "Sub Total",
-                                              contentData: subTotalHarga[index],
-                                              flexLeftRow: 13, 
-                                              flexRightRow: 20,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                            ),
-                            SizedBox(height: getProportionateScreenHeight(10).h),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
-                              child: CardItemExpansionDetail(
-                                child: ListTile(
-                                  title: Column(
-                                    children: <Widget> [
-                                      CardFieldItemTotal(
-                                        label: "Total",
-                                        total: grandTotalHarga,
-                                        flexLeftRow: 15,
-                                        flexRightRow: 20,
-                                      ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
-                                      CardFieldItemPercent(
-                                        label: "Diskon",
-                                        labelValue: detailSalesOrder.data!.detail!.diskon,
-                                        total: diskonHarga,
-                                        flexLeftRow: 15,
-                                        flexRightRow: 20,
-                                      ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
-                                      CardFieldItemTotal(
-                                        label: "Total Setelah Diskon",
-                                        total: totalSetelahDiskon,
-                                        flexLeftRow: 15,
-                                        flexRightRow: 20,
-                                      ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
-                                      CardFieldItemPercent(
-                                        label: "PPN",
-                                        labelValue: detailSalesOrder.data!.detail!.ppn,
-                                        total: ppnHarga,
-                                        flexLeftRow: 15,
-                                        flexRightRow: 20,
-                                      ),
-                                      SizedBox(height: getProportionateScreenHeight(5).h),
-                                      CardFieldItemTotal(
-                                        label: "Total Setelah PPN",
-                                        total: totalSetelahPpn,
-                                        flexLeftRow: 15,
-                                        flexRightRow: 20,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: getProportionateScreenHeight(10).h)
-                          ],
-                        ),
-                        if (detailSalesOrder.data!.approval.isNotEmpty)...[
                           CardExpansionDetail(
-                            label: "Catatan Approval",
+                            label: "Item Sales Order",
                             children: <Widget> [
                               ListView.separated(
                                 separatorBuilder: (context, index) => SizedBox(
-                                  height: getProportionateScreenHeight(10).h,
+                                  height: getProportionateScreenHeight(10),
                                 ),
-                                itemCount: detailSalesOrder.data!.approval.length,
-                                itemBuilder: (context, index){
-                                  return FieldCatatanApproval(
-                                    index: index,
-                                    statusApproval: detailSalesOrder.data!.approval[index].statusApproval,
-                                    namaKaryawan: detailSalesOrder.data!.approval[index].namaKaryawan,
-                                    catatanApproval: detailSalesOrder.data!.approval[index].catatan,
-                                    tglApproval: detailSalesOrder.data!.approval[index].tglApproval,
+                                itemCount: detailSalesOrder.detail!.detail!.length,
+                                itemBuilder: (BuildContext context, index){
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                                    child: CardItemExpansionDetail(
+                                      child: ListTile(
+                                        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
+                                        title: HighlightItemName(
+                                          child: Text(
+                                            detailSalesOrder.detail!.detail![index].kodeBarang.toString(),
+                                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        subtitle: Padding(
+                                          padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              CardFieldItemText(
+                                                label: "Nama Barang",
+                                                contentData: detailSalesOrder.detail!.detail![index].namaBarang,
+                                                flexLeftRow: 13,
+                                                flexRightRow: 20,
+                                              ),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
+                                              CardFieldItemText(
+                                                label: "Nama Gudang",
+                                                contentData: detailSalesOrder.detail!.detail![index].namaGudang,
+                                                flexLeftRow: 13,
+                                                flexRightRow: 20,
+                                              ),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
+                                              CardFieldItemRightRow(
+                                                label: "Qty",
+                                                rightRow: <Widget> [
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 0),
+                                                    child: (detailSalesOrder.detail!.detail![index].qtyItem != null)
+                                                    ? Text(
+                                                      formatDecimal.format(double.parse(detailSalesOrder.detail!.detail![index].qtyItem.toString())).toString()
+                                                      +' '+
+                                                      detailSalesOrder.detail!.detail![index].namaSatuan.toString(),
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                      ),
+                                                      textAlign: TextAlign.left,
+                                                    )
+                                                    : const Text("-",
+                                                      style: TextStyle(
+                                                        color: Colors.black
+                                                      ),
+                                                      textAlign: TextAlign.left,
+                                                    )
+                                                  ),
+                                                ],
+                                                flexLeftRow: 13,
+                                                flexRightRow: 20,
+                                              ),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
+                                              CardFieldItemFormatCurrency(
+                                                label: "Harga Satuan",
+                                                contentData: detailSalesOrder.detail!.detail![index].hargaSatuanJual,
+                                                flexLeftRow: 13, 
+                                                flexRightRow: 20,
+                                              ),
+                                              SizedBox(height: getProportionateScreenHeight(10)),
+                                              CardFieldItemFormatCurrency(
+                                                label: "Sub Total",
+                                                contentData: controller.subTotalHarga[index],
+                                                flexLeftRow: 13, 
+                                                flexRightRow: 20,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   );
                                 },
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(10).h),
-                            ]
+                              SizedBox(height: getProportionateScreenHeight(10)),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                                child: CardItemExpansionDetail(
+                                  child: ListTile(
+                                    title: Column(
+                                      children: <Widget> [
+                                        CardFieldItemTotal(
+                                          label: "Total",
+                                          total: controller.grandTotalHarga.value.toString(),
+                                          flexLeftRow: 15,
+                                          flexRightRow: 20,
+                                        ),
+                                        SizedBox(height: getProportionateScreenHeight(5)),
+                                        CardFieldItemPercent(
+                                          label: "Diskon",
+                                          labelValue: detailSalesOrder.detail!.diskon,
+                                          total: controller.diskonHarga.value.toString(),
+                                          flexLeftRow: 15,
+                                          flexRightRow: 20,
+                                        ),
+                                        SizedBox(height: getProportionateScreenHeight(5)),
+                                        CardFieldItemTotal(
+                                          label: "Total Setelah Diskon",
+                                          total: controller.totalSetelahDiskon.value.toString(),
+                                          flexLeftRow: 15,
+                                          flexRightRow: 20,
+                                        ),
+                                        SizedBox(height: getProportionateScreenHeight(5)),
+                                        CardFieldItemPercent(
+                                          label: "PPN",
+                                          labelValue: detailSalesOrder.detail!.ppn,
+                                          total: controller.ppnHarga.value.toString(),
+                                          flexLeftRow: 15,
+                                          flexRightRow: 20,
+                                        ),
+                                        SizedBox(height: getProportionateScreenHeight(5)),
+                                        CardFieldItemTotal(
+                                          label: "Total Setelah PPN",
+                                          total: controller.totalSetelahPpn.value.toString(),
+                                          flexLeftRow: 15,
+                                          flexRightRow: 20,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: getProportionateScreenHeight(10))
+                            ],
                           ),
-                        ],
-                        Visibility(
-                          visible: visibilityStatusMenu,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h, horizontal: getProportionateScreenWidth(3).w),
-                            child: CatatanApproval(
-                              controller: _catatanTextEditingController,
-                              onChanged: (value) {
-                                if (value!.isNotEmpty) {
-                                  setState(() {
-                                    catatanError = false;
-                                  });
-                                }
-                                return; 
-                              },
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  setState(() {
-                                    catatanError = true;
-                                  });
-                                }
-                                return null;
-                              },
+                          if (detailSalesOrder.approval.isNotEmpty)...[
+                            CardExpansionDetail(
+                              label: "Catatan Approval",
+                              children: <Widget> [
+                                ListView.separated(
+                                  separatorBuilder: (context, index) => SizedBox(
+                                    height: getProportionateScreenHeight(10),
+                                  ),
+                                  itemCount: detailSalesOrder.approval.length,
+                                  itemBuilder: (context, index){
+                                    return FieldCatatanApproval(
+                                      index: index,
+                                      statusApproval: detailSalesOrder.approval[index].statusApproval,
+                                      namaKaryawan: detailSalesOrder.approval[index].namaKaryawan,
+                                      catatanApproval: detailSalesOrder.approval[index].catatan,
+                                      tglApproval: detailSalesOrder.approval[index].tglApproval,
+                                    );
+                                  },
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(10)),
+                              ]
+                            ),
+                          ],
+                          GetX<DefaultVisibilityDetail>(
+                            init: DefaultVisibilityDetail(),
+                            builder:(controller2) => Column(
+                              children: [
+                                Visibility(
+                                  visible: controller2.visibilityStatusMenu.value,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10), horizontal: getProportionateScreenWidth(3)),
+                                    child: CatatanApproval(
+                                      controller: _catatanTextEditingController,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          Get.put(DefaultVisibilityDetail()).defaultCatatanVisibilityDetail(value);
+                                        });
+                                        return; 
+                                      },
+                                      validator: (value) {
+                                        setState(() {
+                                          Get.put(DefaultVisibilityDetail()).defaultCatatanVisibilityDetail(value);
+                                        });
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: controller2.catatanError.value,
+                                  child: Column(
+                                    children: <Widget>[
+                                      SizedBox(height: getProportionateScreenHeight(5)),
+                                      const FormErrors(errors: kCatatanError),
+                                      SizedBox(height: getProportionateScreenHeight(8)),
+                                    ],
+                                  )
+                                ),
+                                Visibility(
+                                  visible: controller2.visibilityStatusMenu.value,
+                                  child: SizedBox(height: getProportionateScreenHeight(10))
+                                ),
+                                Visibility(
+                                  visible: controller2.visibilityStatusMenu.value,
+                                  child: ButtonPemeriksa(
+                                    visibilityPemeriksa: controller2.visibilityPemeriksa.value,
+                                    onClickedRevise: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        if (_catatanTextEditingController.text != "") {
+                                          showAlertDialog(
+                                            "REVISE Sales Order",
+                                            "REVISE",
+                                            reviseButtonColor,
+                                            detailSalesOrder.detail!.noSalesOrder.toString(),
+                                            "REV",
+                                            _catatanTextEditingController.text,
+                                            detailSalesOrder.detail!.baseline.toString(),
+                                          );
+                                        }
+                                      }
+                                    },
+                                    onClickedReject: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        if (_catatanTextEditingController.text != "") {
+                                          showAlertDialog(
+                                            "REJECT Sales Order",
+                                            "REJECT",
+                                            rejectButtonColor,
+                                            detailSalesOrder.detail!.noSalesOrder.toString(),
+                                            "REJ",
+                                            _catatanTextEditingController.text,
+                                            detailSalesOrder.detail!.baseline.toString(),
+                                          );
+                                        }
+                                      }
+                                    },
+                                    onClickedVerify: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        if (_catatanTextEditingController.text != "") {
+                                          showAlertDialog(
+                                            "VERIFY Sales Order",
+                                            "VERIFY",
+                                            verifyButtonColor,
+                                            detailSalesOrder.detail!.noSalesOrder.toString(),
+                                            "VER",
+                                            _catatanTextEditingController.text,
+                                            detailSalesOrder.detail!.baseline.toString(),
+                                          );
+                                        }
+                                      }
+                                    }, isLoading: isLoading,
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: controller2.visibilityStatusMenu.value,
+                                  child: ButtonPengesah(
+                                    visibilityPengesah: controller2.visibilityPengesah.value,
+                                    onClickedReject: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        if (_catatanTextEditingController.text != "") {
+                                          showAlertDialog(
+                                            "REJECT Sales Order",
+                                            "REJECT",
+                                            rejectButtonColor,
+                                            detailSalesOrder.detail!.noSalesOrder.toString(),
+                                            "REJ",
+                                            _catatanTextEditingController.text,
+                                            detailSalesOrder.detail!.baseline.toString(),
+                                          );
+                                        }
+                                      }
+                                    },
+                                    onClickedApprove: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        if (_catatanTextEditingController.text != "") {
+                                          showAlertDialog(
+                                            "APPROVE Sales Order",
+                                            "APPROVE",
+                                            verifyButtonColor,
+                                            detailSalesOrder.detail!.noSalesOrder.toString(),
+                                            "APP",
+                                            _catatanTextEditingController.text,
+                                            detailSalesOrder.detail!.baseline.toString(),
+                                          );
+                                        }
+                                      }
+                                    }, isLoading: isLoading,
+                                  ),
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(30)),
+                              ],
                             ),
                           ),
-                        ),
-                        Visibility(
-                          visible: catatanError,
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(height: getProportionateScreenHeight(5).h),
-                              const FormErrors(errors: kCatatanError),
-                              SizedBox(height: getProportionateScreenHeight(8).h),
-                            ],
-                          )
-                        ),
-                        Visibility(
-                          visible: visibilityStatusMenu,
-                          child: SizedBox(height: getProportionateScreenHeight(10).h)
-                        ),
-                        Visibility(
-                          visible: visibilityStatusMenu,
-                          child: ButtonPemeriksa(
-                            visibilityPemeriksa: visibilityPemeriksa,
-                            onClickedRevise: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "REVISE Sales Order",
-                                    "REVISE",
-                                    reviseButtonColor,
-                                    detailSalesOrder.data!.detail!.noSalesOrder.toString(),
-                                    "REV",
-                                    _catatanTextEditingController.text,
-                                    detailSalesOrder.data!.detail!.baseline.toString(),
-                                  );
-                                }
-                              }
-                            },
-                            onClickedReject: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "REJECT Sales Order",
-                                    "REJECT",
-                                    rejectButtonColor,
-                                    detailSalesOrder.data!.detail!.noSalesOrder.toString(),
-                                    "REJ",
-                                    _catatanTextEditingController.text,
-                                    detailSalesOrder.data!.detail!.baseline.toString(),
-                                  );
-                                }
-                              }
-                            },
-                            onClickedVerify: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "VERIFY Sales Order",
-                                    "VERIFY",
-                                    verifyButtonColor,
-                                    detailSalesOrder.data!.detail!.noSalesOrder.toString(),
-                                    "VER",
-                                    _catatanTextEditingController.text,
-                                    detailSalesOrder.data!.detail!.baseline.toString(),
-                                  );
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                        Visibility(
-                          visible: visibilityStatusMenu,
-                          child: ButtonPengesah(
-                            visibilityPengesah: visibilityPengesah,
-                            onClickedReject: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "REJECT Sales Order",
-                                    "REJECT",
-                                    rejectButtonColor,
-                                    detailSalesOrder.data!.detail!.noSalesOrder.toString(),
-                                    "REJ",
-                                    _catatanTextEditingController.text,
-                                    detailSalesOrder.data!.detail!.baseline.toString(),
-                                  );
-                                }
-                              }
-                            },
-                            onClickedApprove: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "APPROVE Sales Order",
-                                    "APPROVE",
-                                    verifyButtonColor,
-                                    detailSalesOrder.data!.detail!.noSalesOrder.toString(),
-                                    "APP",
-                                    _catatanTextEditingController.text,
-                                    detailSalesOrder.data!.detail!.baseline.toString(),
-                                  );
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(height: getProportionateScreenHeight(30).h),
-                      ],
+                        ],
+                      ),
                     );
                   } else {
                     return const Center(

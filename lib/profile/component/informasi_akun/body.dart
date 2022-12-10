@@ -1,4 +1,4 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/login/login.dart';
 import 'package:mgp_mobile_app/model/profil/profil_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,22 +43,22 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: getProportionateScreenHeight(10).h),
+                SizedBox(height: getProportionateScreenHeight(10)),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.r)
+                      borderRadius: BorderRadius.circular(25)
                     ),
                     elevation: 8.0,
-                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
                     child: Container(
-                      padding: EdgeInsets.only(top: getProportionateScreenHeight(10).h, bottom: getProportionateScreenHeight(10).h),
+                      padding: EdgeInsets.only(top: getProportionateScreenHeight(10), bottom: getProportionateScreenHeight(10)),
                       width: double.infinity,
                       child: Row(
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                             child: const SizedBox(
                               height: 115,
                               width: 115,
@@ -72,26 +72,26 @@ class _BodyState extends State<Body> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                 child: (profilData!.data!.namaKaryawan != null)
                                 ? Text(profilData.data!.namaKaryawan.toString(),
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w800,
-                                    fontSize: 18.sp
+                                    fontSize: 18,
                                   ),
                                 )
                                 : Text("-",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w800,
-                                    fontSize: 18.sp
+                                    fontSize: 18,
                                   ),
                                 )
                               ),
-                              SizedBox(height: getProportionateScreenHeight(10).h),
+                              SizedBox(height: getProportionateScreenHeight(10)),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                 child: (profilData.data!.noHp != null) 
                                 ? Text(profilData.data!.noHp.toString(),
                                   style: const TextStyle(
@@ -108,9 +108,9 @@ class _BodyState extends State<Body> {
                                   ),
                                 )
                               ),
-                              SizedBox(height: getProportionateScreenHeight(10).h),
+                              SizedBox(height: getProportionateScreenHeight(10)),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                 child: (profilData.data!.email != null)
                                 ? Text(profilData.data!.email.toString(),
                                   style: const TextStyle(
@@ -134,7 +134,7 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
-                SizedBox(height: getProportionateScreenHeight(15).h),
+                SizedBox(height: getProportionateScreenHeight(15)),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
@@ -142,18 +142,18 @@ class _BodyState extends State<Body> {
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w800,
-                      fontSize: 14.sp 
+                      fontSize: 14, 
                     ),
                   )
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.r)
+                      borderRadius: BorderRadius.circular(25)
                     ),
                     elevation: 8.0,
-                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
                     child: SizedBox(
                       width: double.infinity,
                       child: Column(
@@ -167,7 +167,7 @@ class _BodyState extends State<Body> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14.sp 
+                                fontSize: 14, 
                               ),
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios),
@@ -183,7 +183,7 @@ class _BodyState extends State<Body> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14.sp 
+                                fontSize: 14, 
                               ),
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios),
@@ -194,7 +194,7 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
-                SizedBox(height: getProportionateScreenHeight(15).h),
+                SizedBox(height: getProportionateScreenHeight(15)),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
@@ -202,18 +202,18 @@ class _BodyState extends State<Body> {
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w800,
-                      fontSize: 14.sp 
+                      fontSize: 14, 
                     ),
                   )
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.r)
+                      borderRadius: BorderRadius.circular(25)
                     ),
                     elevation: 8.0,
-                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
                     child: SizedBox(
                       width: double.infinity,
                       child: Column(
@@ -227,7 +227,7 @@ class _BodyState extends State<Body> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14.sp 
+                                fontSize: 14, 
                               ),
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios),
@@ -238,7 +238,7 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
-                SizedBox(height: getProportionateScreenHeight(15).h),
+                SizedBox(height: getProportionateScreenHeight(15)),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Text(
@@ -246,18 +246,18 @@ class _BodyState extends State<Body> {
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w800,
-                      fontSize: 14.sp 
+                      fontSize: 14, 
                     ),
                   )
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.r)
+                      borderRadius: BorderRadius.circular(25)
                     ),
                     elevation: 8.0,
-                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
                     child: SizedBox(
                       width: double.infinity,
                       child: Column(
@@ -271,7 +271,7 @@ class _BodyState extends State<Body> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14.sp 
+                                fontSize: 14, 
                               ),
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios),
@@ -287,7 +287,7 @@ class _BodyState extends State<Body> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14.sp 
+                                fontSize: 14, 
                               ),
                             ),
                             trailing: Transform.scale(
@@ -307,15 +307,15 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
-                SizedBox(height: getProportionateScreenHeight(15).h),
+                SizedBox(height: getProportionateScreenHeight(15)),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                   child: Card(
                     shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.r)
+                      borderRadius: BorderRadius.circular(25)
                     ),
                     elevation: 8.0,
-                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+                    margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
                     child: SizedBox(
                       width: double.infinity,
                       child: Column(
@@ -329,7 +329,7 @@ class _BodyState extends State<Body> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 14.sp 
+                                fontSize: 14, 
                               ),
                             ),
                             onTap: () async {

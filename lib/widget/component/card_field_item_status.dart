@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/component/text_status.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -21,7 +21,7 @@ class CardFieldItemStatus extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0)),
                 child: const Text("Status Approval",
                   style: TextStyle(
                     color: Colors.black

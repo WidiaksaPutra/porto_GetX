@@ -1,4 +1,4 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/modul/hrdu/approval_ppa/approval_ppa.dart';
 import 'package:mgp_mobile_app/model/hrdu/ppa/detail_ppa_model.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Form(
@@ -101,16 +101,16 @@ class _BodyState extends State<Body> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(
-                          height: getProportionateScreenHeight(20).h,
+                          height: getProportionateScreenHeight(20),
                         ),
                         Card(
                           elevation: 8.0,
-                          margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+                          margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
                           child: Container(
-                            padding: EdgeInsets.only(top: getProportionateScreenHeight(10).h, bottom: getProportionateScreenHeight(10).h),
+                            padding: EdgeInsets.only(top: getProportionateScreenHeight(10), bottom: getProportionateScreenHeight(10)),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(15.r),
+                              borderRadius: BorderRadius.circular(15),
                             ),
                             child: Row(
                               children: <Widget>[
@@ -166,7 +166,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(snapshot.data!.data!.detail!.namaProgram.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -179,7 +179,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -225,7 +225,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(snapshot.data!.data!.detail!.itemSumberDaya.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -238,7 +238,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -284,7 +284,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(snapshot.data!.data!.detail!.nomorAkun.toString()+"-"+snapshot.data!.data!.detail!.namaAkun.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -297,7 +297,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -343,7 +343,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(snapshot.data!.data!.detail!.namaKegiatan.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -356,7 +356,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -402,7 +402,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(bulan.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -415,7 +415,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -461,7 +461,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(tglPPA.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -474,7 +474,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -520,7 +520,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(priceQty.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -533,7 +533,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -579,7 +579,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(priceSatuan.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -592,7 +592,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -638,7 +638,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(snapshot.data!.data!.detail!.noPpa.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -651,7 +651,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -697,7 +697,7 @@ class _BodyState extends State<Body> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5).w),
+                                                      padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                                                       child: Text(snapshot.data!.data!.detail!.satuan.toString(),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -710,7 +710,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(5).h),
+                                          SizedBox(height: getProportionateScreenHeight(5)),
                                         ],
                                       ),
                                     ),
@@ -721,19 +721,19 @@ class _BodyState extends State<Body> {
                           ),
                         ),
                         SizedBox(
-                          height: getProportionateScreenHeight(15).h,
+                          height: getProportionateScreenHeight(15),
                         ),
                         if (snapshot.data!.data!.approval!.isNotEmpty)...[
                           SizedBox(
                             width: double.infinity,
                             child: Card(
                               elevation: 8.0,
-                              margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+                              margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
                               child: Container(
-                                padding: EdgeInsets.only(top: getProportionateScreenHeight(10).h, bottom: getProportionateScreenHeight(10).h),
+                                padding: EdgeInsets.only(top: getProportionateScreenHeight(10), bottom: getProportionateScreenHeight(10)),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15.r),
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: ListView.separated(
                                   separatorBuilder: (context, index) => const Divider(
@@ -742,7 +742,7 @@ class _BodyState extends State<Body> {
                                   itemCount: snapshot.data!.data!.approval!.length,
                                   itemBuilder: (BuildContext context, index){
                                     return ListTile(
-                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                       title: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -758,8 +758,8 @@ class _BodyState extends State<Body> {
                                                     Padding(
                                                       padding: const EdgeInsets.only(left: 0),
                                                       child: (snapshot.data!.data!.approval![index]!.statusApproval.toString() != "APP")
-                                                      ? Text("Pemeriksa ${index+1}",style: TextStyle(color: Colors.black, fontSize: 14.sp), textAlign: TextAlign.left)
-                                                      : Text("Pengesah",style: TextStyle(color: Colors.black, fontSize: 14.sp), textAlign: TextAlign.left),
+                                                      ? Text("Pemeriksa ${index+1}",style: TextStyle(color: Colors.black, fontSize: 14,), textAlign: TextAlign.left)
+                                                      : Text("Pengesah",style: TextStyle(color: Colors.black, fontSize: 14,), textAlign: TextAlign.left),
                                                     ),
                                                   ],
                                                 ),
@@ -775,7 +775,7 @@ class _BodyState extends State<Body> {
                                                       child: Text(snapshot.data!.data!.approval![index]!.namaKaryawan.toString(),
                                                         style:  TextStyle(
                                                           color: Colors.black,
-                                                          fontSize: 14.sp,
+                                                          fontSize: 14,
                                                           fontWeight: FontWeight.bold
                                                         ),
                                                         textAlign: TextAlign.right,
@@ -786,7 +786,7 @@ class _BodyState extends State<Body> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: getProportionateScreenHeight(10).h),
+                                          SizedBox(height: getProportionateScreenHeight(10)),
                                           Row(
                                             children: <Widget>[
                                               Expanded(
@@ -800,7 +800,7 @@ class _BodyState extends State<Body> {
                                                       child: Text("Catatan",
                                                         style: TextStyle(
                                                           color: Colors.black,
-                                                          fontSize: 14.sp
+                                                          fontSize: 14,
                                                         ),
                                                         textAlign: TextAlign.left,
                                                       ),
@@ -819,7 +819,7 @@ class _BodyState extends State<Body> {
                                                       child: Text(snapshot.data!.data!.approval![index]!.catatan.toString(),
                                                         style:  TextStyle(
                                                           color: Colors.black,
-                                                          fontSize: 14.sp,
+                                                          fontSize: 14,
                                                           fontWeight: FontWeight.bold
                                                         ),
                                                         textAlign: TextAlign.right,
@@ -842,7 +842,7 @@ class _BodyState extends State<Body> {
                           ),
                         ],
                         Padding(
-                          padding: EdgeInsets.only(top: getProportionateScreenHeight(10).h, bottom: getProportionateScreenHeight(10).h),
+                          padding: EdgeInsets.only(top: getProportionateScreenHeight(10), bottom: getProportionateScreenHeight(10)),
                           child: TextFormField(
                             controller: _catatanTextEditingController,
                             minLines: 1,
@@ -871,9 +871,9 @@ class _BodyState extends State<Body> {
                             ),
                           ),
                         ),
-                        SizedBox(height: getProportionateScreenHeight(10).h),
+                        SizedBox(height: getProportionateScreenHeight(10)),
                         FormError(errors: errors),
-                        SizedBox(height: getProportionateScreenHeight(10).h),
+                        SizedBox(height: getProportionateScreenHeight(10)),
 
 
 
@@ -887,11 +887,11 @@ class _BodyState extends State<Body> {
                             children: <Widget>[
                               SizedBox(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(56).h,
+                                height: getProportionateScreenHeight(56),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
                                     backgroundColor: Colors.red[700],
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20).r)
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                                   ),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
@@ -913,20 +913,20 @@ class _BodyState extends State<Body> {
                                     "REJECT",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp,
+                                      fontSize: 20,
                                       color: Colors.white,
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(15).h),
+                              SizedBox(height: getProportionateScreenHeight(15)),
                               SizedBox(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(56).h,
+                                height: getProportionateScreenHeight(56),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
                                     backgroundColor: Colors.amber[700],
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20).r)
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                                   ),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
@@ -948,20 +948,20 @@ class _BodyState extends State<Body> {
                                     "REVISE",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp,
+                                      fontSize: 20,
                                       color: Colors.white,
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(15).h),
+                              SizedBox(height: getProportionateScreenHeight(15)),
                               SizedBox(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(56).h,
+                                height: getProportionateScreenHeight(56),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
                                     backgroundColor: Colors.green[800],
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20).r)
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                                   ),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
@@ -983,7 +983,7 @@ class _BodyState extends State<Body> {
                                     "VERIFY",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp,
+                                      fontSize: 20,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -998,11 +998,11 @@ class _BodyState extends State<Body> {
                             children: <Widget>[
                               SizedBox(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(56).h,
+                                height: getProportionateScreenHeight(56),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
                                     backgroundColor: Colors.red[700],
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20).r)
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                                   ),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
@@ -1024,20 +1024,20 @@ class _BodyState extends State<Body> {
                                     "REJECT",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp,
+                                      fontSize: 20,
                                       color: Colors.white,
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: getProportionateScreenHeight(15).h),
+                              SizedBox(height: getProportionateScreenHeight(15)),
                               SizedBox(
                                 width: double.infinity,
-                                height: getProportionateScreenHeight(56).h,
+                                height: getProportionateScreenHeight(56),
                                 child: TextButton(
                                   style: TextButton.styleFrom(
                                     backgroundColor: Colors.green[800],
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20).r)
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                                   ),
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
@@ -1059,7 +1059,7 @@ class _BodyState extends State<Body> {
                                     "APPROVE",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp,
+                                      fontSize: 20,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -1068,7 +1068,7 @@ class _BodyState extends State<Body> {
                             ],
                           )
                         ),
-                        SizedBox(height: getProportionateScreenHeight(30).h),
+                        SizedBox(height: getProportionateScreenHeight(30)),
                       ],
                     );
                   } else {

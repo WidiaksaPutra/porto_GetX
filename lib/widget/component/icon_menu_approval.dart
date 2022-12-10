@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
@@ -22,8 +22,8 @@ class IconMenuApproval extends StatelessWidget {
         ).createShader(bounds);
       },
       child: SvgPicture.asset("assets/icons/akun_informasi_menu.svg",
-        height: getProportionateScreenHeight(30).h,
-        width: getProportionateScreenWidth(30).w,
+        height: getProportionateScreenHeight(30),
+        width: getProportionateScreenWidth(30),
         color: kPrimaryColor,
       ),
     );

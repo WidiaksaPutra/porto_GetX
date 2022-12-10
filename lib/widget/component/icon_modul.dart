@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
@@ -11,14 +11,14 @@ class BoxIconModul extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5).w),
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(5)),
       child: Container(
-        width: getProportionateScreenWidth(160).w,
+        width: getProportionateScreenWidth(160),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.r),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: colorCardItem,
-            width: getProportionateScreenWidth(2).w,
+            width: getProportionateScreenWidth(2),
           ),
           boxShadow: const [
             BoxShadow(
@@ -39,10 +39,10 @@ class BoxIconModul extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10.0).w, vertical: getProportionateScreenHeight(10.0).h),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10.0), vertical: getProportionateScreenHeight(10.0)),
           child: SvgPicture.asset(icon,
-            height: getProportionateScreenHeight(50).h,
-            width: getProportionateScreenWidth(50).w,
+            height: getProportionateScreenHeight(50),
+            width: getProportionateScreenWidth(50),
             color: kPrimaryColor,
           ),
         ),
@@ -60,7 +60,7 @@ class TextIconModul extends StatelessWidget {
     return Expanded(
       child: Text(label,
         style: TextStyle(
-          fontSize: 14.sp,
+          fontSize: 14,
           fontFamily: "Poppins",
           color: Colors.black,
           fontWeight: FontWeight.w600

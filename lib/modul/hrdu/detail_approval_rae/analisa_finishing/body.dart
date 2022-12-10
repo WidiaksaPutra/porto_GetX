@@ -1,4 +1,3 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/detail_rae_model.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,7 @@ class BodyFinihingRae extends StatefulWidget {
 class _BodyFinihingRaeState extends State<BodyFinihingRae> {
   final formatCurrency = NumberFormat.currency(
     locale: 'ID',
-    decimalDigits: 0,
+    decimalDigits: 1,
     symbol: "Rp"
   );
   final formatDecimal = NumberFormat("###.######", "id_ID");
@@ -59,7 +58,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
@@ -216,23 +215,23 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(
-                        height: getProportionateScreenHeight(10).h,
+                        height: getProportionateScreenHeight(10),
                       ),
                       CardExpansionDetail(
                         label: "Total Luas Permukaan",
                         children: <Widget> [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                             child: CardItemExpansionDetail(
                               child: SizedBox(
                                 width: double.infinity,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
+                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
                                   child: Text(
                                     "${totalLuasPermukaan.toString()} (m2)",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 14.sp
+                                      fontSize: 14,
                                     ),
                                     textAlign: TextAlign.left,
                                   )
@@ -240,7 +239,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                               ),
                             ),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          SizedBox(height: getProportionateScreenHeight(10)),
                         ],
                       ),
                       CardExpansionDetail(
@@ -248,7 +247,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                         children: <Widget> [
                           ListView.separated(
                             separatorBuilder: (context, index) => SizedBox(
-                              height: getProportionateScreenHeight(10).h,
+                              height: getProportionateScreenHeight(10),
                             ),
                             itemCount: indexanalisaFinFnBp.length,
                             itemBuilder: (context, index){
@@ -256,19 +255,19 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                 children: [
                                   if(analisaSingleRAE.data!.analisaFinFnBp![indexanalisaFinFnBp[index]].namaFinishingBarangJadi.toString().contains(widget.namaFinishing.toString()))...[
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                       child: CardItemExpansionDetail(
                                         child: ListTile(
-                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                           title: HighlightItemName(
                                             child: Text(
                                               analisaSingleRAE.data!.analisaFinFnBp![indexanalisaFinFnBp[index]].kodeItem.toString(),
-                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           subtitle: Padding(
-                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +299,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -330,7 +329,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -358,7 +357,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -393,7 +392,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -421,7 +420,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -454,7 +453,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -482,7 +481,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -516,7 +515,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -544,7 +543,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -590,9 +589,9 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          SizedBox(height: getProportionateScreenHeight(10)),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                             child: CardItemExpansionDetail(
                               child: ListTile(
                                 title: Column(
@@ -611,7 +610,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14.sp
+                                                    fontSize: 14,
                                                   ),
                                                   textAlign: TextAlign.left,
                                                 ),
@@ -635,7 +634,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14.sp
+                                                    fontSize: 14,
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -650,7 +649,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                               ),
                             ),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          SizedBox(height: getProportionateScreenHeight(10)),
                         ]
                       ),
                       CardExpansionDetail(
@@ -658,7 +657,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                         children: <Widget> [
                           ListView.separated(
                             separatorBuilder: (context, index) => SizedBox(
-                              height: getProportionateScreenHeight(10).h,
+                              height: getProportionateScreenHeight(10),
                             ),
                             itemCount: indexanalisaFinFnSc.length,
                             itemBuilder: (context, index){
@@ -666,19 +665,19 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                 children: [
                                   if(widget.namaFinishing.toString().contains(analisaSingleRAE.data!.analisaFinFnSc![indexanalisaFinFnSc[index]].namaFinishingBarangJadi.toString()))...[
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                       child: CardItemExpansionDetail(
                                         child: ListTile(
-                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                           title: HighlightItemName(
                                             child: Text(
                                               analisaSingleRAE.data!.analisaFinFnSc![indexanalisaFinFnSc[index]].kodeItem.toString(),
-                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           subtitle: Padding(
-                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -710,7 +709,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -740,7 +739,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -768,7 +767,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -803,7 +802,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -831,7 +830,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -864,7 +863,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -892,7 +891,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -926,7 +925,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -954,7 +953,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -1000,9 +999,9 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          SizedBox(height: getProportionateScreenHeight(10)),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                             child: CardItemExpansionDetail(
                               child: ListTile(
                                 title: Column(
@@ -1021,7 +1020,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14.sp
+                                                    fontSize: 14,
                                                   ),
                                                   textAlign: TextAlign.left,
                                                 ),
@@ -1045,7 +1044,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14.sp
+                                                    fontSize: 14,
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -1060,7 +1059,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                               ),
                             ),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          SizedBox(height: getProportionateScreenHeight(10)),
                         ]
                       ),
                       CardExpansionDetail(
@@ -1068,7 +1067,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                         children: <Widget> [
                           ListView.separated(
                             separatorBuilder: (context, index) => SizedBox(
-                              height: getProportionateScreenHeight(10).h,
+                              height: getProportionateScreenHeight(10),
                             ),
                             itemCount: indexanalisaFinFnLc.length,
                             itemBuilder: (context, index){
@@ -1076,19 +1075,19 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                 children: [
                                   if(widget.namaFinishing.toString().contains(analisaSingleRAE.data!.analisaFinFnLc![indexanalisaFinFnLc[index]].namaFinishingBarangJadi.toString()))...[
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                       child: CardItemExpansionDetail(
                                         child: ListTile(
-                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                           title: HighlightItemName(
                                             child: Text(
                                               analisaSingleRAE.data!.analisaFinFnLc![indexanalisaFinFnLc[index]].kodeItem.toString(),
-                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           subtitle: Padding(
-                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1120,7 +1119,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -1150,7 +1149,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1178,7 +1177,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -1213,7 +1212,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1241,7 +1240,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -1274,7 +1273,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1302,7 +1301,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -1336,7 +1335,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1364,7 +1363,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                                                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                                                             child: const Text(":",
                                                               style: TextStyle(
                                                                 color: Colors.black,
@@ -1410,9 +1409,9 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          SizedBox(height: getProportionateScreenHeight(10)),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                             child: CardItemExpansionDetail(
                               child: ListTile(
                                 title: Column(
@@ -1431,7 +1430,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14.sp
+                                                    fontSize: 14,
                                                   ),
                                                   textAlign: TextAlign.left,
                                                 ),
@@ -1455,7 +1454,7 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 14.sp
+                                                    fontSize: 14,
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
@@ -1470,10 +1469,10 @@ class _BodyFinihingRaeState extends State<BodyFinihingRae> {
                               ),
                             ),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          SizedBox(height: getProportionateScreenHeight(10)),
                         ]
                       ),
-                      SizedBox(height: getProportionateScreenHeight(30).h),
+                      SizedBox(height: getProportionateScreenHeight(30)),
                     ],
                   );
                 } else {

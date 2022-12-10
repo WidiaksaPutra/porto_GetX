@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class CardExpansionDetailPrelim extends StatelessWidget {
@@ -34,7 +34,7 @@ class CardExpansionDetailPrelim extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(10).w, right: getProportionateScreenWidth(10).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(10), right: getProportionateScreenWidth(10)),
                 child: const Text(":",
                   style: TextStyle(
                     color: Colors.black,
@@ -53,7 +53,7 @@ class CardExpansionDetailPrelim extends StatelessWidget {
             children: const <Widget> [
               Padding(
                 padding: const EdgeInsets.only(left: 0),
-                child: Text("-",
+                child: Text("1",
                   style: TextStyle(
                     color: Colors.black,
                   ),

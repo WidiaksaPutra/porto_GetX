@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -11,11 +11,11 @@ class CardFieldTotalAnalisa extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: colorCardItem,
-      margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+      margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
       shape: ContinuousRectangleBorder(
-        borderRadius: BorderRadius.circular(25.r),
+        borderRadius: BorderRadius.circular(25),
         side: BorderSide(
-          width: getProportionateScreenWidth(0.8).w,
+          width: getProportionateScreenWidth(0.8),
           color: Colors.grey[300]!
         )
       ),
@@ -33,9 +33,9 @@ class CardFieldGrandTotalAnalisa extends StatelessWidget {
     return Card(
       color: colorCardItem,
       shape: ContinuousRectangleBorder(
-        borderRadius: BorderRadius.circular(25.r),
+        borderRadius: BorderRadius.circular(25),
         side: BorderSide(
-          width: getProportionateScreenWidth(0.8).w,
+          width: getProportionateScreenWidth(0.8),
           color: Colors.grey[350]!
         )
       ),

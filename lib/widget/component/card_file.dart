@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -13,17 +13,17 @@ class CardFile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5.0,
-      margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+      margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
       shape: ContinuousRectangleBorder(
-        borderRadius: BorderRadius.circular(25.r),
+        borderRadius: BorderRadius.circular(25),
         side: BorderSide(
-          width: getProportionateScreenWidth(0.4).w, color: Colors.grey
+          width: getProportionateScreenWidth(0.4), color: Colors.grey
         ),
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+        contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         title: Padding(
-          padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10).h),
+          padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -55,7 +55,7 @@ class CardFile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                           child: const Text(":",
                             style: TextStyle(
                               color: Colors.black,
@@ -85,10 +85,10 @@ class CardFile extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: getProportionateScreenHeight(15).h),
+              SizedBox(height: getProportionateScreenHeight(15)),
               Container(
-                width: getProportionateScreenWidth(125).w,
-                height: getProportionateScreenHeight(35).h,
+                width: getProportionateScreenWidth(125),
+                height: getProportionateScreenHeight(35),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     begin: Alignment.centerLeft,
@@ -98,23 +98,23 @@ class CardFile extends StatelessWidget {
                       kSecondaryColor,
                     ]
                   ),
-                  borderRadius: BorderRadius.circular(25.r),
+                  borderRadius: BorderRadius.circular(25),
                 ),
                 child: TextButton(
                   style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.r))
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25))
                   ),
                   onPressed: onPressed,
                   child: Text("Download",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 15.sp,
+                      fontSize: 15,
                       color: Colors.white,
                     ),
                   )
                 ),
               ),
-              SizedBox(height: getProportionateScreenHeight(10).h)
+              SizedBox(height: getProportionateScreenHeight(10))
             ],
           ),
         ),

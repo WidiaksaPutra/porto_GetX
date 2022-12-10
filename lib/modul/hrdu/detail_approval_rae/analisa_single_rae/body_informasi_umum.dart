@@ -1,5 +1,5 @@
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/widget/component/card_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_total.dart';
@@ -25,19 +25,15 @@ import 'package:mgp_mobile_app/widget/component/skeleton.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class BodyInformasi extends StatefulWidget {
+  final String idRaeDetail;
   final Future<AnalisaSingleRegrae> futureAnalisaSingleRae;
-  const BodyInformasi({Key? key, required this.futureAnalisaSingleRae}) : super(key: key);
+  const BodyInformasi({Key? key, required this.futureAnalisaSingleRae, required this.idRaeDetail}) : super(key: key);
 
   @override
   _BodyInformasiState createState() => _BodyInformasiState();
 }
 
 class _BodyInformasiState extends State<BodyInformasi> {
-  final formatCurrency = NumberFormat.currency(
-    locale: 'ID',
-    decimalDigits: 0,
-    symbol: "Rp"
-  );
   final formatDecimal = NumberFormat("###.######", "id_ID");
   final decimalFormat = NumberFormat("###", "id_ID");
   late List subTotalHargaRAE = [];
@@ -86,7 +82,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
@@ -331,11 +327,11 @@ class _BodyInformasiState extends State<BodyInformasi> {
                   num totalPenunjangProduksi = totalFactorySupply + totalLabourCost + totalMachineProcess + totalBiayaOverhead;
                   num totalFinishing = totalBahanPenunjangFinishing + totalSubkonFinishing + totalLabourCostFinishing;
 
-                  num unitPrice = totalBahanBaku + totalPenunjangProduksi + totalFinishing;
+                  num unitPrice = totalBahanBaku + totalPenunjangProduksi + totalFinishing + totalAlatBantuOnSite + totalLabourCostOnSite;
                   if (analisaSingleRAE.data!.analisaBiayaOverheadKantor!.isNotEmpty) {
                     for (var i = 0; i < analisaSingleRAE.data!.analisaBiayaOverheadKantor!.length; i++) {
                       num subTotal = double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![i].qty.toString()) * unitPrice * double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![i].konstanta.toString());
-                      totalBiayaOverheadKantor = totalBiayaOverheadKantor + subTotal.round();
+                      totalBiayaOverheadKantor = totalBiayaOverheadKantor + subTotal;
                     }
                   }
 
@@ -359,7 +355,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                     children: <Widget>[
                       CardDetail(
                         child: ListTile(
-                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
+                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
                           title: Column(
                             children: <Widget>[
                               CardFieldItemText(
@@ -368,28 +364,28 @@ class _BodyInformasiState extends State<BodyInformasi> {
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Nama Barang Jadi",
                                 contentData: analisaSingleRAE.data!.namaItem,
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Sumber Barang Jadi",
                                 contentData: analisaSingleRAE.data!.namaKelompok,
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemText(
                                 label: "Satuan Jual",
                                 contentData: analisaSingleRAE.data!.namaSatuan,
                                 flexLeftRow: 14,
                                 flexRightRow: 20,
                               ),
-                              SizedBox(height: getProportionateScreenHeight(5).h),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               CardFieldItemUrlLauncher(
                                 label: "Link Referensi",
                                 linkReferensi: analisaSingleRAE.data!.linkReferensi,
@@ -404,10 +400,10 @@ class _BodyInformasiState extends State<BodyInformasi> {
                         label: "Uraian",
                         children: <Widget> [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w),
+                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
                             child: CardItemExpansionDetail(
                               child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10).w, vertical: getProportionateScreenHeight(10).h),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
                                 child: (analisaSingleRAE.data!.uraian != null)
                                 ? Html(
                                   data: analisaSingleRAE.data!.uraian
@@ -415,20 +411,20 @@ class _BodyInformasiState extends State<BodyInformasi> {
                                 : Text("-",
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 14.sp
+                                    fontSize: 14,
                                   ),
                                   textAlign: TextAlign.left,
                                 )
                               ),
                             ),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10).h),
+                          SizedBox(height: getProportionateScreenHeight(10)),
                         ],
                       ),
                       CardFieldAnalisa(
                         label: "Analisa Bahan Baku",
                         onTap: () {
-                          Get.to(AnalisaBahanBakuView(analisaSingleRegrae: widget.futureAnalisaSingleRae));
+                          Get.to(AnalisaBahanBakuView(idRaeDetail: widget.idRaeDetail));
                         },
                       ),
                       CardFieldAnalisa(
@@ -458,7 +454,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                       CardFieldAnalisa(
                         label: "Analisa Biaya Overhead Kantor",
                         onTap: () {
-                          Get.to(AnalisaBiayaOverheadKantorView(analisaSingleRegrae: widget.futureAnalisaSingleRae, totalAnalisaBahanBaku: totalAnalisaBahanBaku, totalAnalisaPenunjanProduksi: totalAnalisaPenunjanProduksi, totalAnalisaFinishing: totalAnalisaFinishing));
+                          Get.to(AnalisaBiayaOverheadKantorView(analisaSingleRegrae: widget.futureAnalisaSingleRae, totalAnalisaBahanBaku: totalAnalisaBahanBaku, totalAnalisaPenunjanProduksi: totalAnalisaPenunjanProduksi, totalAnalisaFinishing: totalAnalisaFinishing, totalAnalisaAlatBantuOnSite: totalAnalisaAlatBantuOnSite, totalAnalisaLabourCostOnSite: totalAnalisaLabourCostOnSite));
                         },
                       ),
                       CardFieldTotalAnalisa(
@@ -488,7 +484,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
                           ),
                         ),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(10).h),
+                      SizedBox(height: getProportionateScreenHeight(10)),
                     ],
                   );
                 }
@@ -496,18 +492,18 @@ class _BodyInformasiState extends State<BodyInformasi> {
                   return Center(
                     child: Column(
                       children: <Widget>[
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(200).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
-                        SizedBox(height: getProportionateScreenHeight(5).h),
-                        Skeleton(height: getProportionateScreenHeight(85).h, width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(200), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        Skeleton(height: getProportionateScreenHeight(85), width: double.infinity),
                       ],
                     ),
                   );

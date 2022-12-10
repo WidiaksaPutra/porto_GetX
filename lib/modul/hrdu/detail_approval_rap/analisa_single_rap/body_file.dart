@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/model/hrdu/rap/analisa_single_rap.dart';
 import 'package:mgp_mobile_app/widget/component/card_file.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
@@ -68,7 +68,7 @@ class _BodyFileState extends State<BodyFile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15).w),
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
       child: FutureBuilder(
         future: widget.futureAnalisaSingleRap,
         builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegrap> snapshot) {
@@ -109,7 +109,7 @@ class _BodyFileState extends State<BodyFile> {
                       }
                     ),
                   ),
-                  SizedBox(height: getProportionateScreenHeight(10).h),
+                  SizedBox(height: getProportionateScreenHeight(10)),
                 ],
               );
             } else {
@@ -121,27 +121,27 @@ class _BodyFileState extends State<BodyFile> {
             return Center(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: getProportionateScreenHeight(5).h),
+                  SizedBox(height: getProportionateScreenHeight(5)),
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
+                        child: Skeleton(height: getProportionateScreenHeight(100), width: getProportionateScreenWidth(100))
                       ),
-                      SizedBox(width: getProportionateScreenWidth(10).w),
+                      SizedBox(width: getProportionateScreenWidth(10)),
                       Expanded(
-                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
+                        child: Skeleton(height: getProportionateScreenHeight(100), width: getProportionateScreenWidth(100))
                       ),
                     ],
                   ),
-                  SizedBox(height: getProportionateScreenHeight(20).h),
+                  SizedBox(height: getProportionateScreenHeight(20)),
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
+                        child: Skeleton(height: getProportionateScreenHeight(100), width: getProportionateScreenWidth(100))
                       ),
-                      SizedBox(width: getProportionateScreenWidth(10).w),
+                      SizedBox(width: getProportionateScreenWidth(10)),
                       Expanded(
-                        child: Skeleton(height: getProportionateScreenHeight(100).h, width: getProportionateScreenWidth(100).w)
+                        child: Skeleton(height: getProportionateScreenHeight(100), width: getProportionateScreenWidth(100))
                       ),
                     ],
                   ),

@@ -1,4 +1,4 @@
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:mgp_mobile_app/model/hrdu/rae/detail_rae_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -56,7 +56,7 @@ class _BodyState extends State<Body> {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20).w),
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
@@ -187,25 +187,25 @@ class _BodyState extends State<Body> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                      SizedBox(
-                        height: getProportionateScreenHeight(10).h,
+                        height: getProportionateScreenHeight(10),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: Card(
                           elevation: 8.0,
-                          margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+                          margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
                           shape: ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.r)
+                            borderRadius: BorderRadius.circular(25)
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15.r),
+                            borderRadius: BorderRadius.circular(15),
                             child: ExpansionTile(
                               title: Text(
                                 "Hardwood",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14.sp
+                                  fontSize: 14,
                                 ),
                               ),
                               children: <Widget>[
@@ -218,14 +218,14 @@ class _BodyState extends State<Body> {
                                       itemCount: analisaSingleRAE.data!.analisaHardwood!.length,
                                       itemBuilder: (context, index){
                                         return ListTile(
-                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                           title: Text(
                                             analisaSingleRAE.data!.analisaHardwood![index]!.deskripsi.toString(),
-                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14,),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           subtitle: Padding(
-                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,7 +270,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -311,7 +311,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -359,7 +359,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -400,7 +400,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -445,7 +445,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -498,7 +498,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -543,7 +543,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -596,7 +596,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -641,7 +641,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -686,7 +686,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -730,7 +730,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -775,7 +775,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -851,7 +851,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.left,
                                                               ),
@@ -875,7 +875,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.right,
                                                               ),
@@ -915,7 +915,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.left,
                                                               ),
@@ -939,7 +939,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.right,
                                                               ),
@@ -979,7 +979,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.left,
                                                               ),
@@ -1003,7 +1003,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.right,
                                                               ),
@@ -1031,19 +1031,19 @@ class _BodyState extends State<Body> {
                         width: double.infinity,
                         child: Card(
                           elevation: 8.0,
-                          margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0).w, vertical: getProportionateScreenHeight(6.0).h),
+                          margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(3.0), vertical: getProportionateScreenHeight(6.0)),
                           shape: ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.r)
+                            borderRadius: BorderRadius.circular(25)
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15.r),
+                            borderRadius: BorderRadius.circular(15),
                             child: ExpansionTile(
                               title: Text(
                                 "Plywood",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14.sp
+                                  fontSize: 14,
                                 ),
                               ),
                               children: <Widget>[
@@ -1056,14 +1056,14 @@ class _BodyState extends State<Body> {
                                       itemCount: analisaSingleRAE.data!.analisaPlywood!.length,
                                       itemBuilder: (context, index){
                                         return ListTile(
-                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0).w, vertical: getProportionateScreenHeight(10.0).h),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
                                           title: Text(
                                             analisaSingleRAE.data!.analisaPlywood![index]!.deskripsi.toString(),
-                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14,),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           subtitle: Padding(
-                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15).h),
+                                            padding: EdgeInsets.only(top: getProportionateScreenHeight(15)),
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1108,7 +1108,7 @@ class _BodyState extends State<Body> {
                                                 //     ),
                                                 //   ],
                                                 // ),
-                                                // SizedBox(height: getProportionateScreenHeight(10).h),
+                                                // SizedBox(height: getProportionateScreenHeight(10)),
                                                 // Row(
                                                 //   children: <Widget>[
                                                 //     Expanded(
@@ -1149,7 +1149,7 @@ class _BodyState extends State<Body> {
                                                 //     ),
                                                 //   ],
                                                 // ),
-                                                // SizedBox(height: getProportionateScreenHeight(10).h),
+                                                // SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1197,7 +1197,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1238,7 +1238,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1283,7 +1283,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1336,7 +1336,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1381,7 +1381,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1434,7 +1434,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1479,7 +1479,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1524,7 +1524,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1568,7 +1568,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1613,7 +1613,7 @@ class _BodyState extends State<Body> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: getProportionateScreenHeight(10).h),
+                                                SizedBox(height: getProportionateScreenHeight(10)),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -1689,7 +1689,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.left,
                                                               ),
@@ -1713,7 +1713,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.right,
                                                               ),
@@ -1753,7 +1753,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.left,
                                                               ),
@@ -1777,7 +1777,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.right,
                                                               ),
@@ -1817,7 +1817,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.left,
                                                               ),
@@ -1841,7 +1841,7 @@ class _BodyState extends State<Body> {
                                                                 style: TextStyle(
                                                                   color: Colors.black,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 14.sp
+                                                                  fontSize: 14,
                                                                 ),
                                                                 textAlign: TextAlign.right,
                                                               ),
@@ -1865,7 +1865,7 @@ class _BodyState extends State<Body> {
                           ),
                         ),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(30).h),
+                      SizedBox(height: getProportionateScreenHeight(30)),
                     ],
                   );
                 } else {

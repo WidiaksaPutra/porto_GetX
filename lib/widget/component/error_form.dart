@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -16,11 +16,11 @@ class FormErrors extends StatelessWidget {
       children: <Widget>[
         SvgPicture.asset(
           "assets/icons/Error.svg",
-          height: getProportionateScreenHeight(14).h,
-          width: getProportionateScreenWidth(14).w,
+          height: getProportionateScreenHeight(14),
+          width: getProportionateScreenWidth(14),
         ),
         SizedBox(
-          width: getProportionateScreenWidth(10).w,
+          width: getProportionateScreenWidth(10),
         ),
         Text(errors),
       ],
@@ -32,11 +32,11 @@ class FormErrors extends StatelessWidget {
       children: [
         SvgPicture.asset(
           "assets/icons/Error.svg",
-          height: getProportionateScreenHeight(14).h,
-          width: getProportionateScreenWidth(14).w,
+          height: getProportionateScreenHeight(14),
+          width: getProportionateScreenWidth(14),
         ),
         SizedBox(
-          width: getProportionateScreenWidth(10).w,
+          width: getProportionateScreenWidth(10),
         ),
         Text(error),
       ],

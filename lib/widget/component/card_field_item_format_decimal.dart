@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+
 import 'package:intl/intl.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -51,7 +51,7 @@ class _CardFieldItemFormatDecimalState extends State<CardFieldItemFormatDecimal>
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(10).w, right: getProportionateScreenWidth(10).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(10), right: getProportionateScreenWidth(10)),
                 child: const Text(":",
                   style: TextStyle(
                     color: Colors.black,
@@ -69,7 +69,7 @@ class _CardFieldItemFormatDecimalState extends State<CardFieldItemFormatDecimal>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget> [
               Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0).w),
+                padding: EdgeInsets.only(left: getProportionateScreenWidth(0.0)),
                 child: (widget.contentData != null)
                 ? Text(
                   formatDecimal.format(

@@ -1,6 +1,6 @@
 import 'dart:async';
-// import 'package:flutter_screenutil/src/size_extension.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+// 
+
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/login/login.dart';
 import 'package:flutter/material.dart';
@@ -57,17 +57,17 @@ class _SplashScreenState extends State<SplashScreen> {
               children: <Widget> [
                 Image.asset(
                   "assets/images/LogoMGP.png",
-                  height: getProportionateScreenHeight(300.0).h,
-                  width: getProportionateScreenWidth(300.0).w,
+                  height: getProportionateScreenHeight(300.0),
+                  width: getProportionateScreenWidth(300.0),
                 ),
-                Text("Welcome!",
+                const Text("Welcome!",
                   style: TextStyle(
-                    fontSize: 30.sp,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: kPrimaryColor
                   ),
                 ),
-                SizedBox(height: getProportionateScreenHeight(50).h),
+                SizedBox(height: getProportionateScreenHeight(50)),
                 const CircularProgressIndicator(
                   color: kSecondaryColor,
                 ),

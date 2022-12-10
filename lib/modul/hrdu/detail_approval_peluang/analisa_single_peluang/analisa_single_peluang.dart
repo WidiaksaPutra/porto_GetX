@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
-import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_baku.dart';
-import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_fin.dart';
+import 'package:get/get.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/bahan_baku/getX_analisa_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/bahan_baku/mixin_analisa_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/finishing/getX_analisa_finishing.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/penunjang_produksi/getX_analisa_penunjang_produksi.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_gambar.dart';
-import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_penunjang.dart';
-import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_umum.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_peluang/analisa_single_peluang/body_file.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_peluang/analisa_single_peluang/body_gambar.dart';
-import 'package:mgp_mobile_app/modul/hrdu/detail_approval_peluang/analisa_single_peluang/build_informasi_umum_copy.dart';
+import 'package:mgp_mobile_app/modul/hrdu/detail_approval_peluang/analisa_single_peluang/build_informasi_umum.dart';
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
@@ -20,23 +20,13 @@ class DetailAnalisaSinglePeluangView extends StatefulWidget {
   _DetailAnalisaSinglePeluangViewState createState() => _DetailAnalisaSinglePeluangViewState();
 }
 
-class _DetailAnalisaSinglePeluangViewState extends State<DetailAnalisaSinglePeluangView> with SingleTickerProviderStateMixin {
+class _DetailAnalisaSinglePeluangViewState extends State<DetailAnalisaSinglePeluangView> with SingleTickerProviderStateMixin, BahanBakuDetail {
   late TabController controller;
   String title = "Approval";
-  late Future<AnalisaSingleRegplgUmum> futureUmum;
-  late Future<AnalisaSingleRegplgBaku> futureBuku;
-  late Future<AnalisaSingleRegplgPenunjang> futurePenunjang;
-  late Future<AnalisaSingleRegplgFinishing> futureFinishing;
-
   late Future<AnalisaSingleRegplgGambar> futureGambar_File;
 
   @override
   void initState() {
-    futureUmum = MGPAPI().fetchAnalisaSinglePeluangUmum(idBarangJadi: widget.idBarangJadi);
-    futureBuku = MGPAPI().fetchAnalisaSinglePeluangBaku(idBarangJadi: widget.idBarangJadi);
-    futurePenunjang = MGPAPI().fetchAnalisaSinglePeluangPenunjang(idBarangJadi: widget.idBarangJadi);
-    futureFinishing = MGPAPI().fetchAnalisaSinglePeluangFinishing(idBarangJadi: widget.idBarangJadi);
-
     futureGambar_File = MGPAPI().fetchAnalisaSinglePeluangGambar(idBarangJadi: widget.idBarangJadi);
 
     super.initState();
@@ -62,15 +52,18 @@ class _DetailAnalisaSinglePeluangViewState extends State<DetailAnalisaSinglePelu
 
   @override
   Widget build(BuildContext context) {
+    Get.put(GetxAnalisaBahanBaku()).bahanBaku(widget.idBarangJadi.toString());
+    Get.put(GetxAnalisaPeluangPenunjang()).analisaPeluangPenunjang(widget.idBarangJadi.toString());
+    Get.put(GetxAnalisaFinishing()).finishing(idBarangJadi: widget.idBarangJadi.toString());
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Analisa Barang Jadi Peluang",
+          title: const Text("Analisa Barang Jadi Peluang",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 18.sp
+              fontSize: 18,
             ),
           ),
           flexibleSpace: const AppBarThemeColor(),
@@ -83,19 +76,19 @@ class _DetailAnalisaSinglePeluangViewState extends State<DetailAnalisaSinglePelu
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: getProportionateScreenWidth(1).w,
+                      width: getProportionateScreenWidth(1),
                       color: const Color.fromRGBO(0, 0, 0, 0.08)
                     )
                   )
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: getProportionateScreenHeight(40).h,
+                  height: getProportionateScreenHeight(40),
                   child: TabBar(
                     controller: controller,
                     indicatorColor: kPrimaryColor,
-                    labelStyle: TextStyle(
-                      fontSize: 14.sp,
+                    labelStyle: const TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins"
                     ),
@@ -110,13 +103,12 @@ class _DetailAnalisaSinglePeluangViewState extends State<DetailAnalisaSinglePelu
                 ),
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(5).h),
+            SizedBox(height: getProportionateScreenHeight(5)),
             Expanded(
               child: TabBarView(
                 controller: controller,
                 children: <Widget>[
-                  BodyInformasi(idBarangJadi: widget.idBarangJadi, futureAnalisaSinglePeluangBaku: futureBuku, fetchAnalisaSinglePeluangPenunjang: futurePenunjang, fetchAnalisaSinglePeluangFinishing: futureFinishing),
-                  // BodyInformasi(futureAnalisaSinglePeluangUmum: futureUmum, futureAnalisaSinglePeluangBaku: futureBuku, fetchAnalisaSinglePeluangPenunjang: futurePenunjang, fetchAnalisaSinglePeluangFinishing: futureFinishing),
+                  BodyInformasi(idBarangJadi: widget.idBarangJadi),
                   BodyGambar(futureAnalisaSingleGambar: futureGambar_File),
                   BodyFile(futureAnalisaSingleFile: futureGambar_File),
                 ],

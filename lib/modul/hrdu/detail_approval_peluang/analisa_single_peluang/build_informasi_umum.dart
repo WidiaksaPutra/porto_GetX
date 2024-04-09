@@ -1,13 +1,14 @@
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/bahan_baku/getX_analisa_bahan_baku.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/bahan_baku/mixin_analisa_bahan_baku.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/finishing/getX_analisa_finishing.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/finishing/mixin_analisa_finishing.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/penunjang_produksi/getX_analisa_penunjang_produksi.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/penunjang_produksi/mixin_analisa_bahan_baku.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/peluang/getX_peluang.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/peluang/mixin_penerimaan_barang.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/bahan_baku/mixin_analisa_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/finishing/getX_finishing.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/finishing/mixin_analisa_finishing.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/penunjang_produksi/getX_penunjang_produksi.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/penunjang_produksi/mixin_analisa_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/bahan_baku/getX_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/detail_peluang/getX_peluang.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/detail_peluang/mixin_peluang.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/detail_peluang/mixin_umum.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_baku.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_fin.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_penunjang.dart';
@@ -37,7 +38,7 @@ class BodyInformasi extends StatefulWidget {
   _BodyInformasiState createState() => _BodyInformasiState();
 }
 
-class _BodyInformasiState extends State<BodyInformasi> with PeluangDetail, PeluangPenunjangDetail, BahanBakuDetail, FinishingDetail{
+class _BodyInformasiState extends State<BodyInformasi> with PeluangDetail, PeluangPenunjangDetail, BahanBakuDetail, FinishingDetail, UmumDetail{
   late Future<AnalisaSingleRegplgUmum> futures1 = fetchDataUmumDetail(idBarangJadi: widget.idBarangJadi);
   late Future<AnalisaSingleRegplgBaku> futures2 = fetchDataBahanBakuDetail(idBarangJadi: widget.idBarangJadi);
   late Future<AnalisaSingleRegplgPenunjang> futures3 = fetchDataPeluangPenunjangDetail(idBarangJadi: widget.idBarangJadi);
@@ -57,12 +58,6 @@ class _BodyInformasiState extends State<BodyInformasi> with PeluangDetail, Pelua
   ];
   
   @override
-  void initState() {
-    initializeDateFormatting();
-    super.initState();
-  }
-  
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: SizedBox(
@@ -77,14 +72,14 @@ class _BodyInformasiState extends State<BodyInformasi> with PeluangDetail, Pelua
                 if (snapshot.hasData) {
                   var analisaDetailUmum = futureDetailUmum!.data;
                   return 
-                  GetBuilder<GetxAnalisaFinishing>(
-                  init: GetxAnalisaFinishing(),
+                  GetBuilder<GetxFinishingPeluang>(
+                  init: GetxFinishingPeluang(),
                   builder:(controller) => 
-                  GetBuilder<GetxAnalisaBahanBaku>(
-                  init: GetxAnalisaBahanBaku(),
+                  GetBuilder<GetxBahanBakuPeluang>(
+                  init: GetxBahanBakuPeluang(),
                   builder:(controller1) =>
-                  GetBuilder<GetxAnalisaPeluangPenunjang>(
-                  init: GetxAnalisaPeluangPenunjang(),
+                  GetBuilder<GetxPenunjangProduksiPeluang>(
+                  init: GetxPenunjangProduksiPeluang(),
                   builder:(controller2) {
                   Get.put(GetxAnalisaPeluang()).analisaPeluang(double.parse(controller.totalFinishing.value.toString()), double.parse(controller1.totalBahanBaku.value.toString()), double.parse(controller2.totalPenunjangProduksi.value.toString()));
                   return GetBuilder<GetxAnalisaPeluang>(
@@ -137,34 +132,34 @@ class _BodyInformasiState extends State<BodyInformasi> with PeluangDetail, Pelua
                           ),
                         ),
                       ),
-                      CardExpansionDetail(
-                        label: "Uraian",
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                            child: CardItemExpansionDetail(
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
-                                  child: (analisaDetailUmum.uraian != null)
-                                  ? Html(
-                                    data: analisaDetailUmum.uraian
-                                  )
-                                  :  const Text("-",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  )
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(10)),
-                        ],
-                      ),
+                      // CardExpansionDetail(
+                      //   label: "Uraian",
+                      //   children: <Widget> [
+                      //     Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                      //       child: CardItemExpansionDetail(
+                      //         child: SizedBox(
+                      //           width: double.infinity,
+                      //           child: Padding(
+                      //             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
+                      //             child: (analisaDetailUmum.uraian != null)
+                      //             ? Html(
+                      //               data: analisaDetailUmum.uraian
+                      //             )
+                      //             :  const Text("-",
+                      //               style: TextStyle(
+                      //                 color: Colors.black,
+                      //                 fontSize: 14,
+                      //               ),
+                      //               textAlign: TextAlign.left,
+                      //             )
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(height: getProportionateScreenHeight(10)),
+                      //   ],
+                      // ),
                       CardFieldAnalisa(
                         label: "Analisa Bahan Baku",
                         onTap: () {

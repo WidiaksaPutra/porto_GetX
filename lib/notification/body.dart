@@ -96,7 +96,7 @@ class _BodyState extends State<Body> {
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/notification/list_notif?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/notification/list_notif?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {

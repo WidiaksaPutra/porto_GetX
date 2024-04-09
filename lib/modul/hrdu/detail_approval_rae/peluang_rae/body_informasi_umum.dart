@@ -1,4 +1,4 @@
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/detail_peluang_rae.dart';
@@ -158,34 +158,34 @@ class _BodyInformasiState extends State<BodyInformasi> {
                           ),
                         ),
                       ),
-                      CardExpansionDetail(
-                        label: "Informasi Lainnya",
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                            child: CardItemExpansionDetail(
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
-                                  child : (detailPeluangRAE.data!.lainLain != null)
-                                  ? Html(
-                                      data: detailPeluangRAE.data!.lainLain
-                                    )
-                                  : Text("-",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(10)),
-                        ],
-                      ),
+                      // CardExpansionDetail(
+                      //   label: "Informasi Lainnya",
+                      //   children: <Widget> [
+                      //     Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                      //       child: CardItemExpansionDetail(
+                      //         child: SizedBox(
+                      //           width: double.infinity,
+                      //           child: Padding(
+                      //             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
+                      //             child : (detailPeluangRAE.data!.lainLain != null)
+                      //             ? Html(
+                      //                 data: detailPeluangRAE.data!.lainLain
+                      //               )
+                      //             : Text("-",
+                      //               style: TextStyle(
+                      //                 color: Colors.black,
+                      //                 fontSize: 14,
+                      //               ),
+                      //               textAlign: TextAlign.left,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(height: getProportionateScreenHeight(10)),
+                      //   ],
+                      // ),
                       if (detailPeluangRAE.data!.detail!.isNotEmpty)...[
                         CardExpansionDetail(
                           label: "Barang Jadi",

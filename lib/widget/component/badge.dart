@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 
 import 'package:mgp_mobile_app/widget/component/text_menu_approval.dart';
 
@@ -15,13 +15,9 @@ class _NotivBadgesState extends State<NotivBadges> {
 
   @override
   Widget build(BuildContext context) {
-    return Badge(
-      shape: BadgeShape.square,
-      borderRadius: BorderRadius.circular(20),
-      animationDuration: const Duration(milliseconds: 300),
-      animationType: BadgeAnimationType.scale,
+    return badges.Badge(
       badgeContent: Text(widget.jumlahNotiv,
-        style: TextStyle(fontSize: 12, color: Colors.white),
+        style: const TextStyle(fontSize: 12, color: Colors.white),
       ),
       child: TextMenuApproval(
         label: widget.labelNotiv,

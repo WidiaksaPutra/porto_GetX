@@ -3,7 +3,7 @@ import 'package:mgp_mobile_app/modul/hrdu/detail_approval_penerimaan_barang/deta
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_penerimaan_barang.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/api_penerimaan_barang/api_history_penerimaan_barang.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_date.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_format_decimal.dart';
@@ -22,7 +22,7 @@ class BodyHistory extends StatefulWidget {
   _BodyHistoryState createState() => _BodyHistoryState();
 }
 
-class _BodyHistoryState extends State<BodyHistory> with PenerimaanBarangClass{
+class _BodyHistoryState extends State<BodyHistory> with PenerimaanBarangHistoryClass{
   final formatDecimal = NumberFormat("###.###", "id_ID");
   late Future<List<dynamic>> _future;
   final ScrollController _scrollController = ScrollController();
@@ -30,6 +30,7 @@ class _BodyHistoryState extends State<BodyHistory> with PenerimaanBarangClass{
   int pages = 1;
 
   Future _refreshPage() async{
+    loadingData = false;
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
       dataList.clear();
@@ -59,6 +60,26 @@ class _BodyHistoryState extends State<BodyHistory> with PenerimaanBarangClass{
     });
   }
 
+  void searchHistory(dynamic value){
+    Future.delayed(const Duration(milliseconds: 500));
+    setState(() {
+      loadingData = false;
+      dataList.clear();
+      pages = 1;
+    });
+    if(value.contains("/")){
+      _future = fetchHistoryPenerimaanBarang(page: pages, noPenerimaanBarang: value);
+    }
+    else if(value.contains("REV") || value.contains("REVISE") || value.contains("Revise") || value.contains("revise") || value.contains("Rev") || value.contains("rev")
+    || value.contains("REJ") || value.contains("REJECT") || value.contains("Reject") || value.contains("reject") || value.contains("Rej") || value.contains("rej")
+    || value.contains("VER") || value.contains("VERIFIED") || value.contains("Verified") || value.contains("verified") || value.contains("Ver") || value.contains("ver")){
+      _future = fetchHistoryPenerimaanBarang(page: pages, statusApproval: value);
+    }
+    else{
+      _future = fetchHistoryPenerimaanBarang(page: pages, namaVendor: value);
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -74,10 +95,7 @@ class _BodyHistoryState extends State<BodyHistory> with PenerimaanBarangClass{
         child: Column(
           children: <Widget>[
             SizedBox(height: getProportionateScreenHeight(15)),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-              child: const SearchField(),
-            ),
+            SearchFieldData(search: searchHistory, refresh: _refreshPage),
             SizedBox(height: getProportionateScreenHeight(5)),
             FutureBuilder(
               future: _future,
@@ -191,6 +209,18 @@ class _BodyHistoryState extends State<BodyHistory> with PenerimaanBarangClass{
                             ],
                           );
                         }
+                      ),
+                    );
+                  } else if(loadingData == false){
+                    return Positioned(
+                      left: 0,
+                      bottom: 0,
+                      child: SizedBox(
+                        height: getProportionateScreenHeight(80),
+                        width: double.maxFinite,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       ),
                     );
                   } else {

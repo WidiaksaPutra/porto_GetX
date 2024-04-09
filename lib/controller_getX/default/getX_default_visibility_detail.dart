@@ -8,26 +8,26 @@ class DefaultVisibilityDetail extends GetxController{
 
   defaultButtonVisibilityDetail(String status){
     if (status == "V") {
-      visibilityPemeriksa = true.obs;
+      visibilityPemeriksa.value = true;
     } else {
-      visibilityPengesah = true.obs;
+      visibilityPengesah.value = true;
     }
   }
 
   defaultApprovalVisibilityDetail(String statusMenu){
     if (statusMenu == "Approval") {
-      visibilityStatusMenu = true.obs;
+      visibilityStatusMenu.value = true;
     } else {
-      visibilityStatusMenu = false.obs;
+      visibilityStatusMenu.value = false;
     }
   }
 
   defaultCatatanVisibilityDetail(var value){
     if (value!.isNotEmpty) {
-      catatanError = false.obs;
+      catatanError.value = false;
     }
     else if(value!.isEmpty){
-      catatanError = true.obs;
+      catatanError.value = true;
     }        
   }
 }

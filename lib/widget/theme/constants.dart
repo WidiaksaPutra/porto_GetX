@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mgp_mobile_app/modul/hrdu/approval/approval.dart';
-import 'package:mgp_mobile_app/modul/hrdu/dashboard_hrdu/dashboard_hrdu.dart';
-import 'package:mgp_mobile_app/modul/hrdu/report/report.dart';
-import 'package:mgp_mobile_app/widget/component/bottom_navigation_box.dart';
 
 // List Color
 const kPrimaryColor = Color.fromRGBO(11, 163, 96, 1);
@@ -44,11 +40,11 @@ List hakAksesModul = [
   "ANG", "PRY"
 ];
 List hakAksesHrduApproval = [
-  "HRDU_APR_PR", "HRDU_APR_PVSPR", "HRDU_APR_REGPO", "HRDU_APR_PENPO",
-  "HRDU_APR_REGSO", "HRDU_APR_REGSSPK", "HRDU_APR_REGDO", "HRDU_APR_REGSJ",
+  "HRDU_APR_PR_V_1", "HRDU_APR_PVSPR", "HRDU_APR_REGPO", "HRDU_APR_PENPO_V_1",
+  "HRDU_APR_REGSO", "HRDU_APR_REGSSPK", "HRDU_APR_REGDO_V_1", "HRDU_APR_REGSJ_V_1",
   "HRDU_APR_REGFPNJ", "HRDU_APR_REGABJ", "HRDU_APR_REGPLG", "HRDU_APR_REGRAE",
   "HRDU_APR_REGRAB", "HRDU_APR_REGPNW", "HRDU_APR_REGSPK", "HRDU_APR_REGRAP",
-  "HRDU_APR_MAG", "HRDU_APR_MBJ",
+  "HRDU_APR_MAG_V_1", "HRDU_APR_MBJ",
 ];
 List hakAksesHrduMasterData = ["HRDU_MAS_HPS"];
 List hakAkesReportMKT = [

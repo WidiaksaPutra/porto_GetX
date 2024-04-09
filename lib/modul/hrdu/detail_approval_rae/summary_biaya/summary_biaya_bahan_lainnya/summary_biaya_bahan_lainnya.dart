@@ -4,8 +4,8 @@ import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/summary_biaya/summary_biaya_bahan_lainnya/body.dart';
 
 class SummaryBiayaBahanLainnya extends StatelessWidget {
-  final Future<Rekapitulasi> futureRekapitulasi;
-  const SummaryBiayaBahanLainnya({Key? key, required this.futureRekapitulasi}) : super(key: key);
+  final String idRae;
+  const SummaryBiayaBahanLainnya({Key? key, required this.idRae}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class SummaryBiayaBahanLainnya extends StatelessWidget {
         title: const Text("Summary Biaya Bahan Lainnya"),
         flexibleSpace: const AppBarThemeColor(),
       ),
-      body: Body(futureRekapitulasi: futureRekapitulasi),
+      body: Body(idRae: idRae),
     );
   }
 }

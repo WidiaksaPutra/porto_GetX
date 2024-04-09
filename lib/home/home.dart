@@ -171,7 +171,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             Expanded(
               child: TabBarView(
                 controller: controller,
-                children: const <Widget>[
+                children: <Widget>[
                   HomeMenu(),
                   Body(),
                 ],

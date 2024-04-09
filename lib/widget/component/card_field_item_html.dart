@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -57,27 +57,27 @@ class CardFieldItemHtml extends StatelessWidget {
             ],
           ),
         ),
-        Expanded(
-          flex: flexRightRow,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
-                child: (htmlUraian != null)
-                ? Html(data: htmlUraian)
-                : const Text("-",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                  ),
-                  textAlign: TextAlign.left,
-                )
-              ),
-            ],
-          ),
-        ),
+        // Expanded(
+        //   flex: flexRightRow,
+        //   child: Column(
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     mainAxisAlignment: MainAxisAlignment.start,
+        //     children: <Widget>[
+        //       Padding(
+        //         padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
+        //         child: (htmlUraian != null)
+        //         ? Html(data: htmlUraian)
+        //         : const Text("-",
+        //           style: TextStyle(
+        //             color: Colors.black,
+        //             fontSize: 14,
+        //           ),
+        //           textAlign: TextAlign.left,
+        //         )
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }

@@ -3,7 +3,7 @@ import 'package:mgp_mobile_app/widget/theme/constants.dart';
 
 class DefaultGambar extends GetxController{
   late var gambar = [].obs;
-
+  late var gambarString = "-".obs;
   defaultGambar(List dataGambar){
     if (dataGambar.isNotEmpty) {
       gambar.clear();
@@ -27,6 +27,12 @@ class DefaultGambar extends GetxController{
           }
         }
       }
+    }
+  }
+
+  defaultGambarSingle(String foto){
+    if (foto != null) {
+      gambarString.value = foto.toString();
     }
   }
 }

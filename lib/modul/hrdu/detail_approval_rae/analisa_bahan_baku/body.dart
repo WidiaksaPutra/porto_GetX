@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/bahan_baku/getX_analisa_bahan_baku.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/bahan_baku/mixin_analisa_bahan_baku.dart';
-import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/mixin_rae.dart';
+import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/component/separator_box.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -21,8 +20,8 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> with BahanBakuDetail{
-  late Future<AnalisaSingleRegplgBaku> futureBuku = fetchDataBahanBakuDetail(idBarangJadi: widget.idRaeDetail);
+class _BodyState extends State<Body> with RaeDetail{
+  late Future<AnalisaSingleRegrae> futureBuku = fetchDataRAEDetail(idRaeDetail: widget.idRaeDetail);
   final formatCurrency = NumberFormat.currency(
     locale: 'ID',
     decimalDigits: 1,
@@ -37,6 +36,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
   }
   @override
   Widget build(BuildContext context) {
+    Get.put(GetxBahanBakuRae()).bahanBaku(widget.idRaeDetail.toString());
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -46,12 +46,11 @@ class _BodyState extends State<Body> with BahanBakuDetail{
             physics: const ScrollPhysics(),
             child: FutureBuilder(
               future: futureBuku,
-              builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegplgBaku> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegrae> snapshot) {
                 if (snapshot.hasData) {
-                  var analisaSingleRAE = futureDetailBahanBaku!.data;
-                  Get.put(GetxAnalisaBahanBaku()).bahanBaku(widget.idRaeDetail.toString());
-                  return GetX<GetxAnalisaBahanBaku>(
-                    init: GetxAnalisaBahanBaku(),
+                  var analisaSingleRAE = futureDetailRae!.data;
+                  return GetX<GetxBahanBakuRae>(
+                    init: GetxBahanBakuRae(),
                     builder:(controller) => Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -773,7 +772,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Konstanta",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -811,7 +810,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaHardwood![index].konstanta.toString()
+                                                      double.parse(analisaSingleRAE.analisaHardwood![index].konstanta.toString()
                                                       )
                                                     ),
                                                     style: const TextStyle(
@@ -835,7 +834,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Sub Total",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -873,7 +872,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatCurrency.format(
-                                                      double.parse(subTotalHardwood[index].toString())
+                                                      double.parse(controller.subTotalHardwood[index].toString())
                                                     ),
                                                     style: const TextStyle(
                                                       color: Colors.black,
@@ -924,9 +923,9 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
+                                            children: const <Widget>[
                                               Padding(
-                                                padding: const EdgeInsets.only(left: 0),
+                                                padding: EdgeInsets.only(left: 0),
                                                 child: Text("Total Luas",
                                                   style: TextStyle(
                                                     color: Colors.black,
@@ -949,10 +948,10 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                 padding: const EdgeInsets.only(right: 0),
                                                 child: Text(
                                                   formatDecimal.format(
-                                                      double.parse(totalLuasHardwood.toString()
+                                                      double.parse(controller.totalLuasHardwood.toString()
                                                     )
                                                   ),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 14,
@@ -973,9 +972,9 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
+                                            children: const <Widget>[
                                               Padding(
-                                                padding: const EdgeInsets.only(left: 0),
+                                                padding: EdgeInsets.only(left: 0),
                                                 child: Text("Total Volume",
                                                   style: TextStyle(
                                                     color: Colors.black,
@@ -998,10 +997,10 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                 padding: const EdgeInsets.only(right: 0),
                                                 child: Text(
                                                   formatDecimal.format(
-                                                      double.parse(totalVolumeHardwood.toString()
+                                                      double.parse(controller.totalVolumeHardwood.toString()
                                                     )
                                                   ),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 14,
@@ -1022,9 +1021,9 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
+                                            children: const <Widget>[
                                               Padding(
-                                                padding: const EdgeInsets.only(left: 0),
+                                                padding: EdgeInsets.only(left: 0),
                                                 child: Text("Grand Total",
                                                   style: TextStyle(
                                                     color: Colors.black,
@@ -1047,10 +1046,10 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                 padding: const EdgeInsets.only(right: 0),
                                                 child: Text(
                                                   formatCurrency.format(
-                                                      double.parse(grandTotalHardwood.toString()
+                                                      double.parse(controller.grandTotalHardwood.toString()
                                                     )
                                                   ),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 14,
@@ -1092,7 +1091,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                 ),
                               );
                             },
-                            itemCount: analisaSingleRAE.data!.analisaPlywood!.length,
+                            itemCount: analisaSingleRAE.analisaPlywood!.length,
                             itemBuilder: (context, index){
                               return ListTile(
                                 contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
@@ -1115,8 +1114,8 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                           child: Padding(
                                             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
                                             child: Text(
-                                              analisaSingleRAE.data!.analisaPlywood![index].deskripsi.toString(),
-                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),
+                                              analisaSingleRAE.analisaPlywood![index].deskripsi.toString(),
+                                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -1140,7 +1139,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Tipe Finishing",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1176,8 +1175,8 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               children: <Widget>[
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 0),
-                                                  child: (analisaSingleRAE.data!.analisaPlywood![index].namaFinishingBarangJadi != null)
-                                                  ? Text(analisaSingleRAE.data!.analisaPlywood![index].namaFinishingBarangJadi.toString(),
+                                                  child: (analisaSingleRAE.analisaPlywood![index].namaFinishingBarangJadi != null)
+                                                  ? Text(analisaSingleRAE.analisaPlywood![index].namaFinishingBarangJadi.toString(),
                                                     style: const TextStyle(
                                                       color: Colors.black,
                                                     ),
@@ -1205,7 +1204,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Tipe Sisi",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1241,7 +1240,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               children: <Widget>[
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 0),
-                                                  child: Text(analisaSingleRAE.data!.analisaPlywood![index].namaTipeSisi.toString(),
+                                                  child: Text(analisaSingleRAE.analisaPlywood![index].namaTipeSisi.toString(),
                                                     style: const TextStyle(
                                                       color: Colors.black,
                                                     ),
@@ -1263,7 +1262,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Qty Final",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1301,7 +1300,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].qtyFinal.toString()
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].qtyFinal.toString()
                                                       )
                                                     ),
                                                     style: const TextStyle(
@@ -1325,7 +1324,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("T x W x L (Final cm)",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1363,15 +1362,15 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].tFinal.toString()
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].tFinal.toString()
                                                       )
                                                     )+" x "+
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].wFinal.toString()
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].wFinal.toString()
                                                       )
                                                     )+" x "+
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].lFinal.toString()
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].lFinal.toString()
                                                       )
                                                     ),
                                                     style: const TextStyle(
@@ -1395,7 +1394,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Qty Raw",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1433,7 +1432,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].qtyRaw.toString()
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].qtyRaw.toString()
                                                       )
                                                     ),
                                                     style: const TextStyle(
@@ -1457,7 +1456,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("T x W x L (Raw cm)",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1495,15 +1494,15 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].tRaw.toString()
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].tRaw.toString()
                                                       )
                                                     )+" x "+
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].wRaw.toString()
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].wRaw.toString()
                                                       )
                                                     )+" x "+
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].lRaw.toString()
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].lRaw.toString()
                                                       )
                                                     ),
                                                     style: const TextStyle(
@@ -1527,7 +1526,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Luas (m2)",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1565,7 +1564,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatDecimal.format(
-                                                      double.parse(listLuasPlywood[index].toString()
+                                                      double.parse(controller.listLuasPlywood[index].toString()
                                                       )
                                                     ),
                                                     style: const TextStyle(
@@ -1589,7 +1588,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Volume (m3)",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1627,7 +1626,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatDecimal.format(
-                                                      double.parse(listVolumePlywood[index].toString()
+                                                      double.parse(controller.listVolumePlywood[index].toString()
                                                       )
                                                     ),
                                                     style: const TextStyle(
@@ -1651,7 +1650,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Unit Price",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1689,7 +1688,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatCurrency.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].unitPrice.toString())
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].unitPrice.toString())
                                                     ),
                                                     style: const TextStyle(
                                                       color: Colors.black,
@@ -1712,7 +1711,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Konstanta",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1750,7 +1749,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatDecimal.format(
-                                                      double.parse(analisaSingleRAE.data!.analisaPlywood![index].konstanta.toString()
+                                                      double.parse(analisaSingleRAE.analisaPlywood![index].konstanta.toString()
                                                       )
                                                     ),
                                                     style: const TextStyle(
@@ -1774,7 +1773,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: const <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 0),
+                                                  padding: EdgeInsets.only(left: 0),
                                                   child: Text("Sub Total",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -1812,7 +1811,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                   padding: const EdgeInsets.only(left: 0),
                                                   child: Text(
                                                     formatCurrency.format(
-                                                      double.parse(subTotalPlywood[index].toString())
+                                                      double.parse(controller.subTotalPlywood[index].toString())
                                                     ),
                                                     style: const TextStyle(
                                                       color: Colors.black,
@@ -1863,9 +1862,9 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
+                                            children: const <Widget>[
                                               Padding(
-                                                padding: const EdgeInsets.only(left: 0),
+                                                padding: EdgeInsets.only(left: 0),
                                                 child: Text("Total Luas",
                                                   style: TextStyle(
                                                     color: Colors.black,
@@ -1888,10 +1887,10 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                 padding: const EdgeInsets.only(right: 0),
                                                 child: Text(
                                                   formatDecimal.format(
-                                                      double.parse(totalLuasPlywood.toString()
+                                                      double.parse(controller.totalLuasPlywood.toString()
                                                     )
                                                   ),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 14,
@@ -1912,9 +1911,9 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
+                                            children: const <Widget>[
                                               Padding(
-                                                padding: const EdgeInsets.only(left: 0),
+                                                padding: EdgeInsets.only(left: 0),
                                                 child: Text("Total Volume",
                                                   style: TextStyle(
                                                     color: Colors.black,
@@ -1937,10 +1936,10 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                 padding: const EdgeInsets.only(right: 0),
                                                 child: Text(
                                                   formatDecimal.format(
-                                                      double.parse(totalVolumePlywood.toString()
+                                                      double.parse(controller.totalVolumePlywood.toString()
                                                     )
                                                   ),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 14,
@@ -1961,9 +1960,9 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
+                                            children: const <Widget>[
                                               Padding(
-                                                padding: const EdgeInsets.only(left: 0),
+                                                padding: EdgeInsets.only(left: 0),
                                                 child: Text("Grand Total",
                                                   style: TextStyle(
                                                     color: Colors.black,
@@ -1986,10 +1985,10 @@ class _BodyState extends State<Body> with BahanBakuDetail{
                                                 padding: const EdgeInsets.only(right: 0),
                                                 child: Text(
                                                   formatCurrency.format(
-                                                      double.parse(grandTotalPlywood.toString()
+                                                      double.parse(controller.grandTotalPlywood.toString()
                                                     )
                                                   ),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 14,

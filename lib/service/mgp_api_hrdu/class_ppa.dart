@@ -19,7 +19,7 @@ mixin PPAClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_ppa/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_ppa/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -46,7 +46,7 @@ mixin PPAClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_ppa/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_ppa/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -71,7 +71,7 @@ mixin PPAClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_ppa/history/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_ppa/history/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {

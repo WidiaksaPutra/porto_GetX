@@ -1,9 +1,13 @@
 
+import 'package:mgp_mobile_app/controller_getX/default/getX_default_gambar.dart';
+import 'package:mgp_mobile_app/controller_getX/default/getX_default_visibility_detail.dart';
 import 'package:mgp_mobile_app/model/hrdu/penerimaan_barang/detail_penerimaan_barang.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_penerimaan_barang/approval_penerimaan_barang.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/api_penerimaan_barang/api_detail_penerimaan_barang.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/api_penerimaan_barang/api_post_penerimaan_barang.dart';
 import 'package:mgp_mobile_app/widget/component/alert_approval.dart';
 import 'package:mgp_mobile_app/widget/component/button_pemeriksa.dart';
 import 'package:mgp_mobile_app/widget/component/button_pengesah.dart';
@@ -18,7 +22,6 @@ import 'package:mgp_mobile_app/widget/component/error_form.dart';
 import 'package:mgp_mobile_app/widget/component/field_catatan_approval.dart';
 import 'package:mgp_mobile_app/widget/component/preview_image.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
@@ -34,16 +37,11 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<Body> with PenerimaanBarangDetail, PenerimaanBarangPostClass{
   final formatDecimal = NumberFormat("###.###", "id_ID");
   final _formKey = GlobalKey<FormState>();
   final _catatanTextEditingController = TextEditingController();
   late Future<DetailPenpo> futureDetailPenpo;
-  bool visibilityPemeriksa = false;
-  bool visibilityPengesah = false;
-  bool catatanError = false;
-  bool visibilityStatusMenu = false;
-  late List gambar = [];
   bool isLoading = false;
 
   Future showAlertDialog(
@@ -68,7 +66,7 @@ class _BodyState extends State<Body> {
             setState(() {
               isLoading = true;
             });
-            final _postProses = await MGPAPI().postPenerimaanBarang(
+            final _postProses = await postPenerimaanBarang(
               noTransaksi: noTransaksi,
               statusApproval: status,
               catatan: catatan,
@@ -88,7 +86,7 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    futureDetailPenpo = MGPAPI().fetchApprovalDetailPenerimaanBarang(noPenerimaanBarang: widget.noPenerimaanBarang);
+    futureDetailPenpo = fetchApprovalDetailPenerimaanBarang(noPenerimaanBarang: widget.noPenerimaanBarang);
     initializeDateFormatting();
     super.initState();
   }
@@ -109,348 +107,345 @@ class _BodyState extends State<Body> {
                   if (snapshot.hasData) {
                     var detailPenerimaanBarang = snapshot.data;
                     String status = detailPenerimaanBarang!.data!.behavior.toString();
-                    if (detailPenerimaanBarang.data!.detail!.fotoSuratJalan != null) {
-                      gambar.add(detailPenerimaanBarang.data!.detail!.fotoSuratJalan.toString());
-                    }
-                    if (status == "V") {
-                      visibilityPemeriksa = true;
-                    } else {
-                      visibilityPengesah = true;
-                    }
-                    if (widget.statusMenu == "Approval") {
-                      visibilityStatusMenu = true;
-                    } else {
-                      visibilityStatusMenu = false;
-                    }
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: getProportionateScreenHeight(5)),
-                        CardDetail(
-                          child: ListTile(
-                            subtitle: Column(
-                              children: <Widget>[
-                                CardFieldItemDate(
-                                  label: "Tgl. Purchase Order",
-                                  date: detailPenerimaanBarang.data!.detail!.tglPurchaseOrder,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemText(
-                                  label: "Vendor",
-                                  contentData: detailPenerimaanBarang.data!.detail!.namaVendor,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemRightRow(
-                                  label: "Qty Purchase Order",
-                                  rightRow: <Widget> [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 0),
-                                      child: (detailPenerimaanBarang.data!.detail!.qtyOrder != null)
-                                      ? Text(
-                                        formatDecimal.format(
-                                          double.parse(detailPenerimaanBarang.data!.detail!.qtyOrder.toString()
-                                          )
-                                        ).toString()
-                                        +" "+
-                                        detailPenerimaanBarang.data!.detail!.namaSatuanOrder.toString(),
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      )
-                                      : const Text("-",
-                                        style: TextStyle(
-                                          color: Colors.black
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      )
-                                    ),
-                                  ],
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemDate(
-                                  label: "Tgl. Penerimaan Barang",
-                                  date: detailPenerimaanBarang.data!.detail!.tglPenerimaanBarang,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemText(
-                                  label: "No. Surat Jalan",
-                                  contentData: detailPenerimaanBarang.data!.detail!.noSuratJalan,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemText(
-                                  label: "Gudang Penerimaan",
-                                  contentData: detailPenerimaanBarang.data!.detail!.namaGudang,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemRightRow(
-                                  label: "Qty Penerimaan Dalam Satuan Beli",
-                                  rightRow: <Widget> [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 0),
-                                      child: (detailPenerimaanBarang.data!.detail!.qtyBeli != null)
-                                      ? Text(
-                                        formatDecimal.format(
-                                          double.parse(detailPenerimaanBarang.data!.detail!.qtyBeli.toString()
-                                          )
-                                        ).toString()
-                                        +" "+
-                                        detailPenerimaanBarang.data!.detail!.namaSatuanBeli.toString(),
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      )
-                                      : const Text("-",
-                                        style: TextStyle(
-                                          color: Colors.black
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      )
-                                    ),
-                                  ],
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemText(
-                                  label: "No. Purchase Order",
-                                  contentData: detailPenerimaanBarang.data!.detail!.noPurchaseOrder,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemText(
-                                  label: "Item",
-                                  contentData: detailPenerimaanBarang.data!.detail!.namaItem,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemText(
-                                  label: "No. Penerimaan Barang",
-                                  contentData: detailPenerimaanBarang.data!.detail!.noPenerimaanBarang,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemText(
-                                  label: "Petugas Penerimaan",
-                                  contentData: detailPenerimaanBarang.data!.detail!.namaKaryawan,
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                                SizedBox(height: getProportionateScreenHeight(5)),
-                                CardFieldItemRightRow(
-                                  label: "Qty Penerimaan Dalam Satuan Pakai",
-                                  rightRow: <Widget> [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 0),
-                                      child: (detailPenerimaanBarang.data!.detail!.qtyPakai != null)
-                                      ? Text(
-                                        formatDecimal.format(
-                                          double.parse(detailPenerimaanBarang.data!.detail!.qtyPakai.toString()
-                                          )
-                                        ).toString()
-                                        +" "+
-                                        detailPenerimaanBarang.data!.detail!.namaSatuanPakai.toString(),
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      )
-                                      : const Text("-",
-                                        style: TextStyle(
-                                          color: Colors.black
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      )
-                                    ),
-                                  ],
-                                  flexLeftRow: 13,
-                                  flexRightRow: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        if (detailPenerimaanBarang.data!.detail!.fotoSuratJalan != null)...[
-                          CardExpansionDetail(
-                          label: "Gambar Penerimaan Barang",
-                            children: <Widget> [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
-                                child: CardGambar(
-                                  imageLink: detailPenerimaanBarang.data!.detail!.fotoSuratJalan.toString(),
-                                  onTap: () {
-                                    Get.to(PreviewImage(imageLink: gambar));
-                                  },
-                                ),
-                              ), 
-                            ],
-                          ),
-                        ],
-                        if (detailPenerimaanBarang.data!.approval!.isNotEmpty)...[
-                          CardExpansionDetail(
-                            label: "Catatan Approval",
-                            children: <Widget> [
-                              ListView.separated(
-                                separatorBuilder: (context, index) => SizedBox(
-                                  height: getProportionateScreenHeight(10),
-                                ),
-                                itemCount: detailPenerimaanBarang.data!.approval!.length,
-                                itemBuilder: (context, index){
-                                  return FieldCatatanApproval(
-                                    index: index,
-                                    statusApproval: detailPenerimaanBarang.data!.approval![index]!.statusApproval,
-                                    namaKaryawan: detailPenerimaanBarang.data!.approval![index]!.namaKaryawan,
-                                    catatanApproval: detailPenerimaanBarang.data!.approval![index]!.catatan,
-                                    tglApproval: detailPenerimaanBarang.data!.approval![index]!.tglApproval,
-                                  );
-                                },
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
+                    Get.put(DefaultVisibilityDetail()).defaultButtonVisibilityDetail(status);
+                    Get.put(DefaultVisibilityDetail()).defaultApprovalVisibilityDetail(widget.statusMenu);
+                    Get.put(DefaultGambar()).defaultGambarSingle(detailPenerimaanBarang.data!.detail!.fotoSuratJalan.toString());
+                    return GetX<DefaultVisibilityDetail>(
+                      init: DefaultVisibilityDetail(),
+                        builder:(controller) => Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: getProportionateScreenHeight(5)),
+                          CardDetail(
+                            child: ListTile(
+                              subtitle: Column(
+                                children: <Widget>[
+                                  CardFieldItemDate(
+                                    label: "Tgl. Purchase Order",
+                                    date: detailPenerimaanBarang.data!.detail!.tglPurchaseOrder,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "Vendor",
+                                    contentData: detailPenerimaanBarang.data!.detail!.namaVendor,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemRightRow(
+                                    label: "Qty Purchase Order",
+                                    rightRow: <Widget> [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 0),
+                                        child: (detailPenerimaanBarang.data!.detail!.qtyOrder != null)
+                                        ? Text(
+                                          formatDecimal.format(
+                                            double.parse(detailPenerimaanBarang.data!.detail!.qtyOrder.toString()
+                                            )
+                                          ).toString()
+                                          +" "+
+                                          detailPenerimaanBarang.data!.detail!.namaSatuanOrder.toString(),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        )
+                                        : const Text("-",
+                                          style: TextStyle(
+                                            color: Colors.black
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        )
+                                      ),
+                                    ],
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemDate(
+                                    label: "Tgl. Penerimaan Barang",
+                                    date: detailPenerimaanBarang.data!.detail!.tglPenerimaanBarang,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "No. Surat Jalan",
+                                    contentData: detailPenerimaanBarang.data!.detail!.noSuratJalan,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "Gudang Penerimaan",
+                                    contentData: detailPenerimaanBarang.data!.detail!.namaGudang,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemRightRow(
+                                    label: "Qty Penerimaan Dalam Satuan Beli",
+                                    rightRow: <Widget> [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 0),
+                                        child: (detailPenerimaanBarang.data!.detail!.qtyBeli != null)
+                                        ? Text(
+                                          formatDecimal.format(
+                                            double.parse(detailPenerimaanBarang.data!.detail!.qtyBeli.toString()
+                                            )
+                                          ).toString()
+                                          +" "+
+                                          detailPenerimaanBarang.data!.detail!.namaSatuanBeli.toString(),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        )
+                                        : const Text("-",
+                                          style: TextStyle(
+                                            color: Colors.black
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        )
+                                      ),
+                                    ],
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "No. Purchase Order",
+                                    contentData: detailPenerimaanBarang.data!.detail!.noPurchaseOrder,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "Item",
+                                    contentData: detailPenerimaanBarang.data!.detail!.namaItem,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "No. Penerimaan Barang",
+                                    contentData: detailPenerimaanBarang.data!.detail!.noPenerimaanBarang,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemText(
+                                    label: "Petugas Penerimaan",
+                                    contentData: detailPenerimaanBarang.data!.detail!.namaKaryawan,
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                  SizedBox(height: getProportionateScreenHeight(5)),
+                                  CardFieldItemRightRow(
+                                    label: "Qty Penerimaan Dalam Satuan Pakai",
+                                    rightRow: <Widget> [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 0),
+                                        child: (detailPenerimaanBarang.data!.detail!.qtyPakai != null)
+                                        ? Text(
+                                          formatDecimal.format(
+                                            double.parse(detailPenerimaanBarang.data!.detail!.qtyPakai.toString()
+                                            )
+                                          ).toString()
+                                          +" "+
+                                          detailPenerimaanBarang.data!.detail!.namaSatuanPakai.toString(),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        )
+                                        : const Text("-",
+                                          style: TextStyle(
+                                            color: Colors.black
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        )
+                                      ),
+                                    ],
+                                    flexLeftRow: 13,
+                                    flexRightRow: 20,
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: getProportionateScreenHeight(10)),
-                            ]
-                          ),
-                        ],
-                        Visibility(
-                          visible: visibilityStatusMenu,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10), horizontal: getProportionateScreenWidth(3)),
-                            child: CatatanApproval(
-                              controller: _catatanTextEditingController,
-                              onChanged: (value) {
-                                if (value!.isNotEmpty) {
-                                  setState(() {
-                                    catatanError = false;
-                                  });
-                                }
-                                return; 
-                              },
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  setState(() {
-                                    catatanError = true;
-                                  });
-                                }
-                                return null;
-                              },
                             ),
                           ),
-                        ),
-                        Visibility(
-                          visible: catatanError,
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(height: getProportionateScreenHeight(5)),
-                              const FormErrors(errors: kCatatanError),
-                              SizedBox(height: getProportionateScreenHeight(8)),
-                            ],
-                          )
-                        ),
-                        Visibility(
-                          visible: visibilityStatusMenu,
-                          child: SizedBox(height: getProportionateScreenHeight(10))
-                        ),
-                        Visibility(
-                          visible: visibilityStatusMenu,
-                          child: ButtonPemeriksa(
-                            visibilityPemeriksa: visibilityPemeriksa,
-                            onClickedRevise: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "REVISE Penerimaan Barang",
-                                    "REVISE",
-                                    reviseButtonColor,
-                                    detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
-                                    "REV",
-                                    _catatanTextEditingController.text,
-                                  );
-                                }
-                              }
-                            },
-                            onClickedReject: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "REJECT Penerimaan Barang",
-                                    "REJECT",
-                                    rejectButtonColor,
-                                    detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
-                                    "REJ",
-                                    _catatanTextEditingController.text,
-                                  );
-                                }
-                              }
-                            },
-                            onClickedVerify: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "VERIFY Penerimaan Barang",
-                                    "VERIFY",
-                                    verifyButtonColor,
-                                    detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
-                                    "VER",
-                                    _catatanTextEditingController.text,
-                                  );
-                                }
-                              }
-                            }, isLoading: isLoading,
+                          if (detailPenerimaanBarang.data!.detail!.fotoSuratJalan != null)...[
+                            GetBuilder<DefaultGambar>(
+                            init: DefaultGambar(),
+                            builder:(controller2) =>
+                              CardExpansionDetail(
+                              label: "Gambar Penerimaan Barang",
+                                children: <Widget> [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
+                                    child: CardGambar(
+                                      imageLink: detailPenerimaanBarang.data!.detail!.fotoSuratJalan.toString(),
+                                      onTap: () {
+                                        Get.to(PreviewImage(imageLink: controller2.gambar));
+                                      },
+                                    ),
+                                  ), 
+                                ],
+                              ),
+                            )
+                          ],
+                          if (detailPenerimaanBarang.data!.approval!.isNotEmpty)...[
+                            CardExpansionDetail(
+                              label: "Catatan Approval",
+                              children: <Widget> [
+                                ListView.separated(
+                                  separatorBuilder: (context, index) => SizedBox(
+                                    height: getProportionateScreenHeight(10),
+                                  ),
+                                  itemCount: detailPenerimaanBarang.data!.approval!.length,
+                                  itemBuilder: (context, index){
+                                    return FieldCatatanApproval(
+                                      index: index,
+                                      statusApproval: detailPenerimaanBarang.data!.approval![index]!.statusApproval,
+                                      namaKaryawan: detailPenerimaanBarang.data!.approval![index]!.namaKaryawan,
+                                      catatanApproval: detailPenerimaanBarang.data!.approval![index]!.catatan,
+                                      tglApproval: detailPenerimaanBarang.data!.approval![index]!.tglApproval,
+                                    );
+                                  },
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(10)),
+                              ]
+                            ),
+                          ],
+                          Visibility(
+                            visible: controller.visibilityStatusMenu.value,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(10), horizontal: getProportionateScreenWidth(3)),
+                              child: CatatanApproval(
+                                controller: _catatanTextEditingController,
+                                onChanged: (value) {
+                                  if (value!.isNotEmpty) {
+                                    setState(() {
+                                      controller.catatanError = false.obs;
+                                    });
+                                  }
+                                  return; 
+                                },
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    setState(() {
+                                      controller.catatanError = true.obs;
+                                    });
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
                           ),
-                        ),
-                        Visibility(
-                          visible: visibilityStatusMenu,
-                          child: ButtonPengesah(
-                            visibilityPengesah: visibilityPengesah,
-                            onClickedReject: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "REJECT Penerimaan Barang",
-                                    "REJECT",
-                                    rejectButtonColor,
-                                    detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
-                                    "REJ",
-                                    _catatanTextEditingController.text,
-                                  );
-                                }
-                              }
-                            },
-                            onClickedApprove: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_catatanTextEditingController.text != "") {
-                                  showAlertDialog(
-                                    "APPROVE Penerimaan Barang",
-                                    "APPROVE",
-                                    verifyButtonColor,
-                                    detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
-                                    "APP",
-                                    _catatanTextEditingController.text,
-                                  );
-                                }
-                              }
-                            }, isLoading: isLoading,
+                          Visibility(
+                            visible: controller.catatanError.value,
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(height: getProportionateScreenHeight(5)),
+                                const FormErrors(errors: kCatatanError),
+                                SizedBox(height: getProportionateScreenHeight(8)),
+                              ],
+                            )
                           ),
-                        ),
-                        SizedBox(height: getProportionateScreenHeight(30)),
-                      ],
+                          Visibility(
+                            visible: controller.visibilityStatusMenu.value,
+                            child: SizedBox(height: getProportionateScreenHeight(10))
+                          ),
+                          Visibility(
+                            visible: controller.visibilityStatusMenu.value,
+                            child: ButtonPemeriksa(
+                              visibilityPemeriksa: controller.visibilityPemeriksa.value,
+                              onClickedRevise: () {
+                                if (_formKey.currentState!.validate()) {
+                                  if (_catatanTextEditingController.text != "") {
+                                    showAlertDialog(
+                                      "REVISE Penerimaan Barang",
+                                      "REVISE",
+                                      reviseButtonColor,
+                                      detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
+                                      "REV",
+                                      _catatanTextEditingController.text,
+                                    );
+                                  }
+                                }
+                              },
+                              onClickedReject: () {
+                                if (_formKey.currentState!.validate()) {
+                                  if (_catatanTextEditingController.text != "") {
+                                    showAlertDialog(
+                                      "REJECT Penerimaan Barang",
+                                      "REJECT",
+                                      rejectButtonColor,
+                                      detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
+                                      "REJ",
+                                      _catatanTextEditingController.text,
+                                    );
+                                  }
+                                }
+                              },
+                              onClickedVerify: () {
+                                if (_formKey.currentState!.validate()) {
+                                  if (_catatanTextEditingController.text != "") {
+                                    showAlertDialog(
+                                      "VERIFY Penerimaan Barang",
+                                      "VERIFY",
+                                      verifyButtonColor,
+                                      detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
+                                      "VER",
+                                      _catatanTextEditingController.text,
+                                    );
+                                  }
+                                }
+                              }, isLoading: isLoading,
+                            ),
+                          ),
+                          Visibility(
+                            visible: controller.visibilityStatusMenu.value,
+                            child: ButtonPengesah(
+                              visibilityPengesah: controller.visibilityPengesah.value,
+                              onClickedReject: () {
+                                if (_formKey.currentState!.validate()) {
+                                  if (_catatanTextEditingController.text != "") {
+                                    showAlertDialog(
+                                      "REJECT Penerimaan Barang",
+                                      "REJECT",
+                                      rejectButtonColor,
+                                      detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
+                                      "REJ",
+                                      _catatanTextEditingController.text,
+                                    );
+                                  }
+                                }
+                              },
+                              onClickedApprove: () {
+                                if (_formKey.currentState!.validate()) {
+                                  if (_catatanTextEditingController.text != "") {
+                                    showAlertDialog(
+                                      "APPROVE Penerimaan Barang",
+                                      "APPROVE",
+                                      verifyButtonColor,
+                                      detailPenerimaanBarang.data!.detail!.noPenerimaanBarang.toString(),
+                                      "APP",
+                                      _catatanTextEditingController.text,
+                                    );
+                                  }
+                                }
+                              }, isLoading: isLoading,
+                            ),
+                          ),
+                          SizedBox(height: getProportionateScreenHeight(30)),
+                        ],
+                      ),
                     );
                   } else {
                     return const Center(

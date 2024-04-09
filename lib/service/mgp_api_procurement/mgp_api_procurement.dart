@@ -1,4 +1,4 @@
 class MGPAPIPRO {
-  static var baseURL = "https://devapi.mgp.bhawanaerp.com/v1/hrdu";
+  static var baseUrlHrdu = "https://devapi.mgp.bhawanaerp.com/v1/hrdu";
   late String? tokens;
 }

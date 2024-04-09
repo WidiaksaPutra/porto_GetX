@@ -39,7 +39,7 @@ class AlertApproval extends StatelessWidget {
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) { 
           return ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: constraints.maxHeight - getProportionateScreenHeight(400)),
+            constraints: BoxConstraints(maxHeight: constraints.maxHeight - getProportionateScreenHeight(500)),
             child: ListView(
               physics: const BouncingScrollPhysics(),
               scrollDirection:Axis.vertical,

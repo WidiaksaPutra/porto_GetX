@@ -1,3 +1,6 @@
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/rekapitulasi/getX_factory_supply.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/rekapitulasi/getX_hardwood.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/rekapitulasi/getX_plywood.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/rekapitulasi.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_rae/approval_rae.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/peluang_rae/analisa_single_peluang.dart';
@@ -411,13 +414,15 @@ class _BodyState extends State<Body> {
                                   CardFieldAnalisa(
                                   label: "Summary Biaya Bahan Baku",
                                   onTap: () {
-                                      Get.to(SummaryBiayaBahanBaku(futureRekapitulasi: futureRekapitulasi));
+                                      Get.put(GetxHardwoodRae()).bahanBaku(detailRAE.data!.detail!.idRae.toString());
+                                      Get.put(GetxPlywoodRae()).bahanBaku(detailRAE.data!.detail!.idRae.toString());
+                                      Get.to(SummaryBiayaBahanBaku(idRae: detailRAE.data!.detail!.idRae.toString()));
                                     },
                                   ),
                                   CardFieldAnalisa(
                                   label: "Summary Biaya Bahan Lainnya",
                                   onTap: () {
-                                      Get.to(SummaryBiayaBahanLainnya(futureRekapitulasi: futureRekapitulasi));
+                                      Get.to(SummaryBiayaBahanLainnya(idRae: detailRAE.data!.detail!.idRae.toString()));
                                     },
                                   ),
                                 ],

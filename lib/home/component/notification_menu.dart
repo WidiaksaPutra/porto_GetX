@@ -34,7 +34,7 @@ class _NotificationMenuState extends State<NotificationMenu> {
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/notification/page/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/notification/page/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {

@@ -1,16 +1,15 @@
 import 'package:get/get.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mgp_mobile_app/controller_getX/login/getX_validasi_form.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 
 class ApprovalHrdu extends GetxController{
   late String? deviceToken;
   late List dataHakAkses = [];
-  late var hakAksesMenu = <String>[].obs;
+  late List hakAksesMenu = [].obs;
   
-  approvalHrdu(String tokenUser) async{
-    Map<String, dynamic> decodeToken = JwtDecoder.decode(tokenUser);
-    for(var i = 0; i < decodeToken["hak"].length; i++) {
-      dataHakAkses.add(decodeToken["hak"][i]);
+  approvalHrdu() async{
+    for(var i = 0; i < ValidasiForm.decodeToken["hak"].length; i++) {
+      dataHakAkses.add(ValidasiForm.decodeToken["hak"][i]);
     }
     for(var i = 0; i < hakAksesHrduApproval.length; i++) {
       for (var j = 0; j < dataHakAkses.length; j++) {

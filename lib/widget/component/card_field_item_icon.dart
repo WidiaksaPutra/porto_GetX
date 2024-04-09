@@ -66,11 +66,17 @@ class CardFieldItemIcon extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: getProportionateScreenWidth(5)),
                 child: (status != null)
-                ? SvgPicture.asset(
-                  "assets/icons/verify_icon.svg",
-                  height: getProportionateScreenHeight(25),
-                  width: getProportionateScreenWidth(25),
-                )
+                ? (status == true)
+                  ? SvgPicture.asset(
+                      "assets/icons/verify_icon.svg",
+                      height: getProportionateScreenHeight(25),
+                      width: getProportionateScreenWidth(25),
+                    )
+                  : SvgPicture.asset(
+                      "assets/icons/reject_icon.svg",
+                      height: getProportionateScreenHeight(25),
+                      width: getProportionateScreenWidth(25),
+                    )
                 : SvgPicture.asset(
                   "assets/icons/reject_icon.svg",
                   height: getProportionateScreenHeight(25),

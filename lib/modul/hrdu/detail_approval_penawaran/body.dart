@@ -1,4 +1,4 @@
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/penawaran/detail_penawaran_model.dart';
@@ -250,31 +250,31 @@ class _BodyState extends State<Body> {
                             ),
                           ),
                         ),
-                        CardExpansionDetail(
-                          label: "Teks Pembuka",
-                          children: <Widget> [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                              child: CardItemExpansionDetail(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
-                                  child: (detailPenawaran.data!.detail!.teksPembuka != null)
-                                  ? Html(
-                                    data: detailPenawaran.data!.detail!.teksPembuka
-                                  )
-                                  :  Text("-",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  )
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: getProportionateScreenHeight(10)),
-                          ],
-                        ),
+                        // CardExpansionDetail(
+                        //   label: "Teks Pembuka",
+                        //   children: <Widget> [
+                        //     Padding(
+                        //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                        //       child: CardItemExpansionDetail(
+                        //         child: Padding(
+                        //           padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
+                        //           child: (detailPenawaran.data!.detail!.teksPembuka != null)
+                        //           ? Html(
+                        //             data: detailPenawaran.data!.detail!.teksPembuka
+                        //           )
+                        //           :  Text("-",
+                        //             style: TextStyle(
+                        //               color: Colors.black,
+                        //               fontSize: 14,
+                        //             ),
+                        //             textAlign: TextAlign.left,
+                        //           )
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     SizedBox(height: getProportionateScreenHeight(10)),
+                        //   ],
+                        // ),
                         CardExpansionDetail(
                           label: "Item Barang Jadi",
                           children: <Widget> [
@@ -480,31 +480,31 @@ class _BodyState extends State<Body> {
                             SizedBox(height: getProportionateScreenHeight(10)),
                           ],
                         ),
-                        CardExpansionDetail(
-                          label: "Teks Penutup",
-                          children: <Widget> [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                              child: CardItemExpansionDetail(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
-                                  child: (detailPenawaran.data!.detail!.teksPenutup != null)
-                                  ? Html(
-                                    data: detailPenawaran.data!.detail!.teksPenutup
-                                  )
-                                  :  Text("-",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  )
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: getProportionateScreenHeight(10)),
-                          ],
-                        ),
+                        // CardExpansionDetail(
+                        //   label: "Teks Penutup",
+                        //   children: <Widget> [
+                        //     Padding(
+                        //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                        //       child: CardItemExpansionDetail(
+                        //         child: Padding(
+                        //           padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
+                        //           child: (detailPenawaran.data!.detail!.teksPenutup != null)
+                        //           ? Html(
+                        //             data: detailPenawaran.data!.detail!.teksPenutup
+                        //           )
+                        //           :  Text("-",
+                        //             style: TextStyle(
+                        //               color: Colors.black,
+                        //               fontSize: 14,
+                        //             ),
+                        //             textAlign: TextAlign.left,
+                        //           )
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     SizedBox(height: getProportionateScreenHeight(10)),
+                        //   ],
+                        // ),
                         if (detailPenawaran.data!.approval!.isNotEmpty)...[
                           CardExpansionDetail(
                             label: "Catatan Approval",

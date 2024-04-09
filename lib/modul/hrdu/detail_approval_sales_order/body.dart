@@ -113,8 +113,7 @@ class _BodyState extends State<Body> with SeleksiSalesOrder{
  
                     Get.put(DefaultVisibilityDetail()).defaultButtonVisibilityDetail(status.toString());
                     Get.put(DefaultVisibilityDetail()).defaultApprovalVisibilityDetail(widget.statusMenu);
-                    Get.put(GetxItemSalesOrder()).fetchDataItemSalesOrderDetail(widget.noSalesOrder);
-                    
+                    Get.put(GetxItemSalesOrder()).fetchDataItemSalesOrderDetail(widget.noSalesOrder); 
                     return GetX<GetxItemSalesOrder>(
                       init: GetxItemSalesOrder(),
                       builder: (controller) => Column(

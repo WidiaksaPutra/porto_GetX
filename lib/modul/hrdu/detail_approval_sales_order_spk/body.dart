@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -305,34 +305,34 @@ class _BodyState extends State<Body> {
                             SizedBox(height: getProportionateScreenHeight(10)),
                           ],
                         ),
-                        CardExpansionDetail(
-                          label: "Informasi Lainnya",
-                          children: <Widget> [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                              child: CardItemExpansionDetail(
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
-                                    child : (detailSalesOrderSPK.data!.detail!.lainLain != null)
-                                    ? Html(
-                                        data: detailSalesOrderSPK.data!.detail!.lainLain
-                                      )
-                                    : Text("-",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: getProportionateScreenHeight(10)),
-                          ],
-                        ),
+                        // CardExpansionDetail(
+                        //   label: "Informasi Lainnya",
+                        //   children: <Widget> [
+                        //     Padding(
+                        //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                        //       child: CardItemExpansionDetail(
+                        //         child: SizedBox(
+                        //           width: double.infinity,
+                        //           child: Padding(
+                        //             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
+                        //             child : (detailSalesOrderSPK.data!.detail!.lainLain != null)
+                        //             ? Html(
+                        //                 data: detailSalesOrderSPK.data!.detail!.lainLain
+                        //               )
+                        //             : Text("-",
+                        //               style: TextStyle(
+                        //                 color: Colors.black,
+                        //                 fontSize: 14,
+                        //               ),
+                        //               textAlign: TextAlign.left,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     SizedBox(height: getProportionateScreenHeight(10)),
+                        //   ],
+                        // ),
                         CardDetail(
                           child: ListTile(
                             subtitle: Column(

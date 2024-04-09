@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 
 class DefaultFile extends GetxController{
-  late var file = [].obs;
-  late var linkFile = [].obs;
+  late var file = <String>[].obs;
+  late var linkFile = <String>[].obs;
 
   defaultFile(List dataFile){
     if (dataFile.isNotEmpty) {

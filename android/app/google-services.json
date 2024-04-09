@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "431630314876",
+    "project_id": "mgp-dev-8875d",
+    "storage_bucket": "mgp-dev-8875d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431630314876:android:ca616e22b3f5ab5ac148f9",
+        "android_client_info": {
+          "package_name": "com.bhawanaerp.dev_mgp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431630314876-7trn8pqskpeu0tgf9tedfu3ssc15rgcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd5_JJoKwmjd2yO0nE6IR5KMTYbSQ1ie8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431630314876-7trn8pqskpeu0tgf9tedfu3ssc15rgcu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

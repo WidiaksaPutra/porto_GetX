@@ -36,6 +36,29 @@ class ButtonApproval extends StatelessWidget {
   }
 }
 
+class ButtonIcon extends StatelessWidget {
+  const ButtonIcon({Key? key, required this.color, required this.onClicked, required this.icon}) : super(key: key);
+  final Color color;
+  final VoidCallback onClicked;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.maxFinite,
+      padding: EdgeInsets.only(top:getProportionateScreenHeight(10), bottom: getProportionateScreenHeight(10)),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+        ),
+        onPressed: onClicked,
+        child: Icon(icon, size: 20.sp, color: colorCardItem)
+      ),
+    );
+  }
+}
+
 class IconApproval extends StatelessWidget {
   const IconApproval({Key? key, required this.color, required this.onClicked}) : super(key: key);
   final Color color;

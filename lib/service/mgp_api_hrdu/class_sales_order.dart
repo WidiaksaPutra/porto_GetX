@@ -19,7 +19,7 @@ mixin SalesOrderClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_sales_order/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_sales_order/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -47,7 +47,7 @@ mixin SalesOrderClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_sales_order/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_sales_order/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -74,7 +74,7 @@ mixin SalesOrderClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_sales_order/history/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_sales_order/history/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {

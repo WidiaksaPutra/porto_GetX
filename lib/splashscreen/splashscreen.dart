@@ -1,6 +1,4 @@
 import 'dart:async';
-// 
-
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/login/login.dart';
 import 'package:flutter/material.dart';

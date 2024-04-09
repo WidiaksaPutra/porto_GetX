@@ -2,24 +2,26 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/controller_getX/modul/hrdu/approval/getX_approval.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/purchase_order/getX_approval_purchase_order.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/seleksi_vendor/getX_approval_seleksi_vendor.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_analisa_barang_jadi/approval_analisa_barang_jadi.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval_sales_order_spk/approval_sales_order_spk.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/api_penerimaan_barang/api_approval_penerimaan_barang.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/api_purchase_order/api_approval_purchase_order.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/purchase_request/getX_approval_purchase_request.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/api_seleksi_vendor/api_approval_seleksi_vendor.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_analisa_barang_jadi.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_delivery_order.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_faktur_penjualan.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_mutasi_antar_gudang.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_peluang.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_penawaran.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_penerimaan_barang.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_ppa.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_purchase_order.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_purchase_request.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_rab.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_rae.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_rap.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_sales_order.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_sales_order_spk.dart';
-import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_seleksi_vendor.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_surat_jalan.dart';
 import 'package:mgp_mobile_app/service/mgp_api_hrdu/class_surat_perjanjian_kerja.dart';
 import 'package:mgp_mobile_app/widget/component/badge.dart';
@@ -54,8 +56,8 @@ class BodyApproval extends StatefulWidget {
 }
 
 class _BodyApprovalState extends State<BodyApproval> with DeliveryOrderClass, FakturPenjualanClass, MutasiAntarGudangClass,
-  PeluangClass, PenawaranClass, PenerimaanBarangClass, PPAClass, PurchaseOrderClass, PurchaseRequestClass,
-  RABClass, RAEClass, RAPClass, SalesOrderClass, SalesOrderSPKClass, SeleksiVendorClass, SuratJalanClass, SPKClass, 
+  PeluangClass, PenawaranClass, PenerimaanBarangApprovalClass, PPAClass, PurchaseOrderApprovalClass,
+  RABClass, RAEClass, RAPClass, SalesOrderClass, SalesOrderSPKClass, SuratJalanClass, SPKClass, 
   AnalisaBarangJadiClass {
   late String tokenUser;
   late SharedPreferences loginData;
@@ -65,7 +67,8 @@ class _BodyApprovalState extends State<BodyApproval> with DeliveryOrderClass, Fa
     setState(() {
       tokenUser = loginData.getString("token").toString();
     });
-    Get.put(ApprovalHrdu()).approvalHrdu(tokenUser);
+    // late Map<String, dynamic> decodeToken = JwtDecoder.decode(tokenUser);
+    Get.put(ApprovalHrdu()).approvalHrdu();
   }
 
   @override
@@ -76,6 +79,9 @@ class _BodyApprovalState extends State<BodyApproval> with DeliveryOrderClass, Fa
 
   @override
   Widget build(BuildContext context) {
+    Get.put(GetxApprovalPurchaseRequest()).fetchCountApprovalPurchaseRequest();
+    Get.put(GetxApprovalSeleksiVendor()).fetchCountApprovalSeleksiVendor();
+    Get.put(GetxApprovalPurchaseOrder()).fetchCountApprovalPurchaseOrder();
     return GetX<ApprovalHrdu>(
       init: ApprovalHrdu(),
       builder: (controller) => SingleChildScrollView(
@@ -101,52 +107,43 @@ class _BodyApprovalState extends State<BodyApproval> with DeliveryOrderClass, Fa
                       children: <Widget>[
                         //kedepannya kita hanya perlu membuat objek yang memiliki value label dan future, class navigasinya, untuk mempersingkat proses ini.
                         if(controller.hakAksesMenu[index] == hakAksesHrduApproval[0])...[
-                          FutureBuilder(
-                          future: fetchApprovalCountPurchaseRequest(page: 1),
-                          builder: (BuildContext context, AsyncSnapshot<int> snapshot){
-                            if(snapshot.hasData){
-                              if(snapshot.data == 0){
-                                return const TextMenuApproval(label: "Purchase Request");
-                              }
-                              else{
-                                return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Purchase Request");
-                              }
-                            }else{
-                              return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
-                            }
-                          }),
+                          GetX<GetxApprovalPurchaseRequest>(
+                            init: GetxApprovalPurchaseRequest(),
+                            builder: (controllerPr) => (controllerPr.loadingTotalDataPr.value == true)
+                            ? (controllerPr.totalDataListApprovalPr.value == 0)
+                              ? const TextMenuApproval(label: "Purchase Request")
+                              : NotivBadges(
+                                jumlahNotiv: controllerPr.totalDataListApprovalPr.value.toString(),
+                                labelNotiv: "Purchase Request"
+                              )
+                            : const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...")
+                          ) 
                         ],
                         if(controller.hakAksesMenu[index] == hakAksesHrduApproval[1])...[
-                          FutureBuilder(
-                          future: fetchApprovalCountSeleksiVendor(page: 1),
-                          builder: (BuildContext context, AsyncSnapshot<int> snapshot){
-                            if(snapshot.hasData){
-                              if(snapshot.data == 0){
-                                return const TextMenuApproval(label: "Seleksi Vendor");
-                              }
-                              else{
-                                return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Seleksi Vendor");
-                              }
-                            }else{
-                              return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
-                            }
-                          }),
+                          GetX<GetxApprovalSeleksiVendor>(
+                            init: GetxApprovalSeleksiVendor(),
+                            builder: (controllerSv) => (controllerSv.loadingTotalDataSv.value == true)
+                            ? (controllerSv.totalDataListApprovalSv.value == 0)
+                              ? const TextMenuApproval(label: "Seleksi Vendor")
+                              : NotivBadges(
+                                jumlahNotiv: controllerSv.totalDataListApprovalSv.value.toString(),
+                                labelNotiv: "Seleksi Vendor"
+                              )
+                            : const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...")
+                          ),
                         ],
                         if(controller.hakAksesMenu[index] == hakAksesHrduApproval[2])...[
-                          FutureBuilder(
-                          future: fetchApprovalCountPurchaseOrder(page: 1),
-                          builder: (BuildContext context, AsyncSnapshot<int> snapshot){
-                            if(snapshot.hasData){
-                              if(snapshot.data == 0){
-                                return const TextMenuApproval(label: "Purchase Order");
-                              }
-                              else{
-                                return NotivBadges(jumlahNotiv: snapshot.data.toString(), labelNotiv: "Purchase Order");
-                              }
-                            }else{
-                              return const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...");
-                            }
-                          }),
+                           GetX<GetxApprovalPurchaseOrder>(
+                            init: GetxApprovalPurchaseOrder(),
+                            builder: (controllerSv) => (controllerSv.loadingTotalDataPo.value == true)
+                            ? (controllerSv.totalDataListApprovalPo.value == 0)
+                              ? const TextMenuApproval(label: "Purchase Order")
+                              : NotivBadges(
+                                jumlahNotiv: controllerSv.totalDataListApprovalPo.value.toString(),
+                                labelNotiv: "Purchase Order"
+                              )
+                            : const NotivBadges(jumlahNotiv: "-", labelNotiv: "loading...")
+                          ),
                         ],
                         if(controller.hakAksesMenu[index] == hakAksesHrduApproval[3])...[
                           FutureBuilder(

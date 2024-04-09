@@ -15,10 +15,7 @@ import 'package:mgp_mobile_app/model/hrdu/sales_order_spk/list_kelompok_prelim_s
 import 'package:mgp_mobile_app/model/hrdu/mutasi_antar_gudang/detail_mutasi_antar_gudang.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/detail_peluang_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/penawaran/detail_penawaran_model.dart';
-import 'package:mgp_mobile_app/model/hrdu/penerimaan_barang/detail_penerimaan_barang.dart';
 import 'package:mgp_mobile_app/model/hrdu/ppa/detail_ppa_model.dart';
-import 'package:mgp_mobile_app/model/hrdu/purchase_order/detail_purchase_order_model.dart';
-import 'package:mgp_mobile_app/model/hrdu/purchase_request/detail_purchase_request_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/rab/analisa_single_rab.dart';
 import 'package:mgp_mobile_app/model/hrdu/rab/detail_rab_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/rab/list_kelompok_prelim.dart';
@@ -28,59 +25,26 @@ import 'package:mgp_mobile_app/model/hrdu/rae/detail_rae_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/list_kelompok_prelim.dart';
 import 'package:mgp_mobile_app/model/hrdu/rap/detail_rap_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/sales_order/detail_sales_order_model.dart';
-import 'package:mgp_mobile_app/model/hrdu/seleksi_vendor/detail_seleksi_vendor_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/surat_jalan/detail_surat_jalan_model.dart';
 import 'package:mgp_mobile_app/model/hrdu/surat_perjanjian_kerja/detail_surat_perjanjian_kerja_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:mgp_mobile_app/model/login/login.dart';
 import 'package:mgp_mobile_app/model/profil/profil_model.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MGPAPI {
   static var client = http.Client();
-  // static var baseURL = "https://devapi.mgp.bhawanaerp.com/v1/hrdu";
-  // static var baseURL = "https://api.mgp.bhawanaerp.com/v1/hrdu";
-  // static var baseURL = "https://api.erpmgpwoodworks.com/v1/hrdu";
-  static var baseURL = "https://devapi.erpmgpwoodworks.com/v1/hrdu";
-  // static var baseURL = "https://api.erpmgpwoodworks.com/v1/hrdu";
+  static var baseUrlHrdu = "https://devapi.mgp.bhawanaerp.com/v1/hrdu";
+  static var baseUrlInv = "https://devapi.mgp.bhawanaerp.com/v1/inv";
 
-  late String? tokens;
-  var status = "";
-
-  //Login 
-  Future loginUser({required String username, required String password}) async {
-    try {
-      final responseBody = await client.post(Uri.parse('$baseURL/auth/login'),
-        headers: <String, String> {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{"username": username, "password": password}
-        )
-      );
-      if (responseBody.statusCode == 200) {
-        final jsonData = responseBody.body;
-        final loginResponse = loginUserFromJson(jsonData);
-        if (loginResponse.message == "login sukses") {
-          final prefs = await SharedPreferences.getInstance();
-          prefs.setString("token", loginResponse.token);
-          prefs.setBool("login", true);
-          return status = "berhasil";
-        } else {
-          return status = "gagal";
-        }
-      } else {
-      }
-    } catch (e) {
-      return status = "gagal";
-    }
-  }
+  static late String? tokens = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEwMyIsInVzZXJuYW1lIjoia290YWFydGEiLCJuYW1hIjoiVXNlciIsImhhayI6WyJJTlYiLCJJTlZfTEFQX0tTVCIsIklOVl9NQVNfQlVBIiwiSU5WX01BU19HVUQiLCJJTlZfTUFTX0pFTiIsIklOVl9NQVNfS0VMIiwiSU5WX01BU19QQUIiLCJJTlZfTUFTX1NBVCIsIklOVl9SRUdfQkhOIiwiSU5WX1JQVF9ETyIsIklOVl9SUFRfTFBSIiwiSU5WX1JQVF9QQkoiLCJJTlZfUlBUX1NVIiwiSU5WX1RSTl9DVkIiLCJJTlZfVFJOX0RPIiwiSU5WX1RSTl9NQUciLCJJTlZfVFJOX1BCSiIsIklOVl9UUk5fUE5CIiwiSU5WX1RSTl9QUiIsIklOVl9UUk5fUFNKIiwiSU5WX1RSTl9SU1AiLCJJTlZfVFJOX1NKIiwiSU5WX1RSTl9USkIiLCJJTlZfVFJOX1RQQiIsIklOVl9UUk5fVFBMIiwiSU5WX1RSTl9UUiIsIkhSRFUiLCJIUkRVX1RSTl9QSkMiLCJJTlZfUkVHX0FMTSIsIklOVl9SRUdfT1ZIIiwiSU5WX1JFR19TQkMiLCJJTlZfUkVHX1VQSCIsIkhSRFVfQVBSX0NWQl9WXzEiLCJIUkRVX0FQUl9SRUdQTlBDSU5WX1ZfMSIsIkhSRFVfQVBSX1JFR1BDSU5WX1ZfMSIsIkhSRFVfQVBSX01BR19WXzEiLCJIUkRVX0FQUl9SRUdTSl9WXzEiLCJIUkRVX0FQUl9SRUdET19WXzEiLCJIUkRVX0FQUl9QRU5QT19WXzEiLCJIUkRVX0FQUl9QUl9WXzEiXSwidW5pdF9vcmdhbmlzYXNpIjp7ImlkIjoiODIiLCJrb2RlIjoiVU8wMDAwMTQiLCJuYW1hIjoiQmFnaWFuIExvZ2lzdGlrIn0sImphYmF0YW4iOnsiaWQiOiIzOSIsImtvZGUiOiJKQjAwMDAxNCIsIm5hbWEiOiJLYS4gQmFnLiBMb2dpc3RpayJ9LCJtYWRlIjoxNjg3NTEzOTA1fQ.f_AwhPHU9KVdrg9YMJ4MZHsspScyNnZE2RgqkIez0BI";
+  static var status = "";
   //Register Token Notification
   Future registerTokenDevice({required String tokenDevice}) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       tokens = prefs.getString("token")!;
-      final responseBody = await client.post(Uri.parse('$baseURL/notification/register_device_token'),
+      final responseBody = await client.post(Uri.parse('$baseUrlHrdu/notification/register_device_token'),
         headers: <String, String> {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $tokens',
@@ -102,7 +66,7 @@ class MGPAPI {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       tokens = prefs.getString("token")!;
-      final responseBody = await client.post(Uri.parse('$baseURL/notification/unregister_device_token'),
+      final responseBody = await client.post(Uri.parse('$baseUrlHrdu/notification/unregister_device_token'),
         headers: <String, String> {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $tokens',
@@ -124,7 +88,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     try {
-      final responseBody = await client.put(Uri.parse('$baseURL/profile/update_password'),
+      final responseBody = await client.put(Uri.parse('$baseUrlHrdu/profile/update_password'),
         headers: <String, String> {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $tokens',
@@ -152,7 +116,7 @@ class MGPAPI {
       'id_karyawan' : idKaryawan,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/profile/single/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/profile/single/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -177,7 +141,7 @@ class MGPAPI {
       'no_delivery_order' : noDeliveryOrder,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_delivery_order/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_delivery_order/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -198,7 +162,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_delivery_order/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_delivery_order/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -220,7 +184,7 @@ class MGPAPI {
       'no_mutasi_antar_gudang' : noMutasiAntarGudang,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_mutasi_antar_gudang/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_mutasi_antar_gudang/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -241,7 +205,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_mutasi_antar_gudang/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_mutasi_antar_gudang/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -264,7 +228,7 @@ class MGPAPI {
       'no_faktur' : noFaktur,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_faktur_penjualan/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_faktur_penjualan/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -286,7 +250,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_faktur_penjualan/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_faktur_penjualan/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -308,7 +272,7 @@ class MGPAPI {
       'no_kegiatan' : noKegiatan,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_kegiatan/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_kegiatan/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -329,7 +293,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_kegiatan/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_kegiatan/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -342,58 +306,17 @@ class MGPAPI {
     } else {
     }
   }
-  // Detail Penerimaan Barang
-  Future<DetailPenpo> fetchApprovalDetailPenerimaanBarang({required String noPenerimaanBarang}) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    Map<String, String>? queryParams = {
-      'no_penerimaan_barang' : noPenerimaanBarang,
-    };
-    String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_penerimaan_barang/detail/?' + queryString;
-    final response = 
-      await client.get(Uri.parse(requestUrl),
-      headers: {
-        'Authorization': 'Bearer $tokens',
-      }
-    );
-    if (response.statusCode == 200) {
-      final parsed = json.decode(response.body);
-      DetailPenpo detailPenerimaanBarangData = DetailPenpo.fromJson(parsed);
-      return detailPenerimaanBarangData;
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
+  // Detail Penerimaan Baran
   // Approve Detail Penerimaan Barang
-  Future postPenerimaanBarang({required String noTransaksi, required String statusApproval, required String catatan, required String tglApproval}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    final response = 
-      await client.post(Uri.parse("$baseURL/approval_penerimaan_barang/approve"),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $tokens',
-      },
-      body: jsonEncode(<String, String>{"no_transaksi": noTransaksi, "status_approval": statusApproval, "catatan" : catatan, "tgl_approval" : tglApproval}
-      )
-    );
-    if (response.statusCode == 200) {
-      return status = "berhasil";
-    } else {
-    }
-  }
   // Detail PPA
   Future<DetailRegppa> fetchApprovalDetailPPA({required String noPPA}) async {
-    await Future.delayed(const Duration(milliseconds: 500));
     SharedPreferences prefs = await SharedPreferences.getInstance();
       tokens = prefs.getString("token")!;
     Map<String, String>? queryParams = {
       'no_ppa' : noPPA,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_ppa/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_ppa/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -413,7 +336,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_ppa/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_ppa/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -427,95 +350,28 @@ class MGPAPI {
     }
   }
   // Detail Purchaser Order
-  Future<DetailRegpo> fetchApprovalDetailPurchaseOrder({required String noPurchaseOrder}) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    Map<String, String>? queryParams = {
-      'no_purchase_order' : noPurchaseOrder,
-    };
-    String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_purchase_order/detail/?' + queryString;
-    final response = 
-      await client.get(Uri.parse(requestUrl),
-      headers: {
-        'Authorization': 'Bearer $tokens',
-      }
-    );
-    if (response.statusCode == 200) {
-      final parsed = json.decode(response.body);
-      // ignore: avoid_print
-      print(parsed);
-      DetailRegpo detailPurchaseOrderData = DetailRegpo.fromJson(parsed);
-      return detailPurchaseOrderData;
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
   // Approve Detail Purchase Order
-  Future postPurchaseOrder({required String noTransaksi, required String statusApproval, required String catatan, required String tglApproval, required String approvalBaseline}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    final response = 
-      await client.post(Uri.parse("$baseURL/approval_purchase_order/approve"),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $tokens',
-      },
-      body: jsonEncode(<String, String>{"no_transaksi": noTransaksi, "status_approval": statusApproval, "catatan" : catatan, "tgl_approval" : tglApproval, "approval_baseline":approvalBaseline}
-      )
-    );
-    if (response.statusCode == 200) {
-      return status = "berhasil";
-    } else {
-    }
-  }
   // Detail Purchase Request
-  Future<DetailPr> fetchApprovalDetailPurchaseRequest({required String noPurchaseRequest}) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    print(noPurchaseRequest);
-    Map<String, String>? queryParams = {
-      'no_purchase_request' : noPurchaseRequest,
-    };
-    String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_purchase_request/detail/?' + queryString;
-    final response = 
-      await client.get(Uri.parse(requestUrl),
-      headers: {
-        'Authorization': 'Bearer $tokens',
-      }
-    );
-    print("test hallo");
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      final parsed = json.decode(response.body);
-      DetailPr detailPurchaseRequestData = DetailPr.fromJson(parsed);
-      return detailPurchaseRequestData;
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
-  // Approve Detail Purchase Request
-  Future postPurchaseRequest({required String noTransaksi, required String statusApproval, required String catatan, required String tglApproval, required String approvalBaseline}) async {
-    print(noTransaksi);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    final response = 
-      await client.post(Uri.parse("$baseURL/approval_purchase_request/approve"),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $tokens',
-      },
-      body: jsonEncode(<String, String>{"no_transaksi": noTransaksi, "status_approval": statusApproval, "catatan" : catatan, "tgl_approval" : tglApproval, "approval_baseline" : approvalBaseline}
-      )
-    );
-    if (response.statusCode == 200) {
-      return status = "berhasil";
-    } else {
-    }
-  }
+  
+  // // Approve Detail Purchase Request
+  // Future postPurchaseRequest({required String noTransaksi, required String statusApproval, required String catatan, required String tglApproval, required String approvalBaseline}) async {
+  //   print(noTransaksi);
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   tokens = prefs.getString("token")!;
+  //   final response = 
+  //     await client.post(Uri.parse("$baseUrlHrdu/approval_purchase_request/approve"),
+  //     headers: {
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //       'Authorization': 'Bearer $tokens',
+  //     },
+  //     body: jsonEncode(<String, String>{"no_transaksi": noTransaksi, "status_approval": statusApproval, "catatan" : catatan, "tgl_approval" : tglApproval, "approval_baseline" : approvalBaseline}
+  //     )
+  //   );
+  //   if (response.statusCode == 200) {
+  //     return status = "berhasil";
+  //   } else {
+  //   }
+  // }
   // Detail Rencana Anggaran Biaya
   Future<DetailRegrab> fetchApprovalDetailRencanaAnggaranBiaya({required String noRab, required String baseline}) async {
     await Future.delayed(const Duration(milliseconds: 500));
@@ -526,7 +382,7 @@ class MGPAPI {
       'baseline': baseline,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_rab/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_rab/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -546,7 +402,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_rab/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_rab/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -569,7 +425,7 @@ class MGPAPI {
       'baseline' : baseline,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_rae/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_rae/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -589,7 +445,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_rae/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_rae/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -611,7 +467,7 @@ class MGPAPI {
       'no_sales_order' : noSalesOrder,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_sales_order/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_sales_order/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -631,7 +487,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_sales_order/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_sales_order/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -654,7 +510,7 @@ class MGPAPI {
       'id_sales_order_spk' : idSalesOrderSpk,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_sales_order_spk/detail?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_sales_order_spk/detail?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -674,54 +530,12 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_sales_order_spk/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_sales_order_spk/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
       },
       body: jsonEncode(<String, String>{"no_transaksi": noTransaksi, "status_approval": statusApproval, "catatan" : catatan, "tgl_approval" : tglApproval, "approval_baseline" : approvalBaseline}
-      )
-    );
-    if (response.statusCode == 200) {
-      return status = "berhasil";
-    } else {
-    }
-  }
-  // Detail Seleksi Vendor
-  Future<DetailPvspr> fetchApprovalDetailSeleksiVendor({required String noSeleksiVendor}) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    Map<String, String>? queryParams = {
-      'no_seleksi_vendor' : noSeleksiVendor,
-    };
-    String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_seleksi_vendor/detail/?' + queryString;
-    final response = 
-      await client.get(Uri.parse(requestUrl),
-      headers: {
-        'Authorization': 'Bearer $tokens',
-      }
-    );
-    if (response.statusCode == 200) {
-      final parsed = json.decode(response.body);
-      DetailPvspr detailDeliveryOrderData = DetailPvspr.fromJson(parsed);
-      return detailDeliveryOrderData;
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
-  // Approve Detail Seleksi Vendor
-  Future postSeleksiVendor({required String noTransaksi, required String statusApproval, required String catatan, required String tglApproval, required String approvalBaseline}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    tokens = prefs.getString("token")!;
-    final response = 
-      await client.post(Uri.parse("$baseURL/approval_seleksi_vendor/approve"),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $tokens',
-      },
-      body: jsonEncode(<String, String>{"no_transaksi": noTransaksi, "status_approval": statusApproval, "catatan" : catatan, "tgl_approval" : tglApproval, "approval_baseline": approvalBaseline}
       )
     );
     if (response.statusCode == 200) {
@@ -738,7 +552,7 @@ class MGPAPI {
       'no_surat_jalan' : noSuratJalan,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_surat_jalan/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_surat_jalan/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -758,7 +572,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_surat_jalan/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_surat_jalan/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -781,7 +595,7 @@ class MGPAPI {
       'baseline' : baseline,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_spk/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_spk/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -801,7 +615,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_spk/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_spk/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -824,7 +638,7 @@ class MGPAPI {
       'baseline' : baseline,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_rap/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_rap/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -844,7 +658,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_rap/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_rap/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -867,7 +681,7 @@ class MGPAPI {
       'baseline' : baseline
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_penawaran/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_penawaran/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -887,7 +701,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_penawaran/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_penawaran/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -910,7 +724,7 @@ class MGPAPI {
       'tipe' : 'gambar',
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -935,7 +749,7 @@ class MGPAPI {
       'tipe' : 'umum',
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -960,7 +774,7 @@ class MGPAPI {
       'tipe' : 'baku',
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -985,7 +799,7 @@ class MGPAPI {
       'tipe' : 'penunjang',
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1010,7 +824,7 @@ class MGPAPI {
       'tipe' : 'fin',
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_peluang/analisa_barang_jadi_single/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1036,7 +850,7 @@ class MGPAPI {
       'id_rae_detail' : idRaeDetail,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_rae/analisa_barang_jadi_single/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_rae/analisa_barang_jadi_single/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1056,7 +870,7 @@ class MGPAPI {
     await Future.delayed(const Duration(milliseconds: 500));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
-    var requestUrl = baseURL + '/approval_rae/list_kelompok_prelim';
+    var requestUrl = baseUrlHrdu + '/approval_rae/list_kelompok_prelim';
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1080,7 +894,7 @@ class MGPAPI {
       'no_peluang' : noPeluang,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_rae/detail_peluang/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_rae/detail_peluang/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1104,7 +918,7 @@ class MGPAPI {
       'no_peluang' : noPeluang,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_peluang/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_peluang/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1124,7 +938,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_peluang/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_peluang/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -1141,7 +955,7 @@ class MGPAPI {
   Future<ListKelompokPrelimRegrab> fetchAnalisaPrelimRAB() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
-    var requestUrl = baseURL + '/approval_rab/list_kelompok_prelim';
+    var requestUrl = baseUrlHrdu + '/approval_rab/list_kelompok_prelim';
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1165,7 +979,7 @@ class MGPAPI {
       'id_rab_detail' : idRabDetail,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_rab/analisa_barang_jadi_single/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_rab/analisa_barang_jadi_single/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1185,7 +999,7 @@ class MGPAPI {
     await Future.delayed(const Duration(milliseconds: 500));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
-    var requestUrl = baseURL + '/approval_sales_order_spk/list_kelompok_prelim';
+    var requestUrl = baseUrlHrdu + '/approval_sales_order_spk/list_kelompok_prelim';
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1209,7 +1023,7 @@ class MGPAPI {
       'id_rap_detail' : idRapDetail,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_rap/analisa_barang_jadi_single/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_rap/analisa_barang_jadi_single/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1233,7 +1047,7 @@ class MGPAPI {
       'id_item_buaso' : idItemBuaso,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = baseURL + '/approval_analisa_barang_jadi/detail/?' + queryString;
+    var requestUrl = baseUrlHrdu + '/approval_analisa_barang_jadi/detail/?' + queryString;
     final response = 
       await client.get(Uri.parse(requestUrl),
       headers: {
@@ -1253,7 +1067,7 @@ class MGPAPI {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     tokens = prefs.getString("token")!;
     final response = 
-      await client.post(Uri.parse("$baseURL/approval_analisa_barang_jadi/approve"),
+      await client.post(Uri.parse("$baseUrlHrdu/approval_analisa_barang_jadi/approve"),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokens',
@@ -1275,14 +1089,14 @@ class MGPAPI {
       'id_rae' : idRae,
     };
     String? quieryString = Uri(queryParameters: queryParams).query;   
-    var requestUrl = baseURL + '/approval_rae/rekapitulasi/?' + quieryString;
+    var requestUrl = baseUrlHrdu + '/approval_rae/rekapitulasi/?' + quieryString;
     final resoponse = await client.get(
       Uri.parse(requestUrl),
       headers: {
         'Authorization': 'Bearer $tokens',
       }
     );
-    print(resoponse.statusCode);
+    
     if(resoponse.statusCode == 200){
       print("test 111");
       final parsed = json.decode(resoponse.body);

@@ -1,6 +1,14 @@
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 
 import 'package:get/get.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_alat_bantu_on-site.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_biaya_overhead_kantor.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_finishing.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_labour_cost_on_site.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_penunjang_produksi.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_rae.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/mixin_rae.dart';
 import 'package:mgp_mobile_app/widget/component/card_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_total.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_url_launcher.dart';
@@ -11,10 +19,7 @@ import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_finishing/
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_labour_cost_on_site/analisa_labour_cost_on_site.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_penunjang_produksi/analisa_penunjang_produksi.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
-import 'package:mgp_mobile_app/model/hrdu/rae/detail_rae_model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:mgp_mobile_app/widget/component/card_detail.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_analisa.dart';
 import 'package:mgp_mobile_app/widget/component/card_field_item_text.dart';
@@ -26,34 +31,15 @@ import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class BodyInformasi extends StatefulWidget {
   final String idRaeDetail;
-  final Future<AnalisaSingleRegrae> futureAnalisaSingleRae;
-  const BodyInformasi({Key? key, required this.futureAnalisaSingleRae, required this.idRaeDetail}) : super(key: key);
+  const BodyInformasi({Key? key, required this.idRaeDetail}) : super(key: key);
 
   @override
   _BodyInformasiState createState() => _BodyInformasiState();
 }
 
-class _BodyInformasiState extends State<BodyInformasi> {
-  final formatDecimal = NumberFormat("###.######", "id_ID");
-  final decimalFormat = NumberFormat("###", "id_ID");
-  late List subTotalHargaRAE = [];
-  late List subTotalHargaPrelim = [];
-  late List totalHargaPrelim = [];
-  late String grandTotal;
-  late String grandTotalPrelim;
-  late String grandTotalHargaRAE;
-  final List<String> errors = [];
-  late Future<DetailRegrae> futureDetailRegrae;
-  late String totalAnalisaBahanBaku;
-  late String totalAnalisaPenunjanProduksi;
-  late String totalAnalisaFinishing;
-  late String totalAnalisaAlatBantuOnSite;
-  late String totalAnalisaLabourCostOnSite;
-  late String totalAnalisaBiayaOverheadKantor;
-  late String totalLuasHardwood;
-  late String totalVolumeHardwood;
-  late String totalLuasPlywood;
-  late String totalVolumePlywood;
+class _BodyInformasiState extends State<BodyInformasi> with RaeDetail{
+  late Future<AnalisaSingleRegrae> futureAnalisaSinggleRae = fetchDataRAEDetail(idRaeDetail: widget.idRaeDetail);
+  
   List namaSummaryBiaya = [
     "Analisa Bahan Baku",
     "Analisa Penunjang Produksi",
@@ -62,20 +48,7 @@ class _BodyInformasiState extends State<BodyInformasi> {
     "Analisa Labour Cost On-Site",
     "Analisa Biaya Overhead Kantor",
   ];
-  late List totalSummaryBiaya = [];
-  late List subTotalHardwood = [];
-  late List subTotalPlywood = [];
-  late List listLuaslHardwood = [];
-  late List listLuasPlywood = [];
-  late List listVolumeHardwood = [];
-  late List listVolumePlywood = [];
-  late List<String> listNamaFinishingBarangJadi = [];
 
-  @override
-  void initState() {
-    initializeDateFormatting();
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -86,407 +59,188 @@ class _BodyInformasiState extends State<BodyInformasi> {
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
-              future: widget.futureAnalisaSingleRae,
+              future: futureAnalisaSinggleRae,
               builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegrae> snapshot) {
                 if (snapshot.hasData) {
-                  var analisaSingleRAE = snapshot.data;
-                  num totalHardwood = 0;
-                  num totalPlywood = 0;
-                  num totalFactorySupply = 0;
-                  num totalLabourCost = 0;
-                  num totalMachineProcess = 0;
-                  num totalBiayaOverhead = 0;
-                  num totalBahanPenunjangFinishing = 0;
-                  num totalSubkonFinishing = 0;
-                  num totalLabourCostFinishing = 0;
-                  num totalAlatBantuOnSite = 0;
-                  num totalLabourCostOnSite = 0;
-                  num totalBiayaOverheadKantor = 0;
-                  num luasHardwood = 0;
-                  num luasPlywood = 0;
-                  num volumeHardwood = 0;
-                  num volumePlywood = 0;
-                  num totalHardwoodAlatBantu = 0;
-                  num totalPlywoodAlatBantu = 0;
-                  if (analisaSingleRAE!.data!.analisaHardwood!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaHardwood!.length; i++) {
-                      num volume = (double.parse(analisaSingleRAE.data!.analisaHardwood![i].tRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].wRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyRaw.toString()))/1000000;
-                      volumeHardwood = volumeHardwood + volume;
-                      listVolumeHardwood.add(volume);
-                      num subTotal = volume * double.parse(analisaSingleRAE.data!.analisaHardwood![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].konstanta.toString());
-                      subTotalHardwood.add(subTotal);
-                      totalHardwood = totalHardwood + subTotal.round();
-                      if (analisaSingleRAE.data!.analisaHardwood![i].namaTipeSisi.toString() == "4 Sisi (2TL + 2WL)") {
-                        num tPlusW = (double.parse(analisaSingleRAE.data!.analisaHardwood![i].tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i].wFinal.toString()));
-                        num luas = (tPlusW * 2 * double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lFinal.toString()))/10000;
-                        listLuaslHardwood.add(formatDecimal.format(luas));
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i].namaTipeSisi.toString() == "3 Sisi Opsi (2TL + WL)") {
-                        num tPlusWPlusT = (double.parse(analisaSingleRAE.data!.analisaHardwood![i].tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i].wFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i].tFinal.toString()));
-                        num luas = (tPlusWPlusT * double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lFinal.toString()))/10000;
-                        listLuaslHardwood.add(formatDecimal.format(luas));
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i].namaTipeSisi.toString() == "3 Sisi Opsi 2 (TL + 2WL)") {
-                        num tPlusWPlusW = (double.parse(analisaSingleRAE.data!.analisaHardwood![i].tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i].wFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i].wFinal.toString()));
-                        num luas = (tPlusWPlusW * double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lFinal.toString()))/10000;
-                        listLuaslHardwood.add(formatDecimal.format(luas));
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i].namaTipeSisi.toString() == "2 Sisi Opsi 1 (TL + WL)") {
-                        num tPlusW = (double.parse(analisaSingleRAE.data!.analisaHardwood![i].tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i].wFinal.toString()));
-                        num luas = (tPlusW * double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lFinal.toString()))/10000;
-                        listLuaslHardwood.add(formatDecimal.format(luas));
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i].namaTipeSisi.toString() == "2 Sisi Opsi 2 (2TL)") {
-                        num tPlusT = (double.parse(analisaSingleRAE.data!.analisaHardwood![i].tFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i].tFinal.toString()));
-                        num luas = (tPlusT * double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lFinal.toString()))/10000;
-                        listLuaslHardwood.add(formatDecimal.format(luas));
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i].namaTipeSisi.toString() == "2 Sisi Opsi 3 (2WL)") {
-                        num wPlusW = (double.parse(analisaSingleRAE.data!.analisaHardwood![i].wFinal.toString()) + double.parse(analisaSingleRAE.data!.analisaHardwood![i].wFinal.toString()));
-                        num luas = (wPlusW * double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lFinal.toString()))/10000;
-                        listLuaslHardwood.add(formatDecimal.format(luas));
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i].namaTipeSisi.toString() == "1 Sisi Opsi 1 (TL)") {
-                        num luas = (double.parse(analisaSingleRAE.data!.analisaHardwood![i].tFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lFinal.toString()))/10000;
-                        listLuaslHardwood.add(formatDecimal.format(luas));
-                        luasHardwood = luasHardwood + luas;
-                      } else if (analisaSingleRAE.data!.analisaHardwood![i].namaTipeSisi.toString() == "1 Sisi Opsi 1 (WL)") {
-                        num luas = (double.parse(analisaSingleRAE.data!.analisaHardwood![i].wFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyFinal.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lFinal.toString()))/10000;
-                        listLuaslHardwood.add(formatDecimal.format(luas));
-                        luasHardwood = luasHardwood + luas;
-                      } else {
-                        num luas = 0;
-                        listLuaslHardwood.add(formatDecimal.format(luas));
-                        luasHardwood = luasHardwood + luas;
-                      }
-                    }
-                  }
-                  if (analisaSingleRAE.data!.analisaPlywood!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaPlywood!.length; i++) {
-                      num volume = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].tRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].wRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].lRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()))/1000000;
-                      volumePlywood = volumePlywood + volume;
-                      listVolumePlywood.add(volume);
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaPlywood![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].konstanta.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString());
-                      subTotalPlywood.add(subTotal);
-                      totalPlywood = totalPlywood + subTotal.round();
-                      if (analisaSingleRAE.data!.analisaPlywood![i].namaTipeSisi.toString() == "4 Sisi (2TL + 2WL)") {
-                        num tPlusW = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i].wRaw.toString()));
-                        num luas = (tPlusW * 2 * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].lRaw.toString()))/10000;
-                        listLuasPlywood.add(formatDecimal.format(luas));
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i].namaTipeSisi.toString() == "3 Sisi Opsi (2TL + WL)") {
-                        num tPlusWPlusT = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i].wRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i].tRaw.toString()));
-                        num luas = (tPlusWPlusT * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].lRaw.toString()))/10000;
-                        listLuasPlywood.add(formatDecimal.format(luas));
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i].namaTipeSisi.toString() == "3 Sisi Opsi 2 (TL + 2WL)") {
-                        num tPlusWPlusW = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i].wRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i].wRaw.toString()));
-                        num luas = (tPlusWPlusW * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].lRaw.toString()))/10000;
-                        listLuasPlywood.add(formatDecimal.format(luas));
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i].namaTipeSisi.toString() == "2 Sisi Opsi 1 (TL + WL)") {
-                        num tPlusW = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i].wRaw.toString()));
-                        num luas = (tPlusW * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].lRaw.toString()))/10000;
-                        listLuasPlywood.add(formatDecimal.format(luas));
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i].namaTipeSisi.toString() == "2 Sisi Opsi 2 (2TL)") {
-                        num tPlusT = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].tRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i].tRaw.toString()));
-                        num luas = (tPlusT * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].lRaw.toString()))/10000;
-                        listLuasPlywood.add(formatDecimal.format(luas));
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i].namaTipeSisi.toString() == "2 Sisi Opsi 3 (2WL)") {
-                        num wPlusW = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].wRaw.toString()) + double.parse(analisaSingleRAE.data!.analisaPlywood![i].wRaw.toString()));
-                        num luas = (wPlusW * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].lRaw.toString()))/10000;
-                        listLuasPlywood.add(formatDecimal.format(luas));
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i].namaTipeSisi.toString() == "1 Sisi Opsi 1 (TL)") {
-                        num luas = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].tRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].lRaw.toString()))/10000;
-                        listLuasPlywood.add(formatDecimal.format(luas));
-                        luasPlywood = luasPlywood + luas;
-                      } else if (analisaSingleRAE.data!.analisaPlywood![i].namaTipeSisi.toString() == "1 Sisi Opsi 1 (WL)") {
-                        num luas = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].wRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lRaw.toString()))/10000;
-                        listLuasPlywood.add(formatDecimal.format(luas));
-                        luasPlywood = luasPlywood + luas;
-                      } else {
-                        num luas = 0;
-                        listLuasPlywood.add(formatDecimal.format(luas));
-                        luasPlywood = luasPlywood + luas;
-                      }
-                    }
-                  }
-                  if (analisaSingleRAE.data!.analisaFinTpFs!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaFinTpFs!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpFs![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpFs![i].konstanta.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpFs![i].qty.toString());
-                      totalFactorySupply = totalFactorySupply + subTotal.round();
-                    }
-                  }
-                  if (analisaSingleRAE.data!.analisaFinTpLc!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaFinTpLc!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpLc![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpLc![i].konstanta.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpLc![i].qty.toString());
-                      totalLabourCost = totalLabourCost + subTotal.round();
-                    }
-                  }
-                  if (analisaSingleRAE.data!.analisaFinTpMp!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaFinTpMp!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpMp![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpMp![i].konstanta.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpMp![i].qty.toString());
-                      totalMachineProcess = totalMachineProcess + subTotal.round();
-                    }
-                  }
-                  if (analisaSingleRAE.data!.analisaFinTpBop!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaFinTpBop!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaFinTpBop![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpBop![i].konstanta.toString()) * double.parse(analisaSingleRAE.data!.analisaFinTpBop![i].qty.toString());
-                      totalBiayaOverhead = totalBiayaOverhead + subTotal.round();
-                    }
-                  }
-        
-                  listNamaFinishingBarangJadi.clear;
-                  if (analisaSingleRAE.data!.analisaFinFnBp!.isNotEmpty) {//analisa_fin_fn_bp
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaFinFnBp!.length; i++) {
-                      if(!listNamaFinishingBarangJadi.contains(analisaSingleRAE.data!.analisaFinFnBp![i].namaFinishingBarangJadi.toString()) && analisaSingleRAE.data!.analisaFinFnBp![i].namaFinishingBarangJadi.toString() != "-"){
-                        listNamaFinishingBarangJadi.add(analisaSingleRAE.data!.analisaFinFnBp![i].namaFinishingBarangJadi.toString());
-                      }
-                    }
-                  }
-                  if (analisaSingleRAE.data!.analisaFinFnSc!.isNotEmpty) {//analisa_fin_fn_sc
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaFinFnSc!.length; i++) {
-                      if(!listNamaFinishingBarangJadi.contains(analisaSingleRAE.data!.analisaFinFnSc![i].namaFinishingBarangJadi.toString()) && analisaSingleRAE.data!.analisaFinFnSc![i].namaFinishingBarangJadi.toString() != "-"){
-                        listNamaFinishingBarangJadi.add(analisaSingleRAE.data!.analisaFinFnSc![i].namaFinishingBarangJadi.toString());
-                      }
-                    }
-                  }
-                  if (analisaSingleRAE.data!.analisaFinFnLc!.isNotEmpty) {//analisa_fin_fn_lc
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaFinFnLc!.length; i++) {
-                      if(!listNamaFinishingBarangJadi.contains(analisaSingleRAE.data!.analisaFinFnLc![i].namaFinishingBarangJadi.toString()) && analisaSingleRAE.data!.analisaFinFnLc![i].namaFinishingBarangJadi.toString() != "-"){
-                        listNamaFinishingBarangJadi.add(analisaSingleRAE.data!.analisaFinFnLc![i].namaFinishingBarangJadi.toString());
-                      }
-                    }
-                  }
-
-                  for(int j = 0 ; j < listNamaFinishingBarangJadi.length ; j++){
-                    if(listNamaFinishingBarangJadi[j].toString() != "-"){
-                      if (analisaSingleRAE.data!.analisaFinFnBp!.isNotEmpty) {//analisa_fin_fn_bp
-                        for (var i = 0; i < analisaSingleRAE.data!.analisaFinFnBp!.length; i++) {
-                          if(listNamaFinishingBarangJadi[j].toString().contains(analisaSingleRAE.data!.analisaFinFnBp![i].namaFinishingBarangJadi.toString())){
-                            num subTotal = double.parse(analisaSingleRAE.data!.analisaFinFnBp![i].qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinFnBp![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinFnBp![i].konstanta.toString());
-                            totalBahanPenunjangFinishing = totalBahanPenunjangFinishing + subTotal.round();
-                          }
-                        }
-                      }
-                      // print(totalBahanPenunjangFinishing);
-                      if (analisaSingleRAE.data!.analisaFinFnSc!.isNotEmpty) {//analisa_fin_fn_sc
-                        for (var i = 0; i < analisaSingleRAE.data!.analisaFinFnSc!.length; i++) {
-                          if(listNamaFinishingBarangJadi[j].toString().contains(analisaSingleRAE.data!.analisaFinFnSc![i].namaFinishingBarangJadi.toString())){
-                            num subTotal = double.parse(analisaSingleRAE.data!.analisaFinFnSc![i].qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinFnSc![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinFnSc![i].konstanta.toString());
-                            totalSubkonFinishing = totalSubkonFinishing + subTotal.round();
-                          }
-                        }
-                      }
-                      // print(totalSubkonFinishing);
-                      if (analisaSingleRAE.data!.analisaFinFnLc!.isNotEmpty) {//analisa_fin_fn_lc
-                        for (var i = 0; i < analisaSingleRAE.data!.analisaFinFnLc!.length; i++) {
-                          if(listNamaFinishingBarangJadi[j].toString().contains(analisaSingleRAE.data!.analisaFinFnLc![i].namaFinishingBarangJadi.toString())){
-                            num subTotal = double.parse(analisaSingleRAE.data!.analisaFinFnLc![i].qty.toString()) * double.parse(analisaSingleRAE.data!.analisaFinFnLc![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaFinFnLc![i].konstanta.toString());
-                            totalLabourCostFinishing = totalLabourCostFinishing + subTotal.round();
-                          }
-                        }
-                      }
-                      // print(totalLabourCostFinishing);
-                    }
-                  }
-
-                  if (analisaSingleRAE.data!.analisaHardwood!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaHardwood!.length; i++) {
-                      num countTotalUnit = ((double.parse(analisaSingleRAE.data!.analisaHardwood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].tRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].wRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].lRaw.toString())) / 1000000 );
-                      num totalUnit = (countTotalUnit < 0.000001) ? 0.000001 : countTotalUnit;
-                      num totalPrice  = totalUnit * (double.parse(analisaSingleRAE.data!.analisaHardwood![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaHardwood![i].konstanta.toString()));
-                      totalHardwoodAlatBantu = totalHardwoodAlatBantu + totalPrice.round(); 
-                    }
-                  }
-                  if (analisaSingleRAE.data!.analisaPlywood!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaPlywood!.length; i++) {
-                      num total = (double.parse(analisaSingleRAE.data!.analisaPlywood![i].qtyRaw.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaPlywood![i].konstanta.toString()));
-                      totalPlywoodAlatBantu = totalPlywoodAlatBantu + total.round(); 
-                    }
-                  }
-                  num unitPriceAlatBantuOnSite = totalHardwoodAlatBantu + totalPlywoodAlatBantu;
-                  if (analisaSingleRAE.data!.analisaAlatBantuOnsite!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaAlatBantuOnsite!.length; i++) {
-                      num totalPrice = (unitPriceAlatBantuOnSite * double.parse(analisaSingleRAE.data!.analisaAlatBantuOnsite![i].qty.toString())) * double.parse(analisaSingleRAE.data!.analisaAlatBantuOnsite![i].konstanta.toString());
-                      totalAlatBantuOnSite = totalAlatBantuOnSite + totalPrice.round();
-                    }
-                  }
-
-                  if (analisaSingleRAE.data!.analisaLabourCostOnsite!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaLabourCostOnsite!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaLabourCostOnsite![i].unitPrice.toString()) * double.parse(analisaSingleRAE.data!.analisaLabourCostOnsite![i].konstanta.toString()) * double.parse(analisaSingleRAE.data!.analisaLabourCostOnsite![i].qty.toString());
-                      totalLabourCostOnSite = totalLabourCostOnSite + subTotal.round();
-                    }
-                  }
-
-                  num totalBahanBaku = totalHardwood + totalPlywood;
-                  num totalPenunjangProduksi = totalFactorySupply + totalLabourCost + totalMachineProcess + totalBiayaOverhead;
-                  num totalFinishing = totalBahanPenunjangFinishing + totalSubkonFinishing + totalLabourCostFinishing;
-
-                  num unitPrice = totalBahanBaku + totalPenunjangProduksi + totalFinishing + totalAlatBantuOnSite + totalLabourCostOnSite;
-                  if (analisaSingleRAE.data!.analisaBiayaOverheadKantor!.isNotEmpty) {
-                    for (var i = 0; i < analisaSingleRAE.data!.analisaBiayaOverheadKantor!.length; i++) {
-                      num subTotal = double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![i].qty.toString()) * unitPrice * double.parse(analisaSingleRAE.data!.analisaBiayaOverheadKantor![i].konstanta.toString());
-                      totalBiayaOverheadKantor = totalBiayaOverheadKantor + subTotal;
-                    }
-                  }
-
-                  num totals = totalBahanBaku + totalPenunjangProduksi + totalFinishing + totalAlatBantuOnSite + totalLabourCostOnSite + totalBiayaOverheadKantor;
-                  totalAnalisaBahanBaku = totalBahanBaku.toString();
-                  totalSummaryBiaya.add(totalAnalisaBahanBaku);
-                  totalAnalisaPenunjanProduksi = totalPenunjangProduksi.toString();
-                  totalSummaryBiaya.add(totalAnalisaPenunjanProduksi);
-                  totalAnalisaFinishing = totalFinishing.toString();
-                  totalSummaryBiaya.add(totalAnalisaFinishing);
-                  totalAnalisaAlatBantuOnSite = totalAlatBantuOnSite.toString();
-                  totalSummaryBiaya.add(totalAnalisaAlatBantuOnSite);
-                  totalAnalisaLabourCostOnSite = totalLabourCostOnSite.toString();
-                  totalSummaryBiaya.add(totalAnalisaLabourCostOnSite);
-                  totalAnalisaBiayaOverheadKantor = totalBiayaOverheadKantor.toString();
-                  totalSummaryBiaya.add(totalAnalisaBiayaOverheadKantor);
-                  grandTotal = totals.toString();
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      CardDetail(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
-                          title: Column(
-                            children: <Widget>[
-                              CardFieldItemText(
-                                label: "Kode Barang Jadi",
-                                contentData: analisaSingleRAE.data!.kodeItem,
-                                flexLeftRow: 14,
-                                flexRightRow: 20,
-                              ),
-                              SizedBox(height: getProportionateScreenHeight(5)),
-                              CardFieldItemText(
-                                label: "Nama Barang Jadi",
-                                contentData: analisaSingleRAE.data!.namaItem,
-                                flexLeftRow: 14,
-                                flexRightRow: 20,
-                              ),
-                              SizedBox(height: getProportionateScreenHeight(5)),
-                              CardFieldItemText(
-                                label: "Sumber Barang Jadi",
-                                contentData: analisaSingleRAE.data!.namaKelompok,
-                                flexLeftRow: 14,
-                                flexRightRow: 20,
-                              ),
-                              SizedBox(height: getProportionateScreenHeight(5)),
-                              CardFieldItemText(
-                                label: "Satuan Jual",
-                                contentData: analisaSingleRAE.data!.namaSatuan,
-                                flexLeftRow: 14,
-                                flexRightRow: 20,
-                              ),
-                              SizedBox(height: getProportionateScreenHeight(5)),
-                              CardFieldItemUrlLauncher(
-                                label: "Link Referensi",
-                                linkReferensi: analisaSingleRAE.data!.linkReferensi,
-                                flexLeftRow: 14,
-                                flexRightRow: 20,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      CardExpansionDetail(
-                        label: "Uraian",
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                            child: CardItemExpansionDetail(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
-                                child: (analisaSingleRAE.data!.uraian != null)
-                                ? Html(
-                                  data: analisaSingleRAE.data!.uraian
-                                )
-                                : Text("-",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                )
-                              ),
+                  var analisaSingleRAE = futureDetailRae!.data;
+                  return GetBuilder<GetxBahanBakuRae>(
+                    init: GetxBahanBakuRae(),
+                    builder:(controller) => 
+                    GetBuilder<GetxPenunjangProduksiRae>(
+                    init: GetxPenunjangProduksiRae(),
+                    builder:(controller1) => 
+                    GetBuilder<GetxFinishingRae>(
+                    init: GetxFinishingRae(),
+                    builder:(controller2) => 
+                    GetBuilder<GetxAlatBantuOnSiteRae>(
+                    init: GetxAlatBantuOnSiteRae(),
+                    builder:(controller3) =>
+                    GetBuilder<GetxLabourCostOnSiteRae>(
+                    init: GetxLabourCostOnSiteRae(),
+                    builder:(controller4){
+                      Get.put(GetxBiayaOverheadKantorRae()).biayaOverheadKantorRae(
+                        widget.idRaeDetail.toString(), 
+                        double.parse(controller.totalBahanBaku.value.toString()), 
+                        double.parse(controller1.totalPenunjangProduksi.value.toString()), 
+                        double.parse(controller2.totalFinishing.value.toString()), 
+                        double.parse(controller3.totalAlatBantuOnSite.value.toString()), 
+                        double.parse(controller4.totalLabourCostOnSite.value.toString()),
+                      );
+                    return GetX<GetxBiayaOverheadKantorRae>(
+                    init: GetxBiayaOverheadKantorRae(),
+                    builder:(controller5){
+                      Get.put(GetxAnalisaRae()).analisaRae(
+                        double.parse(controller.totalBahanBaku.value.toString()), 
+                        double.parse(controller1.totalPenunjangProduksi.value.toString()), 
+                        double.parse(controller2.totalFinishing.value.toString()), 
+                        double.parse(controller3.totalAlatBantuOnSite.value.toString()), 
+                        double.parse(controller4.totalLabourCostOnSite.value.toString()),
+                        double.parse(controller5.totalBiayaOverheadKantor.value.toString()),
+                      );
+                    return GetX<GetxAnalisaRae>(
+                    init: GetxAnalisaRae(),
+                    builder:(controller6) => 
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        CardDetail(
+                          child: ListTile(
+                            contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
+                            title: Column(
+                              children: <Widget>[
+                                CardFieldItemText(
+                                  label: "Kode Barang Jadi",
+                                  contentData: analisaSingleRAE!.kodeItem,
+                                  flexLeftRow: 14,
+                                  flexRightRow: 20,
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(5)),
+                                CardFieldItemText(
+                                  label: "Nama Barang Jadi",
+                                  contentData: analisaSingleRAE.namaItem,
+                                  flexLeftRow: 14,
+                                  flexRightRow: 20,
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(5)),
+                                CardFieldItemText(
+                                  label: "Sumber Barang Jadi",
+                                  contentData: analisaSingleRAE.namaKelompok,
+                                  flexLeftRow: 14,
+                                  flexRightRow: 20,
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(5)),
+                                CardFieldItemText(
+                                  label: "Satuan Jual",
+                                  contentData: analisaSingleRAE.namaSatuan,
+                                  flexLeftRow: 14,
+                                  flexRightRow: 20,
+                                ),
+                                SizedBox(height: getProportionateScreenHeight(5)),
+                                CardFieldItemUrlLauncher(
+                                  label: "Link Referensi",
+                                  linkReferensi: analisaSingleRAE.linkReferensi,
+                                  flexLeftRow: 14,
+                                  flexRightRow: 20,
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(height: getProportionateScreenHeight(10)),
-                        ],
-                      ),
-                      CardFieldAnalisa(
-                        label: "Analisa Bahan Baku",
-                        onTap: () {
-                          Get.to(AnalisaBahanBakuView(idRaeDetail: widget.idRaeDetail));
-                        },
-                      ),
-                      CardFieldAnalisa(
-                        label: "Analisa Penunjang Produksi",
-                        onTap: () {
-                          Get.to(AnalisaPenunjangProduksiView(analisaSingleRegrae: widget.futureAnalisaSingleRae));
-                        },
-                      ),
-                      CardFieldAnalisa(
-                        label: "Analisa Finishing",
-                        onTap: () {
-                          Get.to(AnalisaFinishingView(analisaSingleRegrae: widget.futureAnalisaSingleRae));
-                        },
-                      ),
-                      CardFieldAnalisa(
-                        label: "Analisa Alat Bantu On-Site",
-                        onTap: () {
-                          Get.to(AnalisaAlatBantuOnSiteView(analisaSingleRegrae: widget.futureAnalisaSingleRae));
-                        },
-                      ),
-                      CardFieldAnalisa(
-                        label: "Analisa Labour Cost On-Site",
-                        onTap: () {
-                          Get.to(AnalisaLabourCostOnSiteView(analisaSingleRegrae: widget.futureAnalisaSingleRae));
-                        },
-                      ),
-                      CardFieldAnalisa(
-                        label: "Analisa Biaya Overhead Kantor",
-                        onTap: () {
-                          Get.to(AnalisaBiayaOverheadKantorView(analisaSingleRegrae: widget.futureAnalisaSingleRae, totalAnalisaBahanBaku: totalAnalisaBahanBaku, totalAnalisaPenunjanProduksi: totalAnalisaPenunjanProduksi, totalAnalisaFinishing: totalAnalisaFinishing, totalAnalisaAlatBantuOnSite: totalAnalisaAlatBantuOnSite, totalAnalisaLabourCostOnSite: totalAnalisaLabourCostOnSite));
-                        },
-                      ),
-                      CardFieldTotalAnalisa(
-                        child: ListView.builder(
-                          itemCount: namaSummaryBiaya.length,
-                          itemBuilder: (context, index){
-                            return CardFieldTotalAnalisaItem(
-                              label: namaSummaryBiaya[index],
-                              total: totalSummaryBiaya[index],
-                            );
-                          },
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
                         ),
-                      ),
-                      CardFieldGrandTotalAnalisa(
-                        child: ListTile(
-                          title: Column(
-                            children: [
-                              CardFieldItemTotal(
-                                label: "Grand Total",
-                                total: grandTotal,
-                                flexLeftRow: 15,
-                                flexRightRow: 20,
-                              ),
-                            ],
+                        // CardExpansionDetail(
+                        //   label: "Uraian",
+                        //   children: <Widget> [
+                        //     Padding(
+                        //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                        //       child: CardItemExpansionDetail(
+                        //         child: Padding(
+                        //           padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
+                        //           child: (analisaSingleRAE.uraian != null)
+                        //           ? Html(
+                        //             data: analisaSingleRAE.uraian
+                        //           )
+                        //           : const Text("-",
+                        //             style: TextStyle(
+                        //               color: Colors.black,
+                        //               fontSize: 14,
+                        //             ),
+                        //             textAlign: TextAlign.left,
+                        //           )
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     SizedBox(height: getProportionateScreenHeight(10)),
+                        //   ],
+                        // ),
+                        CardFieldAnalisa(
+                          label: "Analisa Bahan Baku",
+                          onTap: () {
+                            Get.to(AnalisaBahanBakuView(idRaeDetail: widget.idRaeDetail));
+                          },
+                        ),
+                        CardFieldAnalisa(
+                          label: "Analisa Penunjang Produksi",
+                          onTap: () {
+                            Get.to(AnalisaPenunjangProduksiView(idRaeDetail: widget.idRaeDetail));
+                          },
+                        ),
+                        CardFieldAnalisa(
+                          label: "Analisa Finishing",
+                          onTap: () {
+                            Get.to(AnalisaFinishingView(idRaeDetail: widget.idRaeDetail));
+                          },
+                        ),
+                        CardFieldAnalisa(
+                          label: "Analisa Alat Bantu On-Site",
+                          onTap: () {
+                            Get.to(AnalisaAlatBantuOnSiteView(idRaeDetail: widget.idRaeDetail));
+                          },
+                        ),
+                        CardFieldAnalisa(
+                          label: "Analisa Labour Cost On-Site",
+                          onTap: () {
+                            Get.to(AnalisaLabourCostOnSiteView(idRaeDetail: widget.idRaeDetail));
+                          },
+                        ),
+                        CardFieldAnalisa(
+                          label: "Analisa Biaya Overhead Kantor",
+                          onTap: () {
+                            Get.to(AnalisaBiayaOverheadKantorView(idRaeDetail: widget.idRaeDetail, totalAnalisaBahanBaku: controller.totalBahanBaku.value.toString(), totalAnalisaPenunjanProduksi: controller1.totalPenunjangProduksi.value.toString(), totalAnalisaFinishing: controller2.totalFinishing.value.toString(), totalAnalisaAlatBantuOnSite: controller3.totalAlatBantuOnSite.value.toString(), totalAnalisaLabourCostOnSite: controller4.totalLabourCostOnSite.value.toString()));
+                          },
+                        ),
+                        CardFieldTotalAnalisa(
+                          child: ListView.builder(
+                            itemCount: namaSummaryBiaya.length,
+                            itemBuilder: (context, index){
+                              return CardFieldTotalAnalisaItem(
+                                label: namaSummaryBiaya[index],
+                                total: controller6.totalSummaryBiaya[index],
+                              );
+                            },
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                           ),
                         ),
-                      ),
-                      SizedBox(height: getProportionateScreenHeight(10)),
-                    ],
-                  );
+                        CardFieldGrandTotalAnalisa(
+                          child: ListTile(
+                            title: Column(
+                              children: [
+                                CardFieldItemTotal(
+                                  label: "Grand Total",
+                                  total: controller6.totals.value.toString(),
+                                  flexLeftRow: 15,
+                                  flexRightRow: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: getProportionateScreenHeight(10)),
+                      ],
+                    ),
+                  );}
+                );
+                })))));
                 }
                  else {
                   return Center(

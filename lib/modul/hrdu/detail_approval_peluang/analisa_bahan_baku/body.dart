@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/bahan_baku/getX_analisa_bahan_baku.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/bahan_baku/mixin_analisa_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/bahan_baku/mixin_analisa_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/bahan_baku/getX_bahan_baku.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_baku.dart';
 import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/component/separator_box.dart';
@@ -13,7 +13,7 @@ import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
 class Body extends StatefulWidget {
   final String idBarangJadi;
-  const Body({Key? key, required this.idBarangJadi}) : super(key: key);
+  const Body({Key? key, this.idBarangJadi = "-"}) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -30,6 +30,7 @@ class _BodyState extends State<Body> with BahanBakuDetail{
   
   @override
   Widget build(BuildContext context) {
+    Get.put(GetxBahanBakuPeluang()).bahanBaku(widget.idBarangJadi.toString());
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -42,9 +43,8 @@ class _BodyState extends State<Body> with BahanBakuDetail{
               builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegplgBaku> snapshot) {
                 if (snapshot.hasData) {
                   var analisaSingleRAE = futureDetailBahanBaku!.data;
-                  Get.put(GetxAnalisaBahanBaku()).bahanBaku(widget.idBarangJadi.toString());
-                  return GetX<GetxAnalisaBahanBaku>(
-                    init: GetxAnalisaBahanBaku(),
+                  return GetX<GetxBahanBakuPeluang>(
+                    init: GetxBahanBakuPeluang(),
                     builder:(controller) => Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/hrdu/purchase_order/mixin_purchase_order.dart';
-
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/mgp_api_hrdu.dart';
+import 'package:mgp_mobile_app/service/mgp_api_hrdu/api_purchase_order/api_detail_purchase_order.dart';
 class GetxItemPurchaseOrder extends GetxController with PurchaseOrderDetail{
   late var subTotalHarga = <String>[].obs;
   late var grandTotalHarga = "0.0".obs;
@@ -11,13 +11,16 @@ class GetxItemPurchaseOrder extends GetxController with PurchaseOrderDetail{
   late var dpHarga = "0.0".obs;
   late var totalSetelahDp = "0.0".obs;
 
-  fetchDataItemPurchaseOrderDetail(String noPurchaseOrder) async{
-    await fetchDataPurchaseOrderDetail(noPurchaseOrder: noPurchaseOrder.toString());
+  functSharedPrefPo({required String noPurchaseOrder}){
+    fetchDataItemPurchaseOrderDetail(noPurchaseOrder: noPurchaseOrder, getToken: MGPAPI.tokens.toString());
+  }
+
+  fetchDataItemPurchaseOrderDetail({required String noPurchaseOrder, required String getToken}) async{
+    await fetchDetailPurchaseOrder(noPurchaseOrder: noPurchaseOrder.toString(), getToken: getToken);
     double totalHarga = 0.0;
     double valuePPN = double.parse(futureDetailPo!.data!.detail!.ppn.toString());
     double valueDiskon = double.parse(futureDetailPo!.data!.detail!.diskon.toString());
     double valueDP = double.parse(futureDetailPo!.data!.detail!.dp.toString());
-    
     processItemPurchaseOrder(valuePPN, valueDiskon, valueDP, totalHarga);
   }
 

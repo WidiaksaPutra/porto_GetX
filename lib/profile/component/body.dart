@@ -226,17 +226,17 @@ class _BodyState extends State<Body> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
-                    children: <Widget> [
+                    children: const <Widget> [
                       CircleSkeleton(
                         size: 105,
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: getProportionateScreenWidth(10), right: getProportionateScreenWidth(10)),
-                        child: Skeleton(
-                          width: getProportionateScreenWidth(230),
-                          height: getProportionateScreenHeight(35),
-                        ),
-                      )
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: getProportionateScreenWidth(10), right: getProportionateScreenWidth(10)),
+                      //   child: Skeleton(
+                      //     width: getProportionateScreenWidth(230),
+                      //     height: getProportionateScreenHeight(35),
+                      //   ),
+                      // )
                     ],
                   ),
                   SizedBox(height: getProportionateScreenHeight(10)),

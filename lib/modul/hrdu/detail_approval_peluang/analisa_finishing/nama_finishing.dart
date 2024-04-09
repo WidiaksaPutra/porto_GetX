@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/finishing/getX_analisa_finishing.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/finishing/mixin_analisa_finishing.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/finishing/getX_finishing.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/finishing/mixin_analisa_finishing.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_fin.dart';
 import 'package:flutter/material.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_peluang/analisa_finishing/analisa_finishing.dart';
@@ -15,6 +15,7 @@ class NamaBody extends StatelessWidget with FinishingDetail{
 
   Widget build(BuildContext context) {
     // listNamaFinishingBarangJadi.clear;
+    Get.put(GetxFinishingPeluang()).finishing(idBarangJadi: idBarangJadi, namaFinishing: "-");
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -26,9 +27,8 @@ class NamaBody extends StatelessWidget with FinishingDetail{
               future: fetchFinishingDetail,//karena kita butuh fetch jadi untuk sementara begini dulu.
               builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegplgFinishing> snapshot) {
                 if (snapshot.hasData) {
-                  Get.put(GetxAnalisaFinishing()).finishing(idBarangJadi: idBarangJadi);
-                  return GetX<GetxAnalisaFinishing>(
-                    init: GetxAnalisaFinishing(),
+                  return GetX<GetxFinishingPeluang>(
+                    init: GetxFinishingPeluang(),
                     builder:(controller) => Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,

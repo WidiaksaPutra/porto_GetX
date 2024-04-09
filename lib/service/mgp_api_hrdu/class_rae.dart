@@ -20,7 +20,7 @@ mixin RAEClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_rae/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_rae/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -48,7 +48,7 @@ mixin RAEClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_rae/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_rae/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -74,7 +74,7 @@ mixin RAEClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_rae/history/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_rae/history/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {

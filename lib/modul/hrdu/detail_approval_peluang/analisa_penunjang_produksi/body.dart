@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/penunjang_produksi/getX_analisa_penunjang_produksi.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/penunjang_produksi/mixin_analisa_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/penunjang_produksi/getX_penunjang_produksi.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/penunjang_produksi/mixin_analisa_bahan_baku.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_penunjang.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +28,7 @@ class _BodyState extends State<Body> with PeluangPenunjangDetail{
 
   @override
   Widget build(BuildContext context) {
+    Get.put(GetxPenunjangProduksiPeluang()).analisaPeluangPenunjang(widget.idBarangJadi.toString());
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -40,9 +41,8 @@ class _BodyState extends State<Body> with PeluangPenunjangDetail{
               builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegplgPenunjang> snapshot) {
                 if (snapshot.hasData) {
                   var analisaSingleRAE = futureDetailPenunjang!.data;
-                  Get.put(GetxAnalisaPeluangPenunjang()).analisaPeluangPenunjang(widget.idBarangJadi.toString());
-                  return GetX<GetxAnalisaPeluangPenunjang>(
-                    init: GetxAnalisaPeluangPenunjang(),
+                  return GetX<GetxPenunjangProduksiPeluang>(
+                    init: GetxPenunjangProduksiPeluang(),
                     builder:(controller) => Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,

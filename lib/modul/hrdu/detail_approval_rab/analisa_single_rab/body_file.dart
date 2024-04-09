@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mgp_mobile_app/model/hrdu/rab/analisa_single_rab.dart';
@@ -8,7 +9,7 @@ import 'package:mgp_mobile_app/widget/component/card_file.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
-import 'package:open_file/open_file.dart';
+// import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 class BodyFile extends StatefulWidget {
@@ -28,7 +29,7 @@ class _BodyFileState extends State<BodyFile> {
     if (fileDocument == null) {
       return;
     }
-    OpenFile.open(fileDocument.path);
+    // OpenFile.open(fileDocument.path);
   }
 
   Future<File?> pickFile() async {
@@ -50,7 +51,7 @@ class _BodyFileState extends State<BodyFile> {
         options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
-          receiveTimeout: 0,
+          receiveTimeout: const Duration(),
         ),
       );
 

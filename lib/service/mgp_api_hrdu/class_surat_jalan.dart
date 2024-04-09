@@ -19,7 +19,7 @@ mixin SuratJalanClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_surat_jalan/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_surat_jalan/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -46,7 +46,7 @@ mixin SuratJalanClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_surat_jalan/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_surat_jalan/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -72,7 +72,7 @@ mixin SuratJalanClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_surat_jalan/history/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_surat_jalan/history/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {

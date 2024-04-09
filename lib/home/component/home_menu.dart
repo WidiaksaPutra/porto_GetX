@@ -6,22 +6,14 @@ import 'package:mgp_mobile_app/widget/component/icon_modul.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeMenu extends StatefulWidget {
-  const HomeMenu({Key? key}) : super(key: key);
+class HomeMenu extends StatelessWidget {
+  HomeMenu({Key? key}) : super(key: key);
 
-  @override
-  State<HomeMenu> createState() => _HomeMenuState();
-}
-
-class _HomeMenuState extends State<HomeMenu> {
   List modulName = [
     "HRDU",
   ];
-  
-  List iconModuls = ["assets/icons/hrdu.svg"];
 
-  late String tokenUser;
-  late SharedPreferences loginData;
+  List iconModuls = ["assets/icons/hrdu.svg"];
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +34,7 @@ class _HomeMenuState extends State<HomeMenu> {
               itemBuilder: (BuildContext ctx, index) {
                 return GestureDetector(
                   onTap: () async{
-                    loginData = await SharedPreferences.getInstance();
-                    setState(() {
-                      tokenUser = loginData.getString("token").toString();
-                    });
-                    Get.put(HomepageHrdu()).homepageHrdu(tokenUser, const HomePageHRDU(selectedIndexPage: 0,));
+                    Get.put(HomepageHrdu()).homepageHrdu(const HomePageHRDU(selectedIndexPage: 0,));
                   },
                   child: Column(
                     children: <Widget>[

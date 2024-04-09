@@ -4,15 +4,10 @@ import 'package:mgp_mobile_app/login/component/background.dart';
 import 'package:mgp_mobile_app/login/component/login_form.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
-class Body extends StatefulWidget {
+class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
 
 
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

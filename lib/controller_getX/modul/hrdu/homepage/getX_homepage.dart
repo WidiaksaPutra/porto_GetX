@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mgp_mobile_app/controller_getX/login/getX_validasi_form.dart';
 import 'package:mgp_mobile_app/modul/hrdu/approval/approval.dart';
 import 'package:mgp_mobile_app/modul/hrdu/dashboard_hrdu/dashboard_hrdu.dart';
 import 'package:mgp_mobile_app/modul/hrdu/report/report.dart';
@@ -11,8 +11,8 @@ class HomepageHrdu extends GetxController{
   late var screensHRDU = <Widget>[].obs;
   late var bottomItemsHRDU = <BottomNavigationItem>[].obs;
 
-  homepageHrdu(String tokenUser, Widget getHomePageHrdu) {
-    List hasilHakAksesReport = komputasiHomepageHrdu(tokenUser);
+  homepageHrdu(Widget getHomePageHrdu) {
+    List hasilHakAksesReport = komputasiHomepageHrdu();
     if(hasilHakAksesReport.isNotEmpty) {
       homepageHrdu3();
       Get.to(getHomePageHrdu);
@@ -22,12 +22,11 @@ class HomepageHrdu extends GetxController{
     }
   }
 
-  List komputasiHomepageHrdu(String tokenUser){
+  List komputasiHomepageHrdu(){
     late List hakAksesReport = [];
     late List dataHakAkses = [];
-    Map<String, dynamic> decodeToken = JwtDecoder.decode(tokenUser);
-    for(var i = 0; i < decodeToken["hak"].length; i++) {
-      dataHakAkses.add(decodeToken["hak"][i]);
+    for(var i = 0; i < ValidasiForm.decodeToken["hak"].length; i++) {
+      dataHakAkses.add(ValidasiForm.decodeToken["hak"][i]);
     }
     for(var i = 0; i < hakAksesHrduMasterData.length; i++) {
       for (var j = 0; j < dataHakAkses.length; j++) {

@@ -5,8 +5,8 @@ import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_finishing/
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 
 class AnalisaFinishingView extends StatelessWidget {
-  const AnalisaFinishingView({Key? key, required this.analisaSingleRegrae}) : super(key: key);
-  final Future<AnalisaSingleRegrae> analisaSingleRegrae;
+  const AnalisaFinishingView({Key? key, required this.idRaeDetail}) : super(key: key);
+  final String idRaeDetail;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,15 +14,14 @@ class AnalisaFinishingView extends StatelessWidget {
         title: const Text("Analisa Finishing"),
         flexibleSpace: const AppBarThemeColor(),
       ),
-      body: NamaBody(analisaSingleRegrae: analisaSingleRegrae),
+      body: NamaBody(idRaeDetail: idRaeDetail),
     );
   }
 }
 
 class AnalisaFinishingView2 extends StatelessWidget {
-  const AnalisaFinishingView2({Key? key, required this.analisaSingleRegrae, required this.namaFinishing}) : super(key: key);
-  final Future<AnalisaSingleRegrae> analisaSingleRegrae;
-  final String namaFinishing;
+  const AnalisaFinishingView2({Key? key, required this.idRaeDetail, required this.namaFinishing}) : super(key: key);
+  final String namaFinishing, idRaeDetail;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +29,7 @@ class AnalisaFinishingView2 extends StatelessWidget {
         title: Text(namaFinishing),
         flexibleSpace: const AppBarThemeColor(),
       ),
-      body: BodyFinihingRae(namaFinishing: namaFinishing, analisaSingleRegrae: analisaSingleRegrae),
+      body: BodyFinihingRae(namaFinishing: namaFinishing, idRaeDetail: idRaeDetail),
     );
   }
 }

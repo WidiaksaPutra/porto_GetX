@@ -12,7 +12,7 @@ class FieldCatatanApproval extends StatelessWidget {
   final String? statusApproval;
   final String? namaKaryawan;
   final String? catatanApproval;
-  final DateTime? tglApproval;
+  final dynamic? tglApproval;
   const FieldCatatanApproval({
     Key? key,
     required this.index,

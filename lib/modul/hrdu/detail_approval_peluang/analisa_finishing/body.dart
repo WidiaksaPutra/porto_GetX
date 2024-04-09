@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/finishing/getX_analisa_finishing.dart';
-import 'package:mgp_mobile_app/controller_getX/modul/marketing/default_marketing/analisa_barang_jadi/finishing/mixin_analisa_finishing.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/finishing/getX_finishing.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/peluang/finishing/mixin_analisa_finishing.dart';
 import 'package:mgp_mobile_app/model/hrdu/peluang/analisa_single_peluang_fin.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +28,7 @@ class _BodyFinishingState extends State<BodyFinihing> with FinishingDetail{
 
   @override
   Widget build(BuildContext context) {
+    Get.put(GetxFinishingPeluang()).finishing(idBarangJadi: widget.idBarangJadi, namaFinishing: widget.namaFinishing);
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -40,9 +41,8 @@ class _BodyFinishingState extends State<BodyFinihing> with FinishingDetail{
               builder: (BuildContext context, AsyncSnapshot<AnalisaSingleRegplgFinishing>snapshot) {
                 if (snapshot.hasData) {
                   var analisaSinglePeluang = futureFinishing!.data;
-                  Get.put(GetxAnalisaFinishing()).finishing(idBarangJadi: widget.idBarangJadi, namaFinishing: widget.namaFinishing);
-                  return GetX<GetxAnalisaFinishing>(
-                    init: GetxAnalisaFinishing(),
+                  return GetX<GetxFinishingPeluang>(
+                    init: GetxFinishingPeluang(),
                     builder:(controller) => Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

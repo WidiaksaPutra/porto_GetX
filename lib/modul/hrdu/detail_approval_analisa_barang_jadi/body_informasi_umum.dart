@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 
 import 'package:get/get.dart';
 import 'package:mgp_mobile_app/model/hrdu/analisa_barang_jadi/analisa_single_barang_jadi.dart';
@@ -380,31 +380,31 @@ class _BodyInformasiState extends State<BodyInformasi> {
                             ),
                           ),
                         ),
-                        CardExpansionDetail(
-                          label: "Uraian",
-                          children: <Widget> [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                              child: CardItemExpansionDetail(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
-                                  child: (analisaBarangJadi.data!.detail!.uraian != null)
-                                  ? Html(
-                                    data: analisaBarangJadi.data!.detail!.uraian
-                                  )
-                                  : Text("-",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  )
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: getProportionateScreenHeight(10)),
-                          ],
-                        ),
+                        // CardExpansionDetail(
+                        //   label: "Uraian",
+                        //   children: <Widget> [
+                        //     Padding(
+                        //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                        //       child: CardItemExpansionDetail(
+                        //         child: Padding(
+                        //           padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenHeight(10)),
+                        //           child: (analisaBarangJadi.data!.detail!.uraian != null)
+                        //           ? Html(
+                        //             data: analisaBarangJadi.data!.detail!.uraian
+                        //           )
+                        //           : Text("-",
+                        //             style: TextStyle(
+                        //               color: Colors.black,
+                        //               fontSize: 14,
+                        //             ),
+                        //             textAlign: TextAlign.left,
+                        //           )
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     SizedBox(height: getProportionateScreenHeight(10)),
+                        //   ],
+                        // ),
                         CardFieldAnalisa(
                           label: "Analisa Bahan Baku",
                           onTap: () {

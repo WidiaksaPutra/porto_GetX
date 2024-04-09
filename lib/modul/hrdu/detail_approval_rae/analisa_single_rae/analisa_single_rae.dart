@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_alat_bantu_on-site.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_bahan_baku.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_finishing.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_labour_cost_on_site.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/analisa_barang_jadi/getX_penunjang_produksi.dart';
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_single_rae/body_file.dart';
@@ -47,6 +52,11 @@ class _DetailAnalisaSingleRAEViewState extends State<DetailAnalisaSingleRAEView>
 
   @override
   Widget build(BuildContext context) {
+    Get.put(GetxBahanBakuRae()).bahanBaku(widget.idRaeDetail.toString());
+    Get.put(GetxPenunjangProduksiRae()).analisaPeluangPenunjang(widget.idRaeDetail.toString());
+    Get.put(GetxFinishingRae()).finishing(widget.idRaeDetail, "-");
+    Get.put(GetxAlatBantuOnSiteRae()).alatBantuOnSiteRae(widget.idRaeDetail.toString());
+    Get.put(GetxLabourCostOnSiteRae()).labourCostOnSiteRae(widget.idRaeDetail.toString());
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -100,9 +110,9 @@ class _DetailAnalisaSingleRAEViewState extends State<DetailAnalisaSingleRAEView>
               child: TabBarView(
                 controller: controller,
                 children: <Widget>[
-                  BodyInformasi(futureAnalisaSingleRae: future, idRaeDetail: widget.idRaeDetail,),
-                  BodyGambar(futureAnalisaSingleRae: future),
-                  BodyFile(futureAnalisaSingleRae: future),
+                  BodyInformasi(idRaeDetail: widget.idRaeDetail,),
+                  BodyGambar(futureAnalisaSingleGambar: future),
+                  BodyFile(futureAnalisaSingleFile: future),
                 ],
               ),
             ),

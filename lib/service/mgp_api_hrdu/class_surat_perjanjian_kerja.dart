@@ -19,7 +19,7 @@ mixin SPKClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_spk/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_spk/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -46,7 +46,7 @@ mixin SPKClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_spk/list/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_spk/list/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -72,7 +72,7 @@ mixin SPKClass{
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/approval_spk/history/?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/approval_spk/history/?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
@@ -154,7 +153,7 @@ class _LoginFormState extends State<LoginForm> {
                 suffixIcon: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: IconButton(
-                    onPressed: (){
+                    onPressed:(){
                       setState(() {
                         passwordVisible =! passwordVisible;
                       });

@@ -13,7 +13,6 @@ import 'package:mgp_mobile_app/widget/component/highlight_item_name.dart';
 import 'package:mgp_mobile_app/widget/component/icon_filter.dart';
 import 'package:mgp_mobile_app/widget/component/search_field.dart';
 import 'package:mgp_mobile_app/widget/component/skeleton.dart';
-import 'package:mgp_mobile_app/widget/theme/constants.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,7 +44,7 @@ class _BodyState extends State<Body> {
       'grup_buaso' : group,
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/harga_perkiraan_sendiri/page?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/harga_perkiraan_sendiri/page?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -73,7 +72,7 @@ class _BodyState extends State<Body> {
       'per_page' : perPage.toString(),
     };
     String? queryString = Uri(queryParameters: queryParams).query;
-    var requestUrl = MGPAPI.baseURL + '/harga_perkiraan_sendiri/page?' + queryString;
+    var requestUrl = MGPAPI.baseUrlHrdu + '/harga_perkiraan_sendiri/page?' + queryString;
     final response =
       await MGPAPI.client.get(Uri.parse(requestUrl),
       headers: {
@@ -162,7 +161,7 @@ class _BodyState extends State<Body> {
                     child: DropdownButton2(
                       alignment: AlignmentDirectional.bottomEnd,
                       customButton: const IconFilter(),
-                      customItemsHeight: 0,
+                      // customItemsHeight: 0,
                       items: [
                         ...FilterItems.firstItems.map(
                           (item) =>
@@ -178,16 +177,16 @@ class _BodyState extends State<Body> {
                           
                         });
                       },
-                      itemHeight: 48,
-                      itemPadding: const EdgeInsets.only(left: 16, right: 16),
-                      dropdownWidth: 153,
-                      dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: colorCardItem,
-                      ),
-                      dropdownElevation: 8,
-                      offset: const Offset(-99, -5),
+                      // itemHeight: 48,
+                      // itemPadding: const EdgeInsets.only(left: 16, right: 16),
+                      // dropdownWidth: 153,
+                      // dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
+                      // dropdownDecoration: BoxDecoration(
+                      //   borderRadius: BorderRadius.circular(10),
+                      //   color: colorCardItem,
+                      // ),
+                      // dropdownElevation: 8,
+                      // offset: const Offset(-99, -5),
                     ),
                   ),
                 ],
@@ -312,9 +311,9 @@ class _BodyState extends State<Body> {
                       ),
                     );
                   } else {
-                    return Center(
+                    return const Center(
                       child: Column(
-                        children: const <Widget>[
+                        children: <Widget>[
                           Text("Tidak Ada Data")
                         ],
                       ),

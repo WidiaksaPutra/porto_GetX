@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/marketing/rae/mixin_rae.dart';
 import 'package:mgp_mobile_app/model/hrdu/rae/rekapitulasi.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/summary_biaya/summary_biaya_bahan_lainnya/alat_bantu_on-site/alat_bantu_on-site.dart';
 import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/summary_biaya/summary_biaya_bahan_lainnya/biaya_overhead/biaya_overhead.dart';
@@ -15,20 +16,10 @@ import 'package:mgp_mobile_app/widget/component/card_field_item_format_currency.
 import 'package:mgp_mobile_app/widget/component/card_item_expansion_detail.dart';
 import 'package:mgp_mobile_app/widget/theme/size_config.dart';
 
-class Body extends StatelessWidget {
-  final Future<Rekapitulasi> futureRekapitulasi;
-  Body({Key? key, required this.futureRekapitulasi}) : super(key: key);
-
-  // late Future<DetailRegrae> futureDetailRegrae;
-  final formatCurrency = NumberFormat.currency(
-    locale: 'ID',
-    decimalDigits: 0,
-    symbol: "Rp"
-  );
-
-  final formatDecimal = NumberFormat("###.######", "id_ID");
-
-  final decimalFormat = NumberFormat("###", "id_ID");
+class Body extends StatelessWidget with RaeRekapitulasi{
+  final String idRae;
+  Body({Key? key, required this.idRae}) : super(key: key);
+  late Future<Rekapitulasi> futureSumaryRekapitulasi = fetchDataRaeRekapitulasi(idRaeDetail: idRae);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +57,7 @@ class Body extends StatelessWidget {
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: FutureBuilder(
-              future: futureRekapitulasi,
+              future: futureSumaryRekapitulasi,
               builder: (BuildContext context, AsyncSnapshot<Rekapitulasi> snapshot) {
                 if (snapshot.hasData) {
                   var rekapitulasi = snapshot.data;
@@ -249,7 +240,7 @@ class Body extends StatelessWidget {
                                   flexRightRow: 20,
                                 ),
                                 onTap: (){
-                                  Get.to(FactorySupply(futureRekapitulasi: futureRekapitulasi,));
+                                  Get.to(FactorySupply(idRae: idRae));
                                 },
                               ),
                             ),
@@ -272,7 +263,7 @@ class Body extends StatelessWidget {
                                   flexRightRow: 20,
                                 ),
                                 onTap: (){
-                                  Get.to(LabourCost(futureRekapitulasi: futureRekapitulasi,));
+                                  Get.to(LabourCost(idRae: idRae));
                                 },
                               ),
                             ),
@@ -280,144 +271,144 @@ class Body extends StatelessWidget {
                           SizedBox(height: getProportionateScreenHeight(10)),
                         ]
                       ),
-                      CardExpansionDetail(
-                        label: "Machine Process",
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                            child: CardItemExpansionDetail(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
-                                subtitle: CardFieldItemFormatCurrency(
-                                  label: "Total Price (Rp)",
-                                  contentData: totalMachineProcess.toString(),
-                                  flexLeftRow: 12,
-                                  flexRightRow: 20,
-                                ),
-                                onTap: (){
-                                  Get.to(MachineProcess(futureRekapitulasi: futureRekapitulasi,));
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(10)),
-                        ]
-                      ),
-                      CardExpansionDetail(
-                        label: "Biaya Overhead",
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                            child: CardItemExpansionDetail(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
-                                subtitle: CardFieldItemFormatCurrency(
-                                  label: "Total Price (Rp)",
-                                  contentData: totalBiayaOverhead.toString(),
-                                  flexLeftRow: 12,
-                                  flexRightRow: 20,
-                                ),
-                                onTap: (){
-                                  Get.to(BiayaOverhead(futureRekapitulasi: futureRekapitulasi,));
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(10)),
-                        ]
-                      ),
-                      CardExpansionDetail(
-                        label: "Finishing",
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                            child: CardItemExpansionDetail(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
-                                subtitle: CardFieldItemFormatCurrency(
-                                  label: "Total Price (Rp)",
-                                  contentData: totalFinishing.toString(),
-                                  flexLeftRow: 12,
-                                  flexRightRow: 20,
-                                ),
-                                onTap: (){
-                                  Get.to(Finishing(futureRekapitulasi: futureRekapitulasi));
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(10)),
-                        ]
-                      ),
-                      CardExpansionDetail(
-                        label: "Alat Bantu On-Site",
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                            child: CardItemExpansionDetail(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
-                                subtitle: CardFieldItemFormatCurrency(
-                                  label: "Total Price (Rp)",
-                                  contentData: totalAlatBantuOnsite.toString(),
-                                  flexLeftRow: 12,
-                                  flexRightRow: 20,
-                                ),
-                                onTap: (){
-                                  Get.to(AlatBantuOnSite(futureRekapitulasi: futureRekapitulasi,));
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(10)),
-                        ]
-                      ),
-                      CardExpansionDetail(
-                        label: "Labour Cost On-Site",
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                            child: CardItemExpansionDetail(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
-                                subtitle: CardFieldItemFormatCurrency(
-                                  label: "Total Price (Rp)",
-                                  contentData: totalLabourCostOnSite.toString(),
-                                  flexLeftRow: 12,
-                                  flexRightRow: 20,
-                                ),
-                                onTap: (){
-                                  Get.to(LabourCostOnSite(futureRekapitulasi: futureRekapitulasi,));
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(10)),
-                        ]
-                      ),
-                      CardExpansionDetail(
-                        label: "Biaya Overhead Kantor",
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                            child: CardItemExpansionDetail(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
-                                subtitle: CardFieldItemFormatCurrency(
-                                  label: "Total Price (Rp)",
-                                  contentData: totalBiayaOverheadKantor.toString(),
-                                  flexLeftRow: 12,
-                                  flexRightRow: 20,
-                                ),
-                                onTap: (){
-                                  Get.to(BiayaOverheadKantor(futureRekapitulasi: futureRekapitulasi, listSubTotalOverheadKantor: listSubTotalOverheadKantor, totalBiayaOverheadKantor: totalBiayaOverheadKantor, unitPrice: listUnitPraceOverheadKantor));
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(10)),
-                        ]
-                      ),
+                      // CardExpansionDetail(
+                      //   label: "Machine Process",
+                      //   children: <Widget> [
+                      //     Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                      //       child: CardItemExpansionDetail(
+                      //         child: ListTile(
+                      //           contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
+                      //           subtitle: CardFieldItemFormatCurrency(
+                      //             label: "Total Price (Rp)",
+                      //             contentData: totalMachineProcess.toString(),
+                      //             flexLeftRow: 12,
+                      //             flexRightRow: 20,
+                      //           ),
+                      //           onTap: (){
+                      //             Get.to(MachineProcess(futureRekapitulasi: futureRekapitulasi,));
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(height: getProportionateScreenHeight(10)),
+                      //   ]
+                      // ),
+                      // CardExpansionDetail(
+                      //   label: "Biaya Overhead",
+                      //   children: <Widget> [
+                      //     Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                      //       child: CardItemExpansionDetail(
+                      //         child: ListTile(
+                      //           contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
+                      //           subtitle: CardFieldItemFormatCurrency(
+                      //             label: "Total Price (Rp)",
+                      //             contentData: totalBiayaOverhead.toString(),
+                      //             flexLeftRow: 12,
+                      //             flexRightRow: 20,
+                      //           ),
+                      //           onTap: (){
+                      //             Get.to(BiayaOverhead(futureRekapitulasi: futureRekapitulasi,));
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(height: getProportionateScreenHeight(10)),
+                      //   ]
+                      // ),
+                      // CardExpansionDetail(
+                      //   label: "Finishing",
+                      //   children: <Widget> [
+                      //     Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                      //       child: CardItemExpansionDetail(
+                      //         child: ListTile(
+                      //           contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
+                      //           subtitle: CardFieldItemFormatCurrency(
+                      //             label: "Total Price (Rp)",
+                      //             contentData: totalFinishing.toString(),
+                      //             flexLeftRow: 12,
+                      //             flexRightRow: 20,
+                      //           ),
+                      //           onTap: (){
+                      //             Get.to(Finishing(futureRekapitulasi: futureRekapitulasi));
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(height: getProportionateScreenHeight(10)),
+                      //   ]
+                      // ),
+                      // CardExpansionDetail(
+                      //   label: "Alat Bantu On-Site",
+                      //   children: <Widget> [
+                      //     Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                      //       child: CardItemExpansionDetail(
+                      //         child: ListTile(
+                      //           contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
+                      //           subtitle: CardFieldItemFormatCurrency(
+                      //             label: "Total Price (Rp)",
+                      //             contentData: totalAlatBantuOnsite.toString(),
+                      //             flexLeftRow: 12,
+                      //             flexRightRow: 20,
+                      //           ),
+                      //           onTap: (){
+                      //             Get.to(AlatBantuOnSite(futureRekapitulasi: futureRekapitulasi,));
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(height: getProportionateScreenHeight(10)),
+                      //   ]
+                      // ),
+                      // CardExpansionDetail(
+                      //   label: "Labour Cost On-Site",
+                      //   children: <Widget> [
+                      //     Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                      //       child: CardItemExpansionDetail(
+                      //         child: ListTile(
+                      //           contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
+                      //           subtitle: CardFieldItemFormatCurrency(
+                      //             label: "Total Price (Rp)",
+                      //             contentData: totalLabourCostOnSite.toString(),
+                      //             flexLeftRow: 12,
+                      //             flexRightRow: 20,
+                      //           ),
+                      //           onTap: (){
+                      //             Get.to(LabourCostOnSite(futureRekapitulasi: futureRekapitulasi,));
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(height: getProportionateScreenHeight(10)),
+                      //   ]
+                      // ),
+                      // CardExpansionDetail(
+                      //   label: "Biaya Overhead Kantor",
+                      //   children: <Widget> [
+                      //     Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                      //       child: CardItemExpansionDetail(
+                      //         child: ListTile(
+                      //           contentPadding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20.0), vertical: getProportionateScreenHeight(10.0)),
+                      //           subtitle: CardFieldItemFormatCurrency(
+                      //             label: "Total Price (Rp)",
+                      //             contentData: totalBiayaOverheadKantor.toString(),
+                      //             flexLeftRow: 12,
+                      //             flexRightRow: 20,
+                      //           ),
+                      //           onTap: (){
+                      //             Get.to(BiayaOverheadKantor(futureRekapitulasi: futureRekapitulasi, listSubTotalOverheadKantor: listSubTotalOverheadKantor, totalBiayaOverheadKantor: totalBiayaOverheadKantor, unitPrice: listUnitPraceOverheadKantor));
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(height: getProportionateScreenHeight(10)),
+                      //   ]
+                      // ),
                     ],
                   );
                 } else {

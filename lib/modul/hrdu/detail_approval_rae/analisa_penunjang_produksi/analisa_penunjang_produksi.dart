@@ -4,8 +4,8 @@ import 'package:mgp_mobile_app/modul/hrdu/detail_approval_rae/analisa_penunjang_
 import 'package:mgp_mobile_app/model/hrdu/rae/analisa_single_rae.dart';
 
 class AnalisaPenunjangProduksiView extends StatelessWidget {
-  const AnalisaPenunjangProduksiView({Key? key, required this.analisaSingleRegrae}) : super(key: key);
-  final Future<AnalisaSingleRegrae> analisaSingleRegrae;
+  const AnalisaPenunjangProduksiView({Key? key, required this.idRaeDetail}) : super(key: key);
+  final String idRaeDetail;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +13,7 @@ class AnalisaPenunjangProduksiView extends StatelessWidget {
         title: const Text("Analisa Penunjang Produksi"),
         flexibleSpace: const AppBarThemeColor(),
       ),
-      body: Body(analisaSingleRegrae: analisaSingleRegrae),
+      body: Body(idRaeDetail: idRaeDetail),
     );
   }
 }

@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mgp_mobile_app/modul/hrdu/approval_purchase_request/body.dart';
+import 'package:mgp_mobile_app/controller_getX/modul/hrdu/purchase_request/getX_approval_purchase_request.dart';
+import 'package:mgp_mobile_app/modul/hrdu/approval_purchase_request/body_basic.dart';
 import 'package:mgp_mobile_app/modul/hrdu/homepage_hrdu/homepage_hrdu.dart';
 import 'package:mgp_mobile_app/widget/theme/appbar_theme_color.dart';
 
-class PurchaseRequestView extends StatefulWidget {
+class PurchaseRequestView extends StatelessWidget {
   const PurchaseRequestView({Key? key}) : super(key: key);
 
   @override
-  _PurchaseRequestViewState createState() => _PurchaseRequestViewState();
-}
-
-class _PurchaseRequestViewState extends State<PurchaseRequestView> {
-  @override
   Widget build(BuildContext context) {
+    Get.put(GetxApprovalPurchaseRequest()).fetchDataApprovalPurchaseRequest();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Approval Purchase Request"),
@@ -29,7 +26,7 @@ class _PurchaseRequestViewState extends State<PurchaseRequestView> {
         ),
         flexibleSpace: const AppBarThemeColor(),
       ),
-      body: const Body(),
+      body: const BodyBasic(),
     );
   }
 }

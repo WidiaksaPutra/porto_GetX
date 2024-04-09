@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mgp_mobile_app/controller_getX/modul/hrdu/approval/getX_approval.dart';
 import 'package:mgp_mobile_app/modul/hrdu/history_analisa_barang_jadi/history_analisa_barang_jadi.dart';
 import 'package:mgp_mobile_app/modul/hrdu/history_mutasi_antar_gudang/history_mutasi_antar_gudang.dart';
@@ -43,7 +44,8 @@ class _BodyHistoryState extends State<BodyHistory> {
     setState(() {
       tokenUser = loginData.getString("token").toString();
     });
-    Get.put(ApprovalHrdu()).approvalHrdu(tokenUser);
+    // late Map<String, dynamic> decodeToken = JwtDecoder.decode(tokenUser);
+    Get.put(ApprovalHrdu()).approvalHrdu();
   }
 
   @override

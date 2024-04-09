@@ -1,6 +1,6 @@
 // To parse this JSON data, do
 //
-//     final DetailPvspr = DetailPvsprFromJson(jsonString);
+//     final detailPvspr = detailPvsprFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -22,13 +22,13 @@ class DetailPvspr {
     factory DetailPvspr.fromJson(Map<String, dynamic> json) => DetailPvspr(
         status: json["status"],
         message: json["message"] == null ? "-" : json["message"].toString(),
-        data: Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
     );
 
     Map<String, dynamic> toJson() => {
         "status": status,
         "message": message == null ? "-" : message.toString(),
-        "data": data == null ? "-" : data?.toJson(),
+        "data": data == null ? null : data!.toJson(),
     };
 }
 
@@ -36,12 +36,12 @@ class Data {
     Data({
         this.detail,
         this.behavior,
-        required this.approval,
+        this.approval,
     });
 
     final Detail? detail;
     final String? behavior;
-    final List<Approval> approval;
+    final List<Approval>? approval;
 
     factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 
@@ -56,7 +56,7 @@ class Data {
     Map<String, dynamic> toJson() => {
         "detail": detail?.toJson(),
         "behavior": behavior == null ? "-" : behavior.toString(),
-        "approval": List<dynamic>.from(approval.map((x) => x.toJson())),
+        "approval": List<dynamic>.from(approval!.map((x) => x.toJson())),
     };
 }
 
@@ -143,6 +143,7 @@ class Detail {
         this.baseline,
         this.idPurchaseOrder,
         this.idSeleksiVendorDetail,
+        this.idPurchaseRequestDetail,
         this.idItemBuaso,
         this.kodeItem,
         this.namaItem,
@@ -176,8 +177,8 @@ class Detail {
         this.namaProyek,
         this.keterangan,
         this.createdAtPurchaseRequest,
-        this.prDetail,
-        this.detail,
+        this.gambar,
+        this.stakeholder,
     });
 
     final String? idSeleksiVendor;
@@ -193,6 +194,7 @@ class Detail {
     final String? baseline;
     final String? idPurchaseOrder;
     final String? idSeleksiVendorDetail;
+    final String? idPurchaseRequestDetail;
     final String? idItemBuaso;
     final String? kodeItem;
     final String? namaItem;
@@ -226,8 +228,8 @@ class Detail {
     final String? namaProyek;
     final String? keterangan;
     final DateTime? createdAtPurchaseRequest;
-    final List<Detail>? prDetail;
-    final List<Detail>? detail;
+    final List<Gambar>? gambar;
+    final List<Approval>? stakeholder;
 
     factory Detail.fromRawJson(String str) => Detail.fromJson(json.decode(str));
 
@@ -247,6 +249,7 @@ class Detail {
         baseline: json["baseline"] == null ? "-" : json["baseline"].toString(),
         idPurchaseOrder: json["id_purchase_order"] == null ? "-" : json["id_purchase_order"].toString(),
         idSeleksiVendorDetail: json["id_seleksi_vendor_detail"] == null ? "-" : json["id_seleksi_vendor_detail"].toString(),
+        idPurchaseRequestDetail: json["id_purchase_request_detail"] == null ? "-" : json["id_purchase_request_detail"].toString(),
         idItemBuaso: json["id_item_buaso"] == null ? "-" : json["id_item_buaso"].toString(),
         kodeItem: json["kode_item"] == null ? "-" : json["kode_item"].toString(),
         namaItem: json["nama_item"] == null ? "-" : json["nama_item"].toString(),
@@ -280,8 +283,12 @@ class Detail {
         namaProyek: json["nama_proyek"] == null ? "-" : json["nama_proyek"].toString(),
         keterangan: json["keterangan"] == null ? "-" : json["keterangan"].toString(),
         createdAtPurchaseRequest: json["created_at_purchase_request"] == null ? null : DateTime.parse(json["created_at_purchase_request"]),
-        prDetail: json["pr_detail"] == List.empty() ? [] : json["pr_detail"] == null ? null : List<Detail>.from(json["pr_detail"].map((x) => Detail.fromJson(x))),
-        detail: json["detail"] == List.empty() ? [] : json["detail"] == null ? null : List<Detail>.from(json["detail"].map((x) => Detail.fromJson(x))),
+        gambar: json["gambar"] == null ? [] 
+        : json["gambar"] == List.empty() ? []
+        : List<Gambar>.from(json["gambar"].map((x) => Gambar.fromJson(x))),
+        stakeholder: json["stakeholder"] == null ? []
+        : json["stakeholder"] == List.empty() ? []
+        : List<Approval>.from(json["stakeholder"].map((x) => Approval.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -298,6 +305,7 @@ class Detail {
         "baseline": baseline == null ? "-" : baseline.toString(),
         "id_purchase_order": idPurchaseOrder == null ? "-" : idPurchaseOrder.toString(),
         "id_seleksi_vendor_detail": idSeleksiVendorDetail == null ? "-" : idSeleksiVendorDetail.toString(),
+        "id_purchase_request_detail": idPurchaseRequestDetail == null ? "-" : idPurchaseRequestDetail.toString(),
         "id_item_buaso": idItemBuaso == null ? "-" : idItemBuaso.toString(),
         "kode_item": kodeItem == null ? "-" : kodeItem.toString(),
         "nama_item": namaItem == null ? "-" : namaItem.toString(),
@@ -331,7 +339,35 @@ class Detail {
         "nama_proyek": namaProyek == null ? "-" : namaProyek.toString(),
         "keterangan": keterangan == null ? "-" : keterangan.toString(),
         "created_at_purchase_request": createdAtPurchaseRequest == null ? null : createdAtPurchaseRequest!.toIso8601String(),
-        "pr_detail": prDetail == List.empty() ? [] : prDetail == null ? null : List<dynamic>.from(prDetail!.map((x) => x.toJson())),
-        "detail": detail == List.empty() ? [] : detail == null ? null : List<dynamic>.from(detail!.map((x) => x.toJson())),
+        "gambar": gambar == null ? []
+        : gambar == List.empty() ? []
+        : List<dynamic>.from(gambar!.map((x) => x.toJson())),
+        "stakeholder": stakeholder == null ? []
+        : stakeholder == List.empty() ? []
+        : List<dynamic>.from(stakeholder!.map((x) => x.toJson())),
+    };
+}
+
+class Gambar {
+    Gambar({
+        this.idSeleksiVendorDetail,
+        this.pathGambar,
+    });
+
+    final String? idSeleksiVendorDetail;
+    final String? pathGambar;
+
+    factory Gambar.fromRawJson(String str) => Gambar.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory Gambar.fromJson(Map<String, dynamic> json) => Gambar(
+        idSeleksiVendorDetail: json["id_seleksi_vendor_detail"] == null ? "-" : json["id_seleksi_vendor_detail"].toString(),
+        pathGambar: json["path_gambar"] == null ? "-" : json["path_gambar"].toString(),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id_seleksi_vendor_detail": idSeleksiVendorDetail == null ? "-" : idSeleksiVendorDetail.toString(),
+        "path_gambar": pathGambar == null ? "-" : pathGambar.toString(),
     };
 }

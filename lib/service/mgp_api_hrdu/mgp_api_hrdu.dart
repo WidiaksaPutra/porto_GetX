@@ -34,6 +34,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MGPAPI {
   static var client = http.Client();
+  // static var baseUrlHrdu = "https://api.erpmgpwoodworks.com/v1/hrdu";
+  // static var baseUrlInv = "https://api.erpmgpwoodworks.com/v1/inv";
   static var baseUrlHrdu = "https://devapi.mgp.bhawanaerp.com/v1/hrdu";
   static var baseUrlInv = "https://devapi.mgp.bhawanaerp.com/v1/inv";
 

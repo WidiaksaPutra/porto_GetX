@@ -49,7 +49,7 @@ class _BodyDashBoardHrduState extends State<BodyDashBoardHrdu> with KelompokBara
     hiddenValue = true;
     String selectStart = "${DateTime.now().year}-${DateTime.now().month-3}-${DateTime.now().day}";
     selected1 = null;
-    selected2 = null;
+    selected2 = DateTime.now();
     
     dataKelompokBarang = fetchNilaiKelompokBarang(tanggalAwal: selectStart, tanggalAkhir: DateTime.now().toString());
     dataKeperluan = fetchKeperluan(tanggalAwal: selectStart, tanggalAkhir: DateTime.now().toString());

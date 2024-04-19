@@ -18,7 +18,7 @@ class _ComponenLineChartState extends State<ComponenLineChart> {
   @override
   Widget build(BuildContext context) {
     NumberFormat numberFormat = NumberFormat.compact(locale: "in", explicitSign: false);    
-    List dataHorizontalTotal = [];
+    List<double> dataHorizontalTotal = [];
     List dataHorizontalSatuan = [];
     List dataHorizontalBarLine = [];
     int hasilVerticalLine = 0;
@@ -53,6 +53,32 @@ class _ComponenLineChartState extends State<ComponenLineChart> {
     splitToStringBigNumber.clear();
     int parsingBigNumber = double.parse(splitToStringBigNumber2[0]).round();
     splitToStringBigNumber2.clear();
+    
+    for(int index = 0; index < dataHorizontalTotal.length; index++){
+      String formatDataBarLine = numberFormat.format(double.parse(dataHorizontalTotal[index].toString()).round()).toString();
+      dataHorizontalBarLine.add(formatDataBarLine);
+      if(dataHorizontalSatuan[index] != splitToStringBigDataBarLine[1]){
+        List<String> splitFormatDataBarLine = formatDataBarLine.split(RegExp(r"[a-zA-Z,'']*$",caseSensitive: false));
+        if((splitFormatDataBarLine[0].length-1) == 3){
+          dataHorizontalTotal[index] = (double.parse(splitFormatDataBarLine[0].toString().replaceAll(',', '.')).round() / 1000);
+        }else if((splitFormatDataBarLine[0].length-1) == 2){
+          dataHorizontalTotal[index] = (double.parse(splitFormatDataBarLine[0].toString().replaceAll(',', '.')).round() / 100);
+        }else{
+          dataHorizontalTotal[index] = double.parse(splitFormatDataBarLine[0].toString().replaceAll(',', '.'));
+        }
+      }
+      else{
+        List<String> splitFormatDataBarLine = formatDataBarLine.split(RegExp(r"[a-zA-Z,'']*$",caseSensitive: false));
+        List<String> splitFormatDataBarLine2 = splitFormatDataBarLine[0].split(RegExp(r",",caseSensitive: false));
+        if(splitFormatDataBarLine2.length > 1){
+          String splitT = "${splitFormatDataBarLine2[0]}.${splitFormatDataBarLine2[1]}";
+          dataHorizontalTotal[index] = double.parse(splitT.toString());
+        }else{
+          dataHorizontalTotal[index] = double.parse(splitFormatDataBarLine2[0].toString());
+        }
+      }
+    }
+    
     List arrHasilVerticalLine = ['0,00'];
     late int numberMin;
     if(parsingBigNumber.toString().length == 1 && (parsingBigNumber == 0 || parsingBigNumber == 1)){
@@ -68,30 +94,6 @@ class _ComponenLineChartState extends State<ComponenLineChart> {
         }else{
           arrHasilVerticalLine.add('$hasilVerticalLine${splitToStringBigDataBarLine[1]}');
           break;
-        }
-      }
-    }
-    for(int index = 0; index < dataHorizontalTotal.length; index++){
-      String formatDataBarLine = numberFormat.format(double.parse(dataHorizontalTotal[index].toString()).round()).toString();
-      dataHorizontalBarLine.add(formatDataBarLine);
-      if(dataHorizontalSatuan[index] != splitToStringBigDataBarLine[1]){
-        List<String> splitFormatDataBarLine = formatDataBarLine.split(RegExp(r"[a-zA-Z,'']*$",caseSensitive: false));
-        if((splitFormatDataBarLine[0].length-1) == 3){
-          dataHorizontalTotal[index] = double.parse(splitFormatDataBarLine[0].toString()) / 1000;
-        }else if((splitFormatDataBarLine[0].length-1) == 2){
-          dataHorizontalTotal[index] = double.parse(splitFormatDataBarLine[0].toString()) / 100;
-        }else{
-          dataHorizontalTotal[index] = double.parse(splitFormatDataBarLine[0].toString());
-        }
-      }
-      else{
-        List<String> splitFormatDataBarLine = formatDataBarLine.split(RegExp(r"[a-zA-Z,'']*$",caseSensitive: false));
-        List<String> splitFormatDataBarLine2 = splitFormatDataBarLine[0].split(RegExp(r",",caseSensitive: false));
-        if(splitFormatDataBarLine2.length > 1){
-          String splitT = "${splitFormatDataBarLine2[0]}.${splitFormatDataBarLine2[1]}";
-          dataHorizontalTotal[index] = double.parse(splitT.toString());
-        }else{
-          dataHorizontalTotal[index] = double.parse(splitFormatDataBarLine2[0].toString());
         }
       }
     }
@@ -195,11 +197,11 @@ class _ComponenLineChartState extends State<ComponenLineChart> {
             spots: [
               for(int index = 0; index < dataHorizontalTotal.length; index++)...[
                 if(parsingBigNumber.toString().split('.')[0].length == 3)...[
-                  FlSpot(double.parse(index.toString()), double.parse(double.parse(dataHorizontalTotal[index].toString()).toString().split('.')[0].toString()) / 100),
-                ]else if(parsingBigNumber.toString().split('.')[0].length == 2)...[
-                  FlSpot(double.parse(index.toString()), double.parse(double.parse(dataHorizontalTotal[index].toString()).toString().split('.')[0].toString()) / 10),
+                  FlSpot(double.parse(index.toString()), double.parse(double.parse(dataHorizontalTotal[index].toString()).toString().split('.')[0].toString()).round() / 100),
+                ]else if(parsingBigNumber.toString().split('.')[0].length <= 2)...[
+                  FlSpot(double.parse(index.toString()), double.parse(double.parse(dataHorizontalTotal[index].toString()).toString().split('.')[0].toString()).round() / 10),
                 ]else...[
-                  FlSpot(double.parse(index.toString()), double.parse(double.parse(dataHorizontalTotal[index].toString()).toString().split('.')[0].toString())),
+                  // FlSpot(double.parse(index.toString()), double.parse(double.parse(dataHorizontalTotal[index].toString()).toString().split('.')[0].toString())),
                 ]
               ]
             ],

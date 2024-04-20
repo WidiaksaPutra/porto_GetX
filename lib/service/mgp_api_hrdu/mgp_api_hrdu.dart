@@ -34,12 +34,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MGPAPI {
   static var client = http.Client();
-  // static var baseUrlHrdu = "https://api.erpmgpwoodworks.com/v1/hrdu";
-  // static var baseUrlInv = "https://api.erpmgpwoodworks.com/v1/inv";
-  static var baseUrlHrdu = "https://devapi.mgp.bhawanaerp.com/v1/hrdu";
-  static var baseUrlInv = "https://devapi.mgp.bhawanaerp.com/v1/inv";
-
-  static late String? tokens = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEwMyIsInVzZXJuYW1lIjoia290YWFydGEiLCJuYW1hIjoiVXNlciIsImhhayI6WyJJTlYiLCJJTlZfTEFQX0tTVCIsIklOVl9NQVNfQlVBIiwiSU5WX01BU19HVUQiLCJJTlZfTUFTX0pFTiIsIklOVl9NQVNfS0VMIiwiSU5WX01BU19QQUIiLCJJTlZfTUFTX1NBVCIsIklOVl9SRUdfQkhOIiwiSU5WX1JQVF9ETyIsIklOVl9SUFRfTFBSIiwiSU5WX1JQVF9QQkoiLCJJTlZfUlBUX1NVIiwiSU5WX1RSTl9DVkIiLCJJTlZfVFJOX0RPIiwiSU5WX1RSTl9NQUciLCJJTlZfVFJOX1BCSiIsIklOVl9UUk5fUE5CIiwiSU5WX1RSTl9QUiIsIklOVl9UUk5fUFNKIiwiSU5WX1RSTl9SU1AiLCJJTlZfVFJOX1NKIiwiSU5WX1RSTl9USkIiLCJJTlZfVFJOX1RQQiIsIklOVl9UUk5fVFBMIiwiSU5WX1RSTl9UUiIsIkhSRFUiLCJIUkRVX1RSTl9QSkMiLCJJTlZfUkVHX0FMTSIsIklOVl9SRUdfT1ZIIiwiSU5WX1JFR19TQkMiLCJJTlZfUkVHX1VQSCIsIkhSRFVfQVBSX0NWQl9WXzEiLCJIUkRVX0FQUl9SRUdQTlBDSU5WX1ZfMSIsIkhSRFVfQVBSX1JFR1BDSU5WX1ZfMSIsIkhSRFVfQVBSX01BR19WXzEiLCJIUkRVX0FQUl9SRUdTSl9WXzEiLCJIUkRVX0FQUl9SRUdET19WXzEiLCJIUkRVX0FQUl9QRU5QT19WXzEiLCJIUkRVX0FQUl9QUl9WXzEiXSwidW5pdF9vcmdhbmlzYXNpIjp7ImlkIjoiODIiLCJrb2RlIjoiVU8wMDAwMTQiLCJuYW1hIjoiQmFnaWFuIExvZ2lzdGlrIn0sImphYmF0YW4iOnsiaWQiOiIzOSIsImtvZGUiOiJKQjAwMDAxNCIsIm5hbWEiOiJLYS4gQmFnLiBMb2dpc3RpayJ9LCJtYWRlIjoxNjg3NTEzOTA1fQ.f_AwhPHU9KVdrg9YMJ4MZHsspScyNnZE2RgqkIez0BI";
   static var status = "";
   //Register Token Notification
   Future registerTokenDevice({required String tokenDevice}) async {
